@@ -1,5 +1,11 @@
 " Maintainer: fpgentil
 
+" Fix up background
+set termguicolors
+
+" Enable mouse
+:set mouse=a
+
 " Set python bin location
 let g:python_host_prog = '/usr/bin/python'
 let g:python3_host_prog = '/usr/bin/python3'
@@ -38,8 +44,9 @@ map <leader>bd :Bclose<cr>:tabclose<cr>gT
 " Close all the buffers
 map <leader>ba :bufdo bd<cr>
 
-map <leader>l :bnext<cr>
-map <leader>h :bprevious<cr>
+" Split
+map <leader>v :vsplit<cr>
+map <leader>h :split<cr>
 
 " Useful mappings for managing tabs
 map <leader>tn :tabnew<cr>
@@ -47,6 +54,8 @@ map <leader>to :tabonly<cr>
 map <leader>tc :tabclose<cr>
 map <leader>tm :tabmove 
 map <leader>t<leader> :tabnext 
+map <leader><Right> :tabm +1<cr>
+map <leader><Left> :tabm -1<cr>
 
 " Turn backup off, since most stuff is in SVN, git etc. anyway...
 set nobackup
@@ -155,7 +164,7 @@ let g:ctrlp_cmd = 'CtrlP'
 
 " Statusline/bar
 Plug 'itchyny/lightline.vim'
-let g:lightline = { 'colorscheme': 'nord' }
+let g:lightline = { 'colorscheme': 'dracula' }
 
 " Comment with gcc
 Plug 'tpope/vim-commentary'
@@ -199,7 +208,15 @@ nnoremap <Leader><Leader> :Files<cr>
 nnoremap <Leader>b :Buffers<cr>
 nnoremap <Leader>f :Ag <C-R><C-W><cr>
 vnoremap <Leader>f y:Ag <C-R>"<cr>
-nnoremap <C-F> :Ag<Space>"
+nnoremap <C-F> :Ag<Space>
+
+" Nord theme
+" Plug 'arcticicestudio/nord-vim'
+
+" Dracula theme
+Plug 'dracula/vim', { 'as': 'dracula' }
 
 " Initialize plugin system
 call plug#end()
+
+colorscheme dracula
