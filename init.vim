@@ -194,6 +194,9 @@ Plug 'ludovicchabant/vim-gutentags'
 let g:gutentags_project_root = ['.git', '.svn', '.root', '.hg', '.project']
 nmap <leader>tt :TagbarToggle<CR>
 
+" Slim syntax
+Plug 'slim-template/vim-slim'
+
 " Always highlight html tags
 Plug 'Valloric/MatchTagAlways'
 
