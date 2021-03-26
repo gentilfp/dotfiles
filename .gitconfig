@@ -1,3 +1,9 @@
 [user]
 	email = cdigentil@gmail.com
 	name = Felipe Gentil
+
+[includeIf "gitdir:~/Toptal/"]
+    path = ~/Toptal/.gitconfig
+
+[core]
+	excludesFile = ~/.gitignore
