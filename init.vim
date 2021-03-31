@@ -169,7 +169,7 @@ let g:lightline = { 'colorscheme': 'dracula' }
 " Comment with gcc
 Plug 'tpope/vim-commentary'
 
-" Git
+" Git ============================================
 Plug 'tpope/vim-fugitive'
 nnoremap <leader>gs :Gstatus<CR>
 nnoremap <leader>gc :Gcommit<CR>
@@ -178,6 +178,8 @@ Plug 'ruanyl/vim-gh-line'
 Plug 'junegunn/gv.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+
+Plug 'airblade/vim-gitgutter'
 let g:airline_powerline_fonts = 1
 
 if !exists('g:airline_symbols')
@@ -206,6 +208,7 @@ let g:airline_right_alt_sep = ''
 let g:airline_symbols.branch = ''
 let g:airline_symbols.readonly = ''
 let g:airline_symbols.linenr = ''
+
 Plug 'zivyangll/git-blame.vim'
 nnoremap <Leader>s :<C-u>call gitblame#echo()<CR>
 "=============================================================================
@@ -247,6 +250,15 @@ nnoremap <Leader>b :Buffers<cr>
 nnoremap <Leader>f :Ag <C-R><C-W><cr>
 vnoremap <Leader>f y:Ag <C-R>"<cr>
 nnoremap <C-F> :Ag<Space>
+
+"LSP
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+" Rspec
+Plug 'thoughtbot/vim-rspec'
+let g:rspec_command = "!bundle exec rspec {spec}"
+map <Leader>t :call RunCurrentSpecFile()<CR>
+map <Leader>y :call RunNearestSpec()<CR>
 
 " Nord theme
 " Plug 'arcticicestudio/nord-vim'
