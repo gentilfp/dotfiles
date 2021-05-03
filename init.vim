@@ -53,7 +53,9 @@ map <leader>tn :tabnew<cr>
 map <leader>to :tabonly<cr>
 map <leader>tc :tabclose<cr>
 map <leader>tm :tabmove 
-map <leader>t<leader> :tabnext 
+map <leader>t :tabnext<cr>
+map <leader>w :w<cr>
+map <leader>q :q<cr>
 map <leader><Right> :tabm +1<cr>
 map <leader><Left> :tabm -1<cr>
 
@@ -228,8 +230,6 @@ Plug 'valloric/youcompleteme'
 
 " Tags
 Plug 'majutsushi/tagbar'
-Plug 'ludovicchabant/vim-gutentags'
-let g:gutentags_project_root = ['.git', '.svn', '.root', '.hg', '.project']
 nmap <leader>tt :TagbarToggle<CR>
 
 " Slim syntax
