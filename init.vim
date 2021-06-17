@@ -22,12 +22,21 @@ set smartcase
 " Copy/paste from/to clipboard
 set clipboard=unnamedplus
 
+" highlight column 120
+set colorcolumn=120
+
 " Leader
 let mapleader = ","
 
 " Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
 map <space> /
 map <C-space> ?
+
+" Tab+Tab to exit insert moded
+inoremap <Tab><Tab> <Esc>
+
+" Copy
+nmap ,cs :let @*=expand("%")<CR>
 
 " Disable highlight when <leader><cr> is pressed
 map <silent> <leader><cr> :noh<cr>
@@ -39,14 +48,15 @@ map <C-h> <C-W>h
 map <C-l> <C-W>l
 
 " Close the current buffer
-map <leader>bd :Bclose<cr>:tabclose<cr>gT
+map <leader>bd :bw<cr>
 
 " Close all the buffers
-map <leader>ba :bufdo bd<cr>
+map <leader>bq :bufdo bd<cr>
 
 " Split
 map <leader>v :vsplit<cr>
 map <leader>h :split<cr>
+map <leader>= <C-W>=<cr>
 
 " Useful mappings for managing tabs
 map <leader>tn :tabnew<cr>
@@ -58,6 +68,10 @@ map <leader>w :w<cr>
 map <leader>q :q<cr>
 map <leader><Right> :tabm +1<cr>
 map <leader><Left> :tabm -1<cr>
+
+" JSON
+map <leader>j :%!jq .<cr>
+map <leader>J :%!jq -c .<cr>
 
 " Turn backup off, since most stuff is in SVN, git etc. anyway...
 set nobackup
@@ -146,12 +160,25 @@ set tm=500
 " vim-plug
 call plug#begin('~/.vim/autoload')
 
-" Shorthand notation; fetches https://github.com/junegunn/vim-easy-align
-Plug 'junegunn/vim-easy-align'
-
 " NERDTRee
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+Plug 'Xuyuanp/nerdtree-git-plugin'
 nnoremap <leader>n :NERDTreeToggle<CR>
+nnoremap <leader>m :NERDTreeFind<CR>
+let g:NERDTreeWinPos = 'right'
+let g:NERDTreeWinSize=55
+let g:NERDTreeGitStatusIndicatorMapCustom = {
+                \ 'Modified'  :'✹',
+                \ 'Staged'    :'✚',
+                \ 'Untracked' :'✭',
+                \ 'Renamed'   :'➜',
+                \ 'Unmerged'  :'═',
+                \ 'Deleted'   :'✖',
+                \ 'Dirty'     :'✗',
+                \ 'Ignored'   :'☒',
+                \ 'Clean'     :'✔︎',
+                \ 'Unknown'   :'?',
+                \ }
 
 " Ack (silver_search)
 Plug 'mileszs/ack.vim'
@@ -159,14 +186,14 @@ if executable('ag')
   let g:ackprg = 'ag --vimgrep'
 endif
 
-" CtrlP
-Plug 'ctrlpvim/ctrlp.vim'
-let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlP'
+" " CtrlP
+" Plug 'ctrlpvim/ctrlp.vim'
+" let g:ctrlp_map = '<c-p>'
+" let g:ctrlp_cmd = 'CtrlP'
 
 " Statusline/bar
 Plug 'itchyny/lightline.vim'
-let g:lightline = { 'colorscheme': 'dracula' }
+let g:lightline = { 'colorscheme': 'onehalfdark' }
 
 " Comment with gcc
 Plug 'tpope/vim-commentary'
@@ -211,8 +238,9 @@ let g:airline_symbols.branch = ''
 let g:airline_symbols.readonly = ''
 let g:airline_symbols.linenr = ''
 
-Plug 'zivyangll/git-blame.vim'
-nnoremap <Leader>s :<C-u>call gitblame#echo()<CR>
+Plug 'APZelos/blamer.nvim'
+let g:blamer_delay = 500
+let g:blamer_enabled = 1
 "=============================================================================
 
 " Multi cursor
@@ -224,9 +252,6 @@ Plug 'tpope/vim-rails'
 
 " Surround
 Plug 'tpope/vim-surround'
-
-" Completion
-Plug 'valloric/youcompleteme'
 
 " Tags
 Plug 'majutsushi/tagbar'
@@ -251,22 +276,45 @@ nnoremap <Leader>f :Ag <C-R><C-W><cr>
 vnoremap <Leader>f y:Ag <C-R>"<cr>
 nnoremap <C-F> :Ag<Space>
 
-"LSP
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-
 " Rspec
 Plug 'thoughtbot/vim-rspec'
 let g:rspec_command = "!bundle exec rspec {spec}"
 map <Leader>t :call RunCurrentSpecFile()<CR>
 map <Leader>y :call RunNearestSpec()<CR>
 
-" Nord theme
-" Plug 'arcticicestudio/nord-vim'
+" Icons
+Plug 'ryanoasis/vim-devicons'
+set encoding=UTF-8
 
-" Dracula theme
-Plug 'dracula/vim', { 'as': 'dracula' }
+" OneHalf
+Plug 'sonph/onehalf', { 'rtp': 'vim' }
+
+"LSP
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+" Ale
+Plug 'dense-analysis/ale'
+let g:ale_sign_error = '●'
+let g:ale_sign_warning = '.'
+nmap <silent> <C-e> <Plug>(ale_next_wrap)
+let g:ale_linters = {
+      \   'ruby': ['rubocop'],
+      \   'javascript': ['eslint'],
+      \}
+let g:ale_fixers = {
+      \   'ruby': ['trim_whitespace', 'remove_trailing_lines', 'rubocop'],
+      \}
+let g:ale_lint_on_enter = 0
+let g:ale_lint_on_save = 0
+let g:ale_linters_explicit = 1
+let g:airline#extensions#ale#enabled = 1
+let g:ale_ruby_rubocop_executable = 'bundle'
+let g:ale_disable_lsp = 1
+nnoremap <Leader>ll :ALELint<cr>
+nnoremap <Leader>lf :ALEFix<cr>
+nnoremap <Leader>li :ALEInfo<cr>
 
 " Initialize plugin system
 call plug#end()
 
-colorscheme dracula
+colorscheme onehalfdark
