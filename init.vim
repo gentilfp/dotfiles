@@ -193,7 +193,7 @@ endif
 
 " Statusline/bar
 Plug 'itchyny/lightline.vim'
-let g:lightline = { 'colorscheme': 'onehalfdark' }
+" let g:lightline = { 'colorscheme': 'monokai' }
 
 " Comment with gcc
 Plug 'tpope/vim-commentary'
@@ -286,8 +286,12 @@ map <Leader>y :call RunNearestSpec()<CR>
 Plug 'ryanoasis/vim-devicons'
 set encoding=UTF-8
 
-" OneHalf
-Plug 'sonph/onehalf', { 'rtp': 'vim' }
+" Dracula
+" Plug 'dracula/vim', { 'as': 'dracula' }
+
+" Monokai
+Plug 'tanvirtin/monokai.nvim'
+
 
 "LSP
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -317,4 +321,4 @@ nnoremap <Leader>li :ALEInfo<cr>
 " Initialize plugin system
 call plug#end()
 
-colorscheme onehalfdark
+colorscheme monokai
