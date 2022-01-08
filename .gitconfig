@@ -1,5 +1,5 @@
 [user]
-	email = cdigentil@gmail.com
+	email = felipe.gentil@toptal.com
 	name = Felipe Gentil
 
 [includeIf "gitdir:~/Toptal/"]

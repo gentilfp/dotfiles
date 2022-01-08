@@ -97,7 +97,8 @@ set si "Smart indent
 set wrap "Wrap lines
 
 " Enable syntax highlighting
-syntax enable 
+syntax enable
+syntax on 
 
 " Fast saving
 nmap <leader>w :w!<cr>
@@ -286,11 +287,8 @@ map <Leader>y :call RunNearestSpec()<CR>
 Plug 'ryanoasis/vim-devicons'
 set encoding=UTF-8
 
-" Dracula
-" Plug 'dracula/vim', { 'as': 'dracula' }
-
-" Monokai
-Plug 'tanvirtin/monokai.nvim'
+" OneDark
+Plug 'navarasu/onedark.nvim'
 
 
 "LSP
@@ -321,4 +319,4 @@ nnoremap <Leader>li :ALEInfo<cr>
 " Initialize plugin system
 call plug#end()
 
-colorscheme monokai
+colorscheme onedark
