@@ -287,8 +287,8 @@ map <Leader>y :call RunNearestSpec()<CR>
 Plug 'ryanoasis/vim-devicons'
 set encoding=UTF-8
 
-" Dracula
-Plug 'dracula/vim', { 'as': 'dracula' }
+" One Dark
+Plug 'navarasu/onedark.nvim'
 
 "LSP
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -318,4 +318,4 @@ nnoremap <Leader>li :ALEInfo<cr>
 " Initialize plugin system
 call plug#end()
 
-colorscheme dracula
+colorscheme onedark
