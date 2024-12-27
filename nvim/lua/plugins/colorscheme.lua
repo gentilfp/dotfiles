@@ -1,14 +1,9 @@
 return {
-  -- add dracula
-  { "Mofiqul/dracula.nvim" },
-
-  -- { "nxstynate/oneDarkPro.nvim", priority = 1000 },
-
-  -- Configure LazyVim to load dracula
+  { "folke/tokyonight.nvim" },
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = "dracula",
+      colorscheme = "tokyonight-night",
     },
   },
 }
