@@ -3,4 +3,4 @@
 -- Add any additional options here
 --
 vim.o.number = true
-vim.o.relativenumber = false
+vim.o.relativenumber = true
