@@ -53,7 +53,16 @@ return {
         html = { filetypes = { "html", "eruby" } },
         cssls = {},
         tailwindcss = {
-          filetypes = { "html", "css", "scss", "eruby", "javascript", "javascriptreact", "typescript", "typescriptreact" },
+          filetypes = {
+            "html",
+            "css",
+            "scss",
+            "eruby",
+            "javascript",
+            "javascriptreact",
+            "typescript",
+            "typescriptreact",
+          },
         },
       },
     },
