@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(asdf current:*)",
+      "Bash(asdf list:*)",
+      "Bash(~/.asdf/shims/ruby -v)",
+      "Bash(cat:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

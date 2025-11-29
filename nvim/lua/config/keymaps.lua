@@ -37,3 +37,115 @@ vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Go to right window" })
 vim.keymap.set("n", "<leader>Rs", ":TermExec cmd='rails server'<CR>", { desc = "Start Rails server" })
 vim.keymap.set("n", "<leader>Rc", ":TermExec cmd='rails console'<CR>", { desc = "Start Rails console" })
 vim.keymap.set("n", "<leader>Rd", ":TermExec cmd='rails db:migrate'<CR>", { desc = "Run migrations" })
+
+-- Pull request references
+vim.keymap.set("n", "<leader>gp", function()
+  local filename = vim.fn.expand("%")
+  local line_number = vim.fn.line(".")
+
+  local blame_cmd = string.format("git blame -L %d,%d --porcelain %s", line_number, line_number, filename)
+  local commit_hash = vim.fn.system(blame_cmd):match("^(%w+)")
+  local output =
+    vim.fn.system("gh pr list --state=all --search " .. commit_hash .. " --json number,title,author,createdAt,url")
+
+  -- Parse JSON and get first PR
+  local success, prs = pcall(vim.fn.json_decode, output)
+
+  if not success or not prs or #prs == 0 then
+    print("No PRs found for this commit")
+    return
+  end
+
+  local pr = prs[1] -- Take only the first PR
+
+  -- Format the output nicely
+  local formatted_lines = {
+    "PR #" .. pr.number .. ": " .. pr.title,
+    "",
+    "Author: " .. pr.author.name .. " (@" .. pr.author.login .. ")",
+    "Created: " .. pr.createdAt:sub(1, 10), -- Just the date part
+    "",
+    "URL: " .. pr.url,
+  }
+
+  -- Create floating window with formatted output
+  local buf = vim.api.nvim_create_buf(false, true)
+  vim.api.nvim_buf_set_lines(buf, 0, -1, false, formatted_lines)
+
+  -- Make the buffer modifiable so we can copy the URL easily
+  vim.api.nvim_buf_set_option(buf, "modifiable", false)
+
+  local width = 80
+  local height = #formatted_lines + 2
+  local opts = {
+    relative = "editor",
+    width = width,
+    height = height,
+    col = (vim.o.columns - width) / 2,
+    row = (vim.o.lines - height) / 2,
+    border = "rounded",
+    title = " PR for commit " .. commit_hash:sub(1, 8) .. " ",
+  }
+
+  vim.api.nvim_open_win(buf, true, opts)
+  vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = buf })
+  vim.keymap.set("n", "<CR>", function()
+    vim.fn.system("open " .. pr.url) -- On macOS, use "xdg-open" on Linux
+  end, { buffer = buf, desc = "Open PR in browser" })
+end, { desc = "Find PR for current line's commit" })
+
+vim.keymap.set("n", "<leader>gt", function()
+  local filename = vim.fn.expand("%")
+
+  -- Search PRs touching the current file
+  local file_output =
+    vim.fn.system("gh pr list --state=all --search " .. filename .. " --json number,title,author,createdAt,url")
+
+  -- Parse and format file PRs
+  local success, file_prs = pcall(vim.fn.json_decode, file_output)
+
+  if not success or not file_prs or #file_prs == 0 then
+    print("No PRs found for this file")
+    return
+  end
+
+  local formatted_lines = {
+    "PRs TOUCHING THIS FILE:",
+    "",
+  }
+
+  for i, pr in ipairs(file_prs) do
+    if i <= 10 then -- Limit to 10 PRs
+      local pr_lines = {
+        "PR #" .. pr.number .. ": " .. pr.title,
+        "Author: " .. pr.author.name .. " (@" .. pr.author.login .. ")",
+        "Created: " .. pr.createdAt:sub(1, 10),
+        "URL: " .. pr.url,
+      }
+      vim.list_extend(formatted_lines, pr_lines)
+      if i < #file_prs and i < 10 then
+        table.insert(formatted_lines, "") -- Empty line between PRs
+      end
+    end
+  end
+
+  -- Create floating window
+  local buf = vim.api.nvim_create_buf(false, true)
+  vim.api.nvim_buf_set_lines(buf, 0, -1, false, formatted_lines)
+  vim.api.nvim_buf_set_option(buf, "modifiable", false)
+
+  local width = 90
+  local height = math.min(#formatted_lines + 2, 25)
+  local opts = {
+    relative = "editor",
+    width = width,
+    height = height,
+    col = (vim.o.columns - width) / 2,
+    row = (vim.o.lines - height) / 2,
+    border = "rounded",
+    title = " PRs for " .. vim.fn.fnamemodify(filename, ":t") .. " ",
+  }
+
+  vim.api.nvim_open_win(buf, true, opts)
+  vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = buf })
+end, { desc = "Find PRs touching current file" })
