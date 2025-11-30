@@ -1,0 +1,23 @@
+# Configuration file for Ghostty (~/.config/ghostty/config)
+# Ghostty uses a simple 'key = value' format.
+
+# Basics
+theme = "Catppuccin Mocha"
+font-family = "Meslog Nerd Fonto Mono"
+font-size = 12
+
+# Shift + Enter = new line
+keybind = shift+enter=text:\x1b\r
+
+# Move between panes within tab
+keybind = alt+shift+h=goto_split:left
+keybind = alt+shift+j=goto_split:bottom
+keybind = alt+shift+k=goto_split:top
+keybind = alt+shift+l=goto_split:right
+
+# Resize panes
+keybind = alt+shift+left=resize_split:left,10
+keybind = alt+shift+down=resize_split:down,10
+keybind = alt+shift+up=resize_split:up,10
+keybind = alt+shift+right=resize_split:right,10
+keybind = alt+shift+space=equalize_splits

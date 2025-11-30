@@ -4,7 +4,8 @@
       "Bash(asdf current:*)",
       "Bash(asdf list:*)",
       "Bash(~/.asdf/shims/ruby -v)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(asdf set:*)"
     ],
     "deny": [],
     "ask": []
