@@ -2,7 +2,7 @@
 # Ghostty uses a simple 'key = value' format.
 
 # Basics
-theme = "Catppuccin Mocha"
+theme = "tokyonight"
 font-family = "Meslog Nerd Fonto Mono"
 font-size = 12
 
