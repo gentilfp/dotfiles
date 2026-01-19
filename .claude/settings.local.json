@@ -5,7 +5,8 @@
       "Bash(asdf list:*)",
       "Bash(~/.asdf/shims/ruby -v)",
       "Bash(cat:*)",
-      "Bash(asdf set:*)"
+      "Bash(asdf set:*)",
+      "WebFetch(domain:github.com)"
     ],
     "deny": [],
     "ask": []

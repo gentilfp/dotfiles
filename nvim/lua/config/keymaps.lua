@@ -1,3 +1,12 @@
+-- Show diagnostics in floating window
+vim.keymap.set("n", "gl", function()
+  vim.diagnostic.open_float(nil, { focusable = true, scope = "line" })
+end, { desc = "Show line diagnostics" })
+
+vim.keymap.set("n", "<leader>cd", function()
+  vim.diagnostic.open_float(nil, { focusable = true, scope = "line" })
+end, { desc = "Show line diagnostics" })
+
 -- Copy relative path
 vim.keymap.set("n", "<leader>cp", function()
   local relpath = vim.fn.expand("%:~:.")
@@ -5,9 +14,10 @@ vim.keymap.set("n", "<leader>cp", function()
   vim.notify("Copied relative path: " .. relpath)
 end, { noremap = true, silent = true, desc = "Copy Relative File Path to Clipboard" })
 
--- Set tabs to go forward and backward in buffers
-vim.keymap.set("n", "<Tab>", ":bnext<CR>", { noremap = true, silent = true, desc = "Próximo buffer" })
-vim.keymap.set("n", "<S-Tab>", ":bprevious<CR>", { noremap = true, silent = true, desc = "Buffer anterior" })
+-- Buffer navigation (Tab/S-Tab) + Harpoon for pinned files
+vim.keymap.set("n", "<Tab>", ":bnext<CR>", { noremap = true, silent = true, desc = "Next buffer" })
+vim.keymap.set("n", "<S-Tab>", ":bprevious<CR>", { noremap = true, silent = true, desc = "Previous buffer" })
+-- Harpoon: <leader>ha to add file, <leader>hh to see menu, <leader>1-5 for quick access
 
 -- VSCode-like keymaps for Rails development
 -- Go to definition (should work with Ruby LSP now)

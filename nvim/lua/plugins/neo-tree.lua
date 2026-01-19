@@ -5,7 +5,7 @@ return {
     config = function()
       require("neo-tree").setup({
         window = {
-          position = "right", -- Posiciona a tree no lado direito
+          position = "left", -- Posiciona a tree no lado direito
           width = 45, -- Largura da tree
         },
         filesystem = {

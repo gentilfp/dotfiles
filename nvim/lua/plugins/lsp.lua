@@ -2,6 +2,16 @@ return {
   {
     "neovim/nvim-lspconfig",
     opts = {
+      diagnostics = {
+        virtual_text = false,  -- Disable inline diagnostics
+        signs = true,
+        underline = true,
+        update_in_insert = false,
+        float = {
+          border = "rounded",
+          source = true,
+        },
+      },
       servers = {
         -- Ruby LSP - uses sensible defaults
         rubylsp = {},
