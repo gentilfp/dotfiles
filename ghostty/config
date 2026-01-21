@@ -16,8 +16,8 @@ keybind = alt+shift+k=goto_split:top
 keybind = alt+shift+l=goto_split:right
 
 # Resize panes
-keybind = alt+shift+left=resize_split:left,10
-keybind = alt+shift+down=resize_split:down,10
-keybind = alt+shift+up=resize_split:up,10
-keybind = alt+shift+right=resize_split:right,10
+keybind = alt+shift+left=resize_split:left,50
+keybind = alt+shift+down=resize_split:down,50
+keybind = alt+shift+up=resize_split:up,50
+keybind = alt+shift+right=resize_split:right,50
 keybind = alt+shift+space=equalize_splits
