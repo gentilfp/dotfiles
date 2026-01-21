@@ -8,11 +8,18 @@ vim.keymap.set("n", "<leader>cd", function()
 end, { desc = "Show line diagnostics" })
 
 -- Copy relative path
-vim.keymap.set("n", "<leader>cp", function()
+vim.keymap.set("n", "<leader>yp", function()
   local relpath = vim.fn.expand("%:~:.")
-  vim.fn.setreg("+", relpath) -- Set it to the clipboard
+  vim.fn.setreg("+", relpath)
   vim.notify("Copied relative path: " .. relpath)
-end, { noremap = true, silent = true, desc = "Copy Relative File Path to Clipboard" })
+end, { noremap = true, silent = true, desc = "Copy relative file path" })
+
+-- Copy full/absolute path
+vim.keymap.set("n", "<leader>yP", function()
+  local fullpath = vim.fn.expand("%:p")
+  vim.fn.setreg("+", fullpath)
+  vim.notify("Copied full path: " .. fullpath)
+end, { noremap = true, silent = true, desc = "Copy full file path" })
 
 -- Buffer navigation (Tab/S-Tab) + Harpoon for pinned files
 vim.keymap.set("n", "<Tab>", ":bnext<CR>", { noremap = true, silent = true, desc = "Next buffer" })
