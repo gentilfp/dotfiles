@@ -14,10 +14,10 @@ vim.diagnostic.config({
   },
 })
 
--- Show diagnostics in floating window when cursor holds on a line
-vim.api.nvim_create_autocmd("CursorHold", {
+-- Close diagnostic floats when switching buffers to prevent frozen dialogs
+vim.api.nvim_create_autocmd({ "BufLeave", "BufWinLeave" }, {
   callback = function()
-    vim.diagnostic.open_float(nil, { focusable = false, scope = "cursor" })
+    vim.diagnostic.hide()
   end,
 })
 
