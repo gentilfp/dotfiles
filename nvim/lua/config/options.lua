@@ -34,4 +34,7 @@ vim.o.timeoutlen = 300           -- Faster which-key popup
 -- Visual guides
 vim.o.colorcolumn = "120"        -- Show vertical line at 120 characters
 
+-- Disable spelling globally
+vim.o.spell = false
+
 -- Diagnostics config is in autocmds.lua (needs to run after LazyVim)

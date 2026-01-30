@@ -20,3 +20,19 @@ vim.api.nvim_create_autocmd("CursorHold", {
     vim.diagnostic.open_float(nil, { focusable = false, scope = "cursor" })
   end,
 })
+
+-- Don't add newline at end of YAML files
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "yaml", "yml" },
+  callback = function()
+    vim.opt_local.fixendofline = false
+  end,
+})
+
+-- Disable spelling for markdown files
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "markdown", "md" },
+  callback = function()
+    vim.opt_local.spell = false
+  end,
+})
