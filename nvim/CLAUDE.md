@@ -77,13 +77,6 @@ This Neovim configuration is optimized for Rails development with some React sup
 - **`<leader>ac`** - Toggle Claude Code
 - **`<leader>aC`** - Continue Claude conversation
 
-### Copilot
-- **`Tab`** - Accept suggestion
-- **`<C-Right>`** - Accept word
-- **`<C-End>`** - Accept line
-- **`<M-]>`** / **`<M-[>`** - Next/previous suggestion
-- **`<C-]>`** - Dismiss suggestion
-
 ## Installed Plugins
 
 ### Core Rails Support
@@ -109,7 +102,6 @@ This Neovim configuration is optimized for Rails development with some React sup
 - `diffview.nvim` - Git diff viewer
 
 ### AI
-- `copilot.lua` - GitHub Copilot integration
 - `claude-code.nvim` - Claude Code integration
 
 ### LSP & Development
