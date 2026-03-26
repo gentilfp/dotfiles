@@ -1,12 +1,9 @@
 return {
-  { "folke/tokyonight.nvim" },
-  { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
-  { "loctvl842/monokai-pro.nvim" },
-  { "dracula/vim", name = "dracula-vim" },
+  { "dracula/vim", name = "dracula", priority = 1000 },
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = "tokyonight-night",
+      colorscheme = "dracula",
     },
   },
 }

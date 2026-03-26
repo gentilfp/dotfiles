@@ -73,26 +73,17 @@ This Neovim configuration is optimized for Rails development with some React sup
 - **`<leader>gp`** - Find PR for current line's commit
 - **`<leader>gt`** - Find PRs touching current file
 
-### Claude Code Integration
-- **`<leader>ac`** - Toggle Claude Code
-- **`<leader>aC`** - Continue Claude conversation
-
 ## Installed Plugins
 
 ### Core Rails Support
 - `vim-rails` - Rails navigation and commands
-- `vim-bundler` - Bundler integration
-- `vim-rake` - Rake task support
-- `vim-projectionist` - Project navigation
-- `vim-test` - Test runner integration
 
 ### React/TypeScript Support
 - `nvim-ts-autotag` - Auto-close HTML/JSX tags
-- `vim-jsx-pretty` - JSX syntax highlighting
 - `emmet-vim` - HTML/CSS abbreviations (Ctrl+z trigger)
 
 ### Search & Navigation
-- `telescope.nvim` - Fuzzy finder (LazyVim default)
+- `telescope.nvim` - Fuzzy finder
 - `telescope-live-grep-args` - Grep with include/exclude filters
 - `nvim-spectre` - Search & replace across files
 
@@ -100,9 +91,6 @@ This Neovim configuration is optimized for Rails development with some React sup
 - `lazygit.nvim` - Git UI
 - `gitsigns.nvim` - Git signs in gutter
 - `diffview.nvim` - Git diff viewer
-
-### AI
-- `claude-code.nvim` - Claude Code integration
 
 ### LSP & Development
 - `nvim-lspconfig` - Language server configuration

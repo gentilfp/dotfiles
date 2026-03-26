@@ -44,11 +44,7 @@ vim.keymap.set("n", "<leader>w", ":w<CR>", { desc = "Save file" })
 vim.keymap.set("n", "<leader>q", ":q<CR>", { desc = "Quit" })
 vim.keymap.set("n", "<leader>x", ":x<CR>", { desc = "Save and quit" })
 
--- Better window navigation
-vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "Go to left window" })
-vim.keymap.set("n", "<C-j>", "<C-w>j", { desc = "Go to lower window" })
-vim.keymap.set("n", "<C-k>", "<C-w>k", { desc = "Go to upper window" })
-vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Go to right window" })
+-- Window navigation handled by vim-tmux-navigator plugin
 
 -- Rails console and server shortcuts
 vim.keymap.set("n", "<leader>Rs", ":TermExec cmd='rails server'<CR>", { desc = "Start Rails server" })

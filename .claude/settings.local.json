@@ -6,7 +6,10 @@
       "Bash(~/.asdf/shims/ruby -v)",
       "Bash(cat:*)",
       "Bash(asdf set:*)",
-      "WebFetch(domain:github.com)"
+      "WebFetch(domain:github.com)",
+      "Bash(python3:*)",
+      "Bash(tmux source:*)",
+      "Bash(tmux source-file:*)"
     ],
     "deny": [],
     "ask": []
