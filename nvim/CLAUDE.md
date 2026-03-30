@@ -45,7 +45,6 @@ This Neovim configuration is optimized for Rails development with some React sup
 - **`<leader>cp`** - Copy relative file path to clipboard
 
 ### Window Navigation
-- **`Ctrl+h/j/k/l`** - Move between windows (left/down/up/right)
 - **`<C-w>v`** - Vertical split
 - **`<C-w>s`** - Horizontal split
 - **`<C-w>o`** - Close other windows
@@ -80,7 +79,7 @@ This Neovim configuration is optimized for Rails development with some React sup
 
 ### React/TypeScript Support
 - `nvim-ts-autotag` - Auto-close HTML/JSX tags
-- `emmet-vim` - HTML/CSS abbreviations (Ctrl+z trigger)
+- LazyVim TypeScript extra for enhanced TS support
 
 ### Search & Navigation
 - `telescope.nvim` - Fuzzy finder
