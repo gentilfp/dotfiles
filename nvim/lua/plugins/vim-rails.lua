@@ -1,14 +1,6 @@
 return {
   { "tpope/vim-rails" },
   {
-    "tpope/vim-bundler",
-    ft = { "ruby" },
-  },
-  {
-    "tpope/vim-rake",
-    ft = { "ruby" },
-  },
-  {
     -- Better Rails navigation and commands
     "tpope/vim-projectionist",
     config = function()
