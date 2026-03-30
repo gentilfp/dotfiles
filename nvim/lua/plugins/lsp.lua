@@ -14,7 +14,10 @@ return {
       },
       servers = {
         -- Ruby LSP - uses sensible defaults
-        rubylsp = {},
+        rubylsp = {
+          cmd = { "mise", "exec", "--", "ruby-lsp" },
+          mason = false,
+        },
         -- TypeScript/JavaScript for React
         ts_ls = {},
         -- HTML/CSS for ERB templates
@@ -26,10 +29,15 @@ return {
     },
   },
   {
+    "mason-org/mason-lspconfig.nvim",
+    opts = {
+      exclude = { "ruby_lsp" },
+    },
+  },
+  {
     "mason-org/mason.nvim",
     opts = {
       ensure_installed = {
-        "ruby-lsp",
         "typescript-language-server",
         "html-lsp",
         "css-lsp",
