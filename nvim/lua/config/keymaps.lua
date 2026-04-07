@@ -1,3 +1,11 @@
+-- Search scratchpad files from anywhere via Telescope
+vim.keymap.set("n", "<leader>sn", function()
+  require("telescope.builtin").find_files({
+    cwd = vim.fn.expand("~/notes/scratchpad"),
+    prompt_title = "Find Scratchpad Note",
+  })
+end, { desc = "Search Scratchpad" })
+
 -- Show diagnostics in floating window
 vim.keymap.set("n", "gl", function()
   vim.diagnostic.open_float(nil, { focusable = true, scope = "line" })
@@ -52,6 +60,19 @@ vim.keymap.set("n", "<leader>Rc", ":TermExec cmd='rails console'<CR>", { desc = 
 vim.keymap.set("n", "<leader>Rd", ":TermExec cmd='rails db:migrate'<CR>", { desc = "Run migrations" })
 
 -- Pull request references
+local function open_url(url)
+  local ok = vim.ui.open(url)
+  if ok then
+    return
+  end
+
+  if vim.fn.has("mac") == 1 then
+    vim.fn.jobstart({ "open", url }, { detach = true })
+  elseif vim.fn.has("unix") == 1 then
+    vim.fn.jobstart({ "xdg-open", url }, { detach = true })
+  end
+end
+
 vim.keymap.set("n", "<leader>gp", function()
   local filename = vim.fn.expand("%")
   local line_number = vim.fn.line(".")
@@ -78,7 +99,9 @@ vim.keymap.set("n", "<leader>gp", function()
     "Author: " .. pr.author.name .. " (@" .. pr.author.login .. ")",
     "Created: " .. pr.createdAt:sub(1, 10), -- Just the date part
     "",
-    "URL: " .. pr.url,
+    pr.url,
+    "",
+    "Press <CR>, gx, or double-click to open",
   }
 
   -- Create floating window with formatted output
@@ -101,9 +124,16 @@ vim.keymap.set("n", "<leader>gp", function()
   }
 
   vim.api.nvim_open_win(buf, true, opts)
+  vim.api.nvim_win_set_cursor(0, { 6, 0 })
   vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = buf })
   vim.keymap.set("n", "<CR>", function()
-    vim.fn.system("open " .. pr.url) -- On macOS, use "xdg-open" on Linux
+    open_url(pr.url)
+  end, { buffer = buf, desc = "Open PR in browser" })
+  vim.keymap.set("n", "gx", function()
+    open_url(pr.url)
+  end, { buffer = buf, desc = "Open PR in browser" })
+  vim.keymap.set("n", "<2-LeftMouse>", function()
+    open_url(pr.url)
   end, { buffer = buf, desc = "Open PR in browser" })
 end, { desc = "Find PR for current line's commit" })
 

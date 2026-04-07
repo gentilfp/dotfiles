@@ -3,7 +3,7 @@ return {
     "neovim/nvim-lspconfig",
     opts = {
       diagnostics = {
-        virtual_text = false,  -- Disable inline diagnostics
+        virtual_text = false, -- Disable inline diagnostics
         signs = true,
         underline = true,
         update_in_insert = false,
@@ -13,10 +13,12 @@ return {
         },
       },
       servers = {
-        -- Ruby LSP - uses sensible defaults
-        rubylsp = {
-          cmd = { "mise", "exec", "--", "ruby-lsp" },
+        ruby_lsp = {
           mason = false,
+          cmd = { "mise", "exec", "--", "ruby-lsp" },
+          filetypes = { "ruby", "eruby" },
+          root_markers = { "Gemfile", ".git" },
+          init_options = { formatter = "auto" },
         },
         -- TypeScript/JavaScript for React
         ts_ls = {},
@@ -26,12 +28,6 @@ return {
         -- Tailwind
         tailwindcss = {},
       },
-    },
-  },
-  {
-    "mason-org/mason-lspconfig.nvim",
-    opts = {
-      exclude = { "ruby_lsp" },
     },
   },
   {

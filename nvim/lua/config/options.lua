@@ -37,4 +37,7 @@ vim.o.colorcolumn = "120"        -- Show vertical line at 120 characters
 -- Disable spelling globally
 vim.o.spell = false
 
+-- Session persistence (Sublime-style tab restoration for scratchpad workflow)
+vim.opt.sessionoptions = { "buffers", "curdir", "tabpages", "winsize", "help", "globals", "skiprtp", "folds" }
+
 -- Diagnostics config is in autocmds.lua (needs to run after LazyVim)
