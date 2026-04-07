@@ -3,6 +3,7 @@
 
 # Neovim
 nvim/lazy-lock.json
+nvim/.nvimlog
 *.swp
 *.swo
 *~
