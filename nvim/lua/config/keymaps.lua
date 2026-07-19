@@ -1,3 +1,17 @@
+local function live_grep_args_root()
+  require("lazy").load({ plugins = { "telescope-live-grep-args.nvim" } })
+  require("telescope").extensions.live_grep_args.live_grep_args({
+    cwd = LazyVim.root.get(),
+    prompt_title = "Grep with args (Root Dir)",
+  })
+end
+
+vim.keymap.set("n", "<leader>/", live_grep_args_root, { desc = "Grep with args (Root Dir)" })
+
+vim.keymap.set("n", "<leader>sq", "<cmd>copen<cr>", { desc = "Open search results" })
+vim.keymap.set("n", "]q", "<cmd>cnext<cr>", { desc = "Next search result" })
+vim.keymap.set("n", "[q", "<cmd>cprev<cr>", { desc = "Previous search result" })
+
 -- Search scratchpad files from anywhere via Telescope
 vim.keymap.set("n", "<leader>sn", function()
   require("telescope.builtin").find_files({
