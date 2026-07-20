@@ -3,8 +3,12 @@
 
 # Basics
 theme = "dracula"
-font-family = "Monaspace Neon"
+font-family = "JetBrainsMono Nerd Font Mono"
 font-size = 11
+
+# Treat macOS Option as Alt so apps like nvim receive <A-...> keybinds
+# instead of macOS dead keys (e.g. Option+i = ˆ)
+macos-option-as-alt = true
 
 # Shift + Enter = new line
 keybind = shift+enter=text:\x1b\r
@@ -21,3 +25,10 @@ keybind = alt+shift+down=resize_split:down,50
 keybind = alt+shift+up=resize_split:up,50
 keybind = alt+shift+right=resize_split:right,50
 keybind = alt+shift+space=equalize_splits
+
+# Window
+window-width = 200
+window-height = 60
+
+window-position-x = 850
+window-position-y = 300
