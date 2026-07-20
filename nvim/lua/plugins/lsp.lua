@@ -20,6 +20,7 @@ return {
           root_markers = { "Gemfile", ".git" },
           init_options = { formatter = "auto" },
         },
+        rubocop = { enabled = false },
         -- TypeScript/JavaScript for React
         ts_ls = {},
         -- HTML/CSS for ERB templates
