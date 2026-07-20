@@ -14,8 +14,8 @@ return {
             mappings = {
               i = {
                 ["<C-k>"] = lga_actions.quote_prompt(),
-                ["<C-i>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
-                ["<C-g>"] = lga_actions.quote_prompt({ postfix = " -g " }),
+                ["<A-i>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
+                ["<A-g>"] = lga_actions.quote_prompt({ postfix = " -g " }),
                 ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
               },
               n = {
