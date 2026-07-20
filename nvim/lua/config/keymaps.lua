@@ -20,6 +20,11 @@ vim.keymap.set("n", "<leader>sn", function()
   })
 end, { desc = "Search Scratchpad" })
 
+-- Command palette: fuzzy-search every available picker (keymaps, commands, files, etc.)
+vim.keymap.set("n", "<leader>sP", function()
+  Snacks.picker()
+end, { desc = "Picker palette (all pickers)" })
+
 -- Show diagnostics in floating window
 vim.keymap.set("n", "gl", function()
   vim.diagnostic.open_float(nil, { focusable = true, scope = "line" })
