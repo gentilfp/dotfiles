@@ -5,6 +5,13 @@
 -- Disable format-on-save from LazyVim/Conform
 vim.g.autoformat = false
 
+-- Monorepo: always use the launch/working dir as the project root.
+-- Default LazyVim root_spec ({ "lsp", { ".git", "lua" }, "cwd" }) walks up to the
+-- nearest .git, so opening a file inside a nested app (its own git repo) re-roots
+-- into that app -- breaking <leader>/ and moving the file-tree into the sub-app.
+-- Preferring "cwd" keeps everything scoped to the folder you opened nvim in.
+vim.g.root_spec = { "cwd" }
+
 -- Line numbers
 vim.o.number = true
 vim.o.relativenumber = true
