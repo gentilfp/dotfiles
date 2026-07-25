@@ -73,6 +73,35 @@ vim.keymap.set("n", "<leader>x", ":x<CR>", { desc = "Save and quit" })
 
 -- Window navigation handled by vim-tmux-navigator plugin
 
+-- Resize splits via a modifier-free submode. LazyVim's <C-arrows> are eaten by
+-- macOS (Spaces/Mission Control) and <A-arrows> don't work in the terminal
+-- (Option+arrow is sent as ESC+seq, which nvim can't parse as <A-Up>).
+-- So: <leader>W enters resize mode, then h/j/k/l (repeatable) resize the
+-- current split. Any other key exits. Works in every terminal.
+local function resize_mode()
+  local hint = "-- RESIZE -- h/l: width  j/k: height  (any other key exits)"
+  while true do
+    vim.api.nvim_echo({ { hint, "ModeMsg" } }, false, {})
+    vim.cmd("redraw")
+    local ok, ch = pcall(vim.fn.getcharstr)
+    if not ok then
+      break
+    elseif ch == "h" then
+      vim.cmd("vertical resize -3")
+    elseif ch == "l" then
+      vim.cmd("vertical resize +3")
+    elseif ch == "j" then
+      vim.cmd("resize -3")
+    elseif ch == "k" then
+      vim.cmd("resize +3")
+    else
+      break
+    end
+  end
+  vim.api.nvim_echo({ { "" } }, false, {})
+end
+vim.keymap.set("n", "<leader>W", resize_mode, { desc = "Resize window mode (h/j/k/l)" })
+
 -- Rails console and server shortcuts
 vim.keymap.set("n", "<leader>Rs", ":TermExec cmd='rails server'<CR>", { desc = "Start Rails server" })
 vim.keymap.set("n", "<leader>Rc", ":TermExec cmd='rails console'<CR>", { desc = "Start Rails console" })
