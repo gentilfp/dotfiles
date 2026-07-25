@@ -1,0 +1,23 @@
+# Global gitignore → symlinked to ~/.gitignore (core.excludesFile).
+# Machine/OS/editor noise you never want in any repo.
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Editors
+*.swp
+*.swo
+*~
+.netrwhist
+.idea/
+*.sublime-workspace
+
+# Env & secrets (local only)
+.env.local
+.direnv/
+
+# Logs & temp
+*.log

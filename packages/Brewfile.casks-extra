@@ -1,0 +1,18 @@
+# Brewfile.casks-extra — the rest of the GUI apps (optional group).
+
+# Window management & desktop automation
+cask "middleclick"
+
+# Editors
+cask "sublime-text"
+
+# Browser & tools
+cask "chromium"
+cask "flameshot"       # screenshots + annotation
+cask "portkiller"
+cask "sf-symbols"
+
+# More Nerd Fonts
+cask "font-hack-nerd-font"
+cask "font-3270-nerd-font"
+cask "font-monaspace"

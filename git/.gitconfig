@@ -1,0 +1,60 @@
+# ~/.gitconfig — portable across machines/jobs.
+# Identity lives in ~/.gitconfig.local (NOT tracked) so you never commit with
+# the wrong email at a new job. The installer writes it for you.
+[include]
+	path = ~/.gitconfig.local
+
+[core]
+	excludesFile = ~/.gitignore
+	pager = delta
+
+[init]
+	defaultBranch = main
+
+[pull]
+	rebase = true
+
+[push]
+	autoSetupRemote = true
+	default = simple
+
+[fetch]
+	prune = true
+
+[rebase]
+	autoStash = true
+
+[diff]
+	colorMoved = default
+	algorithm = histogram
+
+[merge]
+	conflictstyle = zdiff3
+
+[interactive]
+	diffFilter = delta --color-only
+
+[delta]
+	navigate = true
+	line-numbers = true
+	side-by-side = false
+
+[column]
+	ui = auto
+
+[branch]
+	sort = -committerdate
+
+[alias]
+	st = status -sb
+	co = checkout
+	sw = switch
+	br = branch
+	ci = commit
+	amend = commit --amend --no-edit
+	last = log -1 HEAD --stat
+	lg = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) %C(dim white)%an%C(reset) %C(auto)%d%C(reset) %s %C(dim)(%ar)%C(reset)'
+	unstage = reset HEAD --
+	undo = reset --soft HEAD~1
+	wip = "!git add -A && git commit -m 'wip'"
+	cleanup = "!git branch --merged | grep -vE '^\\*|master|main|develop' | xargs -r git branch -d"

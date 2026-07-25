@@ -1,0 +1,31 @@
+# Brewfile.extra — nice-to-haves, alternative tools, and fun (optional group).
+
+# Extra AI coding CLIs
+brew "gemini-cli"
+
+# Alternative editors
+brew "midnight-commander"
+
+# Extra TUIs & monitors
+brew "television"      # general fuzzy finder TUI
+brew "glances"
+brew "neofetch"
+brew "treemd"          # markdown viewer
+brew "hunk"            # review-first diff viewer for agent changesets
+
+# Languages & build tools
+brew "go"
+brew "cmake"
+
+# Media / docs processing
+brew "imagemagick"
+brew "poppler"
+brew "tesseract"       # OCR
+
+# Misc utilities
+brew "gnupg"
+brew "nmap"
+brew "phrase-cli"
+brew "gcalcli"
+brew "ical-buddy"
+brew "switchaudio-osx"

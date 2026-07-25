@@ -1,0 +1,208 @@
+tap "atlassian/acli"
+tap "charmbracelet/tap"
+tap "cloudmanic/spice-edit", "https://github.com/cloudmanic/spice-edit"
+tap "felixkratz/formulae", "https://github.com/FelixKratz/homebrew-formulae"
+tap "homebrew/services"
+tap "jandedobbeleer/oh-my-posh"
+tap "jesseduffield/lazygit"
+tap "productdevbook/tap"
+# Securely store and access AWS credentials in development environments
+brew "aws-vault"
+# Cryptography and SSL/TLS Toolkit
+brew "openssl@3"
+# Official Amazon AWS command-line interface
+brew "awscli"
+# C library of Git core methods that is re-entrant and linkable
+brew "libgit2"
+# Clone of cat(1) with syntax highlighting and Git integration
+brew "bat"
+# Resource monitor. C++ version and continuation of bashtop and bpytop
+brew "btop"
+# Core application library for C
+brew "glib"
+# Cross-platform make
+brew "cmake"
+# GNU multiple precision arithmetic library
+brew "gmp"
+# GNU File, Shell, and Text utilities
+brew "coreutils"
+# Load/unload environment variables based on $PWD
+brew "direnv"
+# Platform keystore credential helper for Docker
+brew "docker-credential-helper"
+# Modern, maintained replacement for ls
+brew "eza"
+# Simple, fast and user-friendly alternative to find
+brew "fd"
+# Command-line fuzzy finder written in Go
+brew "fzf"
+# Easily access your Google Calendar(s) from a command-line
+brew "gcalcli"
+# Open-source, cross-platform JavaScript runtime environment
+brew "node"
+# Interact with Google Gemini AI models from the command-line
+brew "gemini-cli"
+# GitHub command-line tool
+brew "gh"
+# Distributed revision control system
+brew "git"
+# Syntax-highlighting pager for git and diff output
+brew "git-delta"
+# Alternative to top/htop
+brew "glances"
+# GNU Privacy Guard (OpenPGP)
+brew "gnupg"
+# Open source programming language to build simple/reliable/efficient software
+brew "go"
+# OpenType text shaping engine
+brew "harfbuzz"
+# Kubernetes package manager
+brew "helm"
+# Review-first terminal diff viewer for agent-authored changesets
+brew "hunk"
+# Get events and tasks from the macOS calendar database
+brew "ical-buddy"
+# ISO/IEC 23008-12:2017 HEIF file format decoder and encoder
+brew "libheif"
+# Tools and libraries to manipulate images in select formats
+brew "imagemagick"
+# Lightweight and flexible command-line JSON processor
+brew "jq"
+# Lazier way to manage everything docker
+brew "lazydocker"
+# Simple terminal UI for git commands
+brew "lazygit"
+# Pager program similar to more
+brew "less"
+# Postgres C API library
+brew "libpq"
+# GNOME XML library
+brew "libxml2", link: true
+# C XSLT library for GNOME
+brew "libxslt", link: true
+# Web and API based SMTP testing tool
+brew "mailhog"
+# Terminal-based visual file manager
+brew "midnight-commander"
+# Small, simple certificate authority
+brew "minica"
+# Polyglot runtime manager (asdf rust clone)
+brew "mise"
+# Simple tool to make locally trusted development certificates
+brew "mkcert"
+# Fast, highly customisable system info script
+brew "neofetch"
+# Clean C library for processing UTF-8 Unicode data
+brew "utf8proc", args: ["HEAD"]
+# Ambitious Vim-fork focused on extensibility and agility
+brew "neovim"
+# Diagnose infrastructure problems with metrics, visualizations & alarms
+brew "netdata"
+# Port scanning utility for large networks
+brew "nmap"
+# Search tool like grep and The Silver Searcher
+brew "ripgrep"
+# Tool to interact with the Phrase API
+brew "phrase-cli"
+# Package compiler and linker metadata toolkit
+brew "pkgconf"
+# PDF rendering library (based on the xpdf-3.0 code base)
+brew "poppler"
+# Object-relational database system
+brew "postgresql@14"
+# Object-relational database system
+brew "postgresql@16", restart_service: :changed
+# Theme for zsh
+brew "powerlevel10k"
+# Develop and deploy code with zero configuration
+brew "railway"
+# Persistent key-value database, with built-in net interface
+brew "redis", restart_service: :changed
+# Database of common MIME types
+brew "shared-mime-info"
+# Editor of encrypted files
+brew "sops"
+# Change macOS audio source from the command-line
+brew "switchaudio-osx"
+# General purpose fuzzy finder TUI
+brew "television"
+# User interface to the TELNET protocol
+brew "telnet"
+# OCR (Optical Character Recognition) engine
+brew "tesseract"
+# TUI and CLI dual pane markdown viewer
+brew "treemd"
+# Extremely fast Python package installer and resolver, written in Rust
+brew "uv"
+# Tool for managing your YubiKey configuration
+brew "ykman"
+# Process YAML, JSON, XML, CSV and properties documents from the CLI
+brew "yq"
+# Shell extension to navigate your filesystem faster
+brew "zoxide"
+# Fish-like fast/unobtrusive autosuggestions for zsh
+brew "zsh-autosuggestions"
+# Fish shell like syntax highlighting for zsh
+brew "zsh-syntax-highlighting"
+# SpiceEdit — opinionated mouse-first terminal code editor.
+brew "cloudmanic/spice-edit/spice-edit"
+# Free and open-source web browser
+cask "chromium"
+# Terminal-based AI coding assistant
+cask "claude-code"
+# Screenshot software with built-in annotation tools
+cask "flameshot"
+cask "font-3270-nerd-font"
+cask "font-hack-nerd-font"
+cask "font-meslo-lg-nerd-font"
+cask "font-monaspace"
+# Terminal emulator that uses platform-native UI and GPU acceleration
+cask "ghostty@tip"
+# Utility to extend trackpad functionality
+cask "middleclick"
+# Replacement for Docker Desktop
+cask "orbstack"
+cask "portkiller"
+# Tool that provides consistent, highly configurable symbols for apps
+cask "sf-symbols"
+# Text editor for code, markup and prose
+cask "sublime-text"
+vscode "anthropic.claude-code"
+vscode "buenon.scratchpads"
+vscode "clemenspeters.format-json"
+vscode "dbaeumer.vscode-eslint"
+vscode "dotjoshjohnson.xml"
+vscode "dracula-theme.theme-dracula"
+vscode "eamodio.gitlens"
+vscode "ecmel.vscode-html-css"
+vscode "esbenp.prettier-vscode"
+vscode "github.vscode-pull-request-github"
+vscode "graphql.vscode-graphql"
+vscode "graphql.vscode-graphql-syntax"
+vscode "hashicorp.terraform"
+vscode "jakebecker.elixir-ls"
+vscode "jasonnutter.vscode-codeowners"
+vscode "marcoroth.herb-lsp"
+vscode "ms-azuretools.vscode-containers"
+vscode "ms-vscode-remote.remote-containers"
+vscode "ms-vscode.live-server"
+vscode "ms-vscode.vscode-typescript-next"
+vscode "ms-vsliveshare.vsliveshare"
+vscode "oderwat.indent-rainbow"
+vscode "openai.chatgpt"
+vscode "pkief.material-icon-theme"
+vscode "redhat.vscode-yaml"
+vscode "shopify.ruby-lsp"
+vscode "sleistner.vscode-fileutils"
+vscode "sporto.rails-go-to-spec"
+vscode "typescriptteam.native-preview"
+vscode "yzhang.markdown-all-in-one"
+go "github.com/jsha/minica"
+cargo "fuzzy"
+uv "specify-cli", source: "git+https://github.com/github/spec-kit.git"
+npm "@earendil-works/pi-coding-agent"
+npm "@fission-ai/openspec"
+npm "@openai/codex"
+npm "corepack"
+npm "hunkdiff"
+npm "pnpm"

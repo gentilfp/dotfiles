@@ -1,6 +1,0 @@
-[user]
-	email = cdigentil@gmail.com
-	name = Felipe Gentil
-
-[core]
-	excludesFile = ~/.gitignore

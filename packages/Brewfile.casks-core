@@ -1,0 +1,12 @@
+# Brewfile.casks-core — minimal GUI apps for a fresh dev machine.
+# The "new job essentials": terminal, docker, AI CLIs, fonts.
+
+cask "ghostty"                       # terminal (stable; use ghostty@tip for nightly)
+cask "orbstack"                      # Docker & Linux VMs (Docker Desktop replacement)
+cask "claude-code"                   # Claude Code
+cask "codex"                         # OpenAI Codex CLI
+# pi (pi.dev) is installed separately by the AI-CLIs step (npm -g)
+
+# Nerd Fonts — JetBrainsMono is referenced by ghostty/config
+cask "font-jetbrains-mono-nerd-font"
+cask "font-meslo-lg-nerd-font"

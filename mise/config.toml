@@ -1,0 +1,14 @@
+# mise global tool versions → symlinked to ~/.config/mise/config.toml
+# Edit freely per machine/job. Run `mise install` to materialise these.
+# Tip: keep this as your *global* baseline; pin per-project versions in a
+# repo-local .mise.toml or .tool-versions instead.
+[tools]
+aws = { version = "2.9.12", symlink_bins = "true" }
+helm = "3.11.2"
+kubectl = "1.23.0"
+kubectx = "v0.9.4"
+ruby = "3.4.7"
+sops = "3.7.3"
+terraform = "1.8.5"
+python = "3.6.15"
+node = "22.16.0"
