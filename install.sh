@@ -8,6 +8,7 @@
 #    ./install.sh --full          everything from the reference machine
 #    ./install.sh --yes           accept all defaults (implies interactive defaults)
 #    ./install.sh --link-only     only (re)create symlinks
+#    ./install.sh --doctor        verify the setup (symlinks, tools, mise, git)
 #
 set -euo pipefail
 
@@ -17,6 +18,7 @@ source "$REPO/bootstrap/lib.sh"
 
 PROFILE=""            # minimal | standard | full | custom
 LINK_ONLY=0
+DOCTOR=0
 export ASSUME_YES=0
 
 for arg in "$@"; do
@@ -26,7 +28,8 @@ for arg in "$@"; do
     --full)      PROFILE="full" ;;
     --yes|-y)    ASSUME_YES=1 ;;
     --link-only) LINK_ONLY=1 ;;
-    -h|--help)   sed -n '3,11p' "$0" | sed 's/^#//'; exit 0 ;;
+    --doctor)    DOCTOR=1 ;;
+    -h|--help)   sed -n '3,12p' "$0" | sed 's/^#//'; exit 0 ;;
     *) die "unknown argument: $arg" ;;
   esac
 done
@@ -91,6 +94,17 @@ customize() {
 }
 
 # ── Steps ────────────────────────────────────────────────────────────────────
+ensure_xcode_clt() {
+  header "Xcode Command Line Tools"
+  if xcode-select -p >/dev/null 2>&1; then ok "already installed"; return; fi
+  step "requesting Command Line Tools install…"
+  xcode-select --install 2>/dev/null || true
+  warn "Finish the macOS installer dialog that just opened."
+  info "Waiting for CLT to finish installing… (Ctrl-C to abort)"
+  until xcode-select -p >/dev/null 2>&1; do sleep 5; done
+  ok "Command Line Tools ready"
+}
+
 ensure_homebrew() {
   header "Homebrew"
   if have brew; then ok "already installed ($(brew --version | head -1))"; return; fi
@@ -122,14 +136,28 @@ install_packages() {
   [[ "$DO_HERD" == 1 ]]        && { step "installing Herd…"; brew install --cask herd || warn "herd failed"; }
 }
 
+# Canonical symlink map — the single source of truth for both linking and
+# doctor. Each line: SRC|DST|GROUP   (GROUP is core or zsh).
+dotfile_links() {
+  printf '%s\n' \
+    "$REPO/ghostty|$HOME/.config/ghostty|core" \
+    "$REPO/cmux/settings.json|$HOME/.config/cmux/settings.json|core" \
+    "$REPO/herdr/config.toml|$HOME/.config/herdr/config.toml|core" \
+    "$REPO/nvim|$HOME/.config/nvim|core" \
+    "$REPO/git/.gitconfig|$HOME/.gitconfig|core" \
+    "$REPO/git/.gitignore|$HOME/.gitignore|core" \
+    "$REPO/mise/config.toml|$HOME/.config/mise/config.toml|core" \
+    "$REPO/zsh/.zshrc|$HOME/.zshrc|zsh" \
+    "$REPO/zsh/.p10k.zsh|$HOME/.p10k.zsh|zsh"
+}
+
 link_dotfiles() {
   header "Symlinks"
-  link "$REPO/ghostty"          "$HOME/.config/ghostty"
-  link "$REPO/nvim"             "$HOME/.config/nvim"
-  link "$REPO/git/.gitconfig"   "$HOME/.gitconfig"
-  link "$REPO/git/.gitignore"   "$HOME/.gitignore"
-  link "$REPO/mise/config.toml" "$HOME/.config/mise/config.toml"
-  [[ "$DO_ZSH" == 1 ]] && link "$REPO/zsh/.zshrc" "$HOME/.zshrc"
+  local src dst grp
+  while IFS='|' read -r src dst grp; do
+    [[ "$grp" == "zsh" && "$DO_ZSH" != 1 ]] && continue
+    link "$src" "$dst"
+  done < <(dotfile_links)
 }
 
 setup_git_identity() {
@@ -169,6 +197,9 @@ setup_zsh() {
 install_mise_tools() {
   header "mise runtimes"
   have mise || { warn "mise not installed yet — run packages step first"; return; }
+  step "trusting mise config…"
+  mise trust "$HOME/.config/mise/config.toml" >/dev/null 2>&1 || true
+  mise trust "$REPO/mise/config.toml"          >/dev/null 2>&1 || true
   step "mise install (from ~/.config/mise/config.toml)…"
   mise install || warn "some mise tools failed"
   mise ls
@@ -208,8 +239,51 @@ summary() {
   echo
 }
 
+# ── Doctor ───────────────────────────────────────────────────────────────────
+doctor() {
+  banner
+  local problems=0 src dst grp t
+
+  header "Symlinks"
+  while IFS='|' read -r src dst grp; do
+    if [[ -L "$dst" && "$(readlink "$dst")" == "$src" ]]; then
+      ok "${dst/#$HOME/~}"
+    elif [[ -e "$dst" ]]; then
+      warn "${dst/#$HOME/~} exists but is NOT linked to the repo"; problems=$((problems+1))
+    else
+      warn "${dst/#$HOME/~} missing"; problems=$((problems+1))
+    fi
+  done < <(dotfile_links)
+
+  header "Required tools"
+  for t in brew git nvim mise fzf rg fd bat eza zoxide gh lazygit; do
+    if have "$t"; then ok "$t"; else warn "$t missing"; problems=$((problems+1)); fi
+  done
+
+  header "Terminal & AI (optional)"
+  for t in cmux herdr claude codex pi docker; do
+    have "$t" && ok "$t" || info "$t not installed"
+  done
+
+  header "mise & git"
+  if have mise; then
+    mise ls >/dev/null 2>&1 && ok "mise config readable & trusted" \
+      || { warn "mise config not trusted → run: mise trust"; problems=$((problems+1)); }
+  fi
+  if [[ -f "$HOME/.gitconfig.local" ]]; then
+    ok "git identity: $(git config user.email 2>/dev/null || echo '?')"
+  else
+    warn "no ~/.gitconfig.local — run ./install.sh to set your identity"; problems=$((problems+1))
+  fi
+
+  echo
+  if (( problems == 0 )); then ok "all good ✓"; else warn "$problems issue(s) found"; fi
+}
+
 # ── Main ─────────────────────────────────────────────────────────────────────
 main() {
+  if [[ "$DOCTOR" == 1 ]]; then doctor; exit 0; fi
+
   banner
 
   if [[ "$LINK_ONLY" == 1 ]]; then
@@ -223,6 +297,7 @@ main() {
   summary
   confirm "Proceed?" Y || { warn "aborted"; exit 0; }
 
+  ensure_xcode_clt
   ensure_homebrew
   install_packages
   link_dotfiles
