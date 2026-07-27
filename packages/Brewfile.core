@@ -8,12 +8,14 @@ brew "git-delta"       # syntax-highlighting diff pager
 brew "lazygit"
 brew "lazydocker"
 
-# Editor
+# Editor & multiplexer
 brew "neovim"
+brew "herdr"           # agent-aware terminal multiplexer (persistent, remote-attachable)
 
 # Runtime & env management
 brew "mise"            # polyglot runtime manager (ruby/node/python/…)
 brew "direnv"
+brew "just"            # command runner (see ./Justfile)
 
 # Shell prompt & niceties
 brew "powerlevel10k"   # zsh prompt (via oh-my-zsh)
