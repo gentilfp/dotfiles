@@ -33,16 +33,31 @@ Non-interactive:
 ./install.sh --minimal      # essentials, no prompts
 ./install.sh --full         # the whole machine
 ./install.sh --link-only    # just (re)create the symlinks
+./install.sh --doctor       # verify symlinks, tools, mise trust, git identity
+```
+
+## Daily commands (Justfile)
+
+With `just` installed (it's in `Brewfile.core`):
+
+```sh
+just            # list recipes
+just link       # (re)create symlinks
+just doctor     # health-check the setup
+just update     # git pull + refresh core packages + relink
+just dump       # regenerate packages/Brewfile.full from this machine
+just new-mac    # full interactive bootstrap
 ```
 
 ## What lives where
 
 ```
-install.sh              interactive bootstrap (entry point)
+install.sh              interactive bootstrap (entry point; also --doctor)
+Justfile                daily commands (just link / doctor / update / dump)
 bootstrap/lib.sh        shared shell helpers (prompts, logging, symlink)
 packages/               tiered Brewfiles
   ├── Brewfile.core         essential CLI — always installed
-  ├── Brewfile.casks-core   ghostty, orbstack, claude-code, codex, fonts
+  ├── Brewfile.casks-core   ghostty, cmux, orbstack, claude-code, codex, fonts
   ├── Brewfile.cloud        aws, sops, mkcert, ykman…
   ├── Brewfile.data         postgres, redis, mailhog
   ├── Brewfile.extra        extra CLIs + fun
@@ -55,6 +70,8 @@ zsh/                    curated zsh (oh-my-zsh + powerlevel10k + plugins)
   └── functions.zsh         shell functions
 mise/config.toml        global runtime versions (ruby/node/python/…)
 git/                    portable gitconfig + global gitignore
+cmux/settings.json      cmux app settings (keybinds; font/theme inherited from ghostty)
+herdr/config.toml       herdr multiplexer config
 ghostty/  nvim/         app configs (symlinked into ~/.config etc.)
 ```
 
@@ -65,12 +82,28 @@ ghostty/  nvim/         app configs (symlinked into ~/.config etc.)
 
 | Repo file            | → Target |
 |----------------------|----------|
-| `ghostty/`           | `~/.config/ghostty` |
+| `ghostty/`           | `~/.config/ghostty` (cmux reads this too) |
+| `cmux/settings.json` | `~/.config/cmux/settings.json` |
+| `herdr/config.toml`  | `~/.config/herdr/config.toml` |
 | `nvim/`              | `~/.config/nvim` |
 | `zsh/.zshrc`         | `~/.zshrc` |
 | `git/.gitconfig`     | `~/.gitconfig` |
 | `git/.gitignore`     | `~/.gitignore` |
 | `mise/config.toml`   | `~/.config/mise/config.toml` |
+
+## Terminal & multiplexer
+
+Two layers, and they stack — one is the window, the other tiles inside it:
+
+- **cmux** (the window) — a native macOS terminal built on *libghostty*, tuned for
+  running AI agents in parallel. It reads the terminal **font, colors, and theme
+  from `~/.config/ghostty/config`**, so the Dracula theme + JetBrainsMono Nerd
+  Font are shared with Ghostty automatically. Only cmux's app-level keybinds live
+  in `cmux/settings.json` (split-focus mapped to `opt+shift+hjkl` to match Ghostty).
+- **herdr** (the multiplexer) — replaces tmux/zellij. Agent-aware panes, plus
+  persistent sessions you can detach and re-attach over SSH (even from a phone).
+
+Ghostty stays installed as a fallback window; `cmux` is the daily driver.
 
 ## Machine-specific bits (never committed)
 
@@ -83,7 +116,8 @@ Two untracked files hold anything that differs per machine/job:
 ## AI coding CLIs
 
 Installed by the AI step: **Claude Code** & **Codex** (Homebrew casks) and
-**pi** (`pi.dev`, via its curl installer). `gemini-cli` is in `Brewfile.extra`.
+**pi** (`pi.dev`, via `npm -g @earendil-works/pi-coding-agent`). `gemini-cli`
+is in `Brewfile.extra`.
 
 ## Regenerating the full snapshot
 
@@ -95,9 +129,9 @@ brew bundle dump --file=packages/Brewfile.full --force
 
 ## Moving to a new machine — checklist
 
-1. Install Xcode CLT if prompted: `xcode-select --install`
-2. `git clone … ~/dotfiles && cd ~/dotfiles`
-3. `./install.sh` → pick **minimal**
-4. Open a new terminal (`exec zsh`)
-5. Open `nvim` once so lazy.nvim syncs plugins
-6. `mise install` to materialize runtimes (the installer does this for you)
+1. `git clone git@github.com:<you>/dotfiles.git ~/dotfiles && cd ~/dotfiles`
+   (the first `git` call triggers the Xcode CLT install on a clean Mac)
+2. `./install.sh` → pick **minimal** (it also installs Xcode CLT if missing)
+3. Open a new terminal (`exec zsh`)
+4. Open `nvim` once so lazy.nvim installs the pinned plugin versions (`lazy-lock.json`)
+5. `just doctor` to confirm everything landed
