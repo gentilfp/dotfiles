@@ -1,0 +1,14 @@
+# herdr config → symlinked to ~/.config/herdr/config.toml
+# Runtime state (sessions/, *.sock, *.log) stays local and is NOT tracked.
+onboarding = false
+
+[ui]
+agent_panel_sort = "spaces"
+show_agent_labels_on_pane_borders = true
+
+[ui.toast]
+delivery = "terminal"
+
+[theme]
+name = "dracula"
+auto_switch = false

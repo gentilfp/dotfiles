@@ -71,8 +71,6 @@ vim.keymap.set("n", "<leader>w", ":w<CR>", { desc = "Save file" })
 vim.keymap.set("n", "<leader>q", ":q<CR>", { desc = "Quit" })
 vim.keymap.set("n", "<leader>x", ":x<CR>", { desc = "Save and quit" })
 
--- Window navigation handled by vim-tmux-navigator plugin
-
 -- Resize splits via a modifier-free submode. LazyVim's <C-arrows> are eaten by
 -- macOS (Spaces/Mission Control) and <A-arrows> don't work in the terminal
 -- (Option+arrow is sent as ESC+seq, which nvim can't parse as <A-Up>).

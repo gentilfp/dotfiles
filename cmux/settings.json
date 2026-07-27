@@ -1,0 +1,38 @@
+{
+  "$schema": "https://raw.githubusercontent.com/manaflow-ai/cmux/main/web/data/cmux-settings.schema.json",
+  "schemaVersion": 1,
+
+  // cmux settings → symlinked to ~/.config/cmux/settings.json
+  //
+  // NOTE ON FONT & THEME: cmux is built on libghostty and reads the TERMINAL
+  // font, colors, theme, opacity, etc. straight from ~/.config/ghostty/config.
+  // So your Dracula theme + JetBrainsMono Nerd Font are already inherited from
+  // the ghostty symlink — nothing to duplicate here. This file only holds
+  // cmux's APP-level settings (keybinds, sidebar, notifications).
+  //
+  // Only keys present here are file-managed; delete a key to fall back to the
+  // value from the in-app Settings UI. (JSONC — comments allowed.)
+
+  "shortcuts": {
+    "bindings": {
+      // Port Ghostty's split navigation muscle memory (alt+shift+hjkl).
+      // cmux modifier names: cmd / opt / ctrl / shift  (opt == macOS Option).
+      "focusLeft": "opt+shift+h",
+      "focusDown": "opt+shift+j",
+      "focusUp": "opt+shift+k",
+      "focusRight": "opt+shift+l",
+
+      // Splits (cmux has no proportional-resize keybind like ghostty's
+      // alt+shift+arrows, so those are left to the mouse / in-app controls).
+      "splitRight": "cmd+d",
+      "splitDown": "cmd+shift+d",
+      "toggleSplitZoom": "cmd+shift+return"
+    }
+  },
+
+  "sidebar": {
+    "branchLayout": "vertical",
+    "showPorts": true,
+    "showProgress": true
+  }
+}
