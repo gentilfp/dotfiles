@@ -1,8 +1,7 @@
 # OS
 .DS_Store
 
-# Neovim
-nvim/lazy-lock.json
+# Neovim — lazy-lock.json IS tracked on purpose (pins plugin versions across machines)
 nvim/.nvimlog
 *.swp
 *.swo
