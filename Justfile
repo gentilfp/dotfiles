@@ -19,6 +19,12 @@ update:
     brew bundle --file=packages/Brewfile.core
     ./install.sh --link-only
 
+# upgrade everything already installed (formulae + casks + mise runtimes)
+upgrade:
+    brew update
+    brew upgrade
+    mise upgrade --bump
+
 # regenerate the full machine snapshot (run on a machine you trust as baseline)
 dump:
     brew bundle dump --file=packages/Brewfile.full --force

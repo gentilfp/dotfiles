@@ -26,9 +26,7 @@ keybind = alt+shift+up=resize_split:up,50
 keybind = alt+shift+right=resize_split:right,50
 keybind = alt+shift+space=equalize_splits
 
-# Window
-window-width = 200
-window-height = 60
-
-window-position-x = 850
-window-position-y = 300
+# Machine-specific overrides (window geometry, font size…) live in an
+# untracked `local` file next to this one — see .gitignore. The leading `?`
+# makes it optional, so a fresh machine works without it. Loaded last: wins.
+config-file = ?local

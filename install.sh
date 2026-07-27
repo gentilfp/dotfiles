@@ -5,6 +5,7 @@
 #  Usage:
 #    ./install.sh                 interactive
 #    ./install.sh --minimal       new-job essentials, no prompts
+#    ./install.sh --standard      minimal + cloud & database tooling
 #    ./install.sh --full          everything from the reference machine
 #    ./install.sh --yes           accept all defaults (implies interactive defaults)
 #    ./install.sh --link-only     only (re)create symlinks
@@ -29,7 +30,7 @@ for arg in "$@"; do
     --yes|-y)    ASSUME_YES=1 ;;
     --link-only) LINK_ONLY=1 ;;
     --doctor)    DOCTOR=1 ;;
-    -h|--help)   sed -n '3,12p' "$0" | sed 's/^#//'; exit 0 ;;
+    -h|--help)   sed -n '3,13p' "$0" | sed 's/^#//'; exit 0 ;;
     *) die "unknown argument: $arg" ;;
   esac
 done
@@ -48,7 +49,7 @@ ART
 
 # ── Feature flags (populated by the profile / questions) ─────────────────────
 DO_CASKS=0 DO_CLOUD=0 DO_DATA=0 DO_EXTRA=0 DO_CASKS_EXTRA=0
-DO_ZSH=0 DO_AI=0 DO_HERD=0 DO_MISE=0 DO_MACOS=0
+DO_ZSH=0 DO_AI=0 DO_HERD=0 DO_MISE=0
 
 apply_profile() {
   case "$1" in
@@ -163,7 +164,7 @@ link_dotfiles() {
 setup_git_identity() {
   header "Git identity"
   local local_cfg="$HOME/.gitconfig.local"
-  if [[ -f "$local_cfg" ]] && ! confirm "~/.gitconfig.local exists. Overwrite?" N; then
+  if [[ -f "$local_cfg" ]] && ! confirm "Overwrite existing ~/.gitconfig.local?" N; then
     info "keeping existing identity"; return
   fi
   local name email
@@ -262,13 +263,16 @@ doctor() {
 
   header "Terminal & AI (optional)"
   for t in cmux herdr claude codex pi docker; do
-    have "$t" && ok "$t" || info "$t not installed"
+    if have "$t"; then ok "$t"; else info "$t not installed"; fi
   done
 
   header "mise & git"
   if have mise; then
-    mise ls >/dev/null 2>&1 && ok "mise config readable & trusted" \
-      || { warn "mise config not trusted → run: mise trust"; problems=$((problems+1)); }
+    if mise ls >/dev/null 2>&1; then
+      ok "mise config readable & trusted"
+    else
+      warn "mise config not trusted → run: mise trust"; problems=$((problems+1))
+    fi
   fi
   if [[ -f "$HOME/.gitconfig.local" ]]; then
     ok "git identity: $(git config user.email 2>/dev/null || echo '?')"

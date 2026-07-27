@@ -31,6 +31,7 @@ Non-interactive:
 
 ```sh
 ./install.sh --minimal      # essentials, no prompts
+./install.sh --standard     # minimal + cloud/infra + databases
 ./install.sh --full         # the whole machine
 ./install.sh --link-only    # just (re)create the symlinks
 ./install.sh --doctor       # verify symlinks, tools, mise trust, git identity
@@ -45,6 +46,7 @@ just            # list recipes
 just link       # (re)create symlinks
 just doctor     # health-check the setup
 just update     # git pull + refresh core packages + relink
+just upgrade    # brew update/upgrade + mise upgrade (everything installed)
 just dump       # regenerate packages/Brewfile.full from this machine
 just new-mac    # full interactive bootstrap
 ```
@@ -107,11 +109,14 @@ Ghostty stays installed as a fallback window; `cmux` is the daily driver.
 
 ## Machine-specific bits (never committed)
 
-Two untracked files hold anything that differs per machine/job:
+Three untracked files hold anything that differs per machine/job:
 
 - **`~/.gitconfig.local`** — your name & email. The installer prompts for these,
   so you never accidentally commit with the wrong identity at a new job.
+  Also the place for commit signing (see the comment in `git/.gitconfig`).
 - **`~/.zshrc.local`** — work paths, secrets, per-machine overrides. Sourced last.
+- **`ghostty/local`** — window geometry & anything monitor-specific. Optional
+  (`config-file = ?local`), gitignored, loaded last so it wins.
 
 ## AI coding CLIs
 

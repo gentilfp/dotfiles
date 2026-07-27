@@ -3,18 +3,13 @@
 
 # Neovim — lazy-lock.json IS tracked on purpose (pins plugin versions across machines)
 nvim/.nvimlog
+nvim/doc/tags
 *.swp
 *.swo
 *~
-.netrwhist
-tt.*
-.tests
-doc/tags
-debug
-.repro
-foo.*
-*.log
-data
+
+# Machine-specific ghostty overrides (window geometry etc.)
+ghostty/local
 
 # Claude
 .claude/*

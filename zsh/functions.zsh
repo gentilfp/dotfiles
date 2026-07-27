@@ -13,11 +13,11 @@ up() {
 # gclone: clone and cd into the repo
 gclone() { git clone "$1" && cd "$(basename "${1%.git}")"; }
 
-# fkill: fuzzy-pick a process and kill it
+# fkill: fuzzy-pick a process and kill it — TERM by default, `fkill 9` to force
 fkill() {
   local pid
   pid=$(ps -ef | sed 1d | fzf -m --header='[kill process]' | awk '{print $2}')
-  [[ -n "$pid" ]] && echo "$pid" | xargs kill -"${1:-9}"
+  [[ -n "$pid" ]] && echo "$pid" | xargs kill -"${1:-15}"
 }
 
 # ports: what's listening

@@ -38,7 +38,7 @@ done
 
 # ── Tools (guarded so a missing tool never breaks the shell) ──────────────────
 command -v mise      >/dev/null && eval "$(mise activate zsh)"
-command -v zoxide    >/dev/null && eval "$(zoxide init zsh)"
+command -v zoxide    >/dev/null && eval "$(zoxide init zsh --cmd cd)"
 command -v direnv    >/dev/null && eval "$(direnv hook zsh)"
 
 # fzf keybindings & completion (Ctrl-R, Ctrl-T, Alt-C)

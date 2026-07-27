@@ -36,11 +36,11 @@ alias lzd='lazydocker'
 alias d='docker'
 alias dc='docker compose'
 
-# navigation
+# navigation — zoxide replaces cd itself (init --cmd cd in .zshrc), which
+# keeps `cd -`, completion, etc. working, unlike an alias to `z`.
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
-command -v zoxide >/dev/null && alias cd='z'
 
 # dotfiles: jump to & edit the repo
 alias dot='cd ${DOTFILES:-$HOME/dotfiles}'

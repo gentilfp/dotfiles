@@ -62,7 +62,8 @@ link() {
     fi
     rm -f "$dst"
   elif [[ -e "$dst" ]]; then
-    local bak="$dst.bak-$(date +%Y%m%d%H%M%S)"
+    local bak
+    bak="$dst.bak-$(date +%Y%m%d%H%M%S)"
     mv "$dst" "$bak"
     warn "backed up ${dst/#$HOME/~} → ${bak/#$HOME/~}"
   fi

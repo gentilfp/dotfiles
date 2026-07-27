@@ -45,6 +45,20 @@
 [branch]
 	sort = -committerdate
 
+[rerere]
+	enabled = true
+
+[help]
+	autocorrect = prompt
+
+[log]
+	date = iso
+
+# Commit signing is machine/job-specific — enable it in ~/.gitconfig.local:
+#   [user]    signingkey = ~/.ssh/id_ed25519.pub
+#   [gpg]     format = ssh
+#   [commit]  gpgsign = true
+
 [alias]
 	st = status -sb
 	co = checkout
