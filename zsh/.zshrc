@@ -46,6 +46,9 @@ if command -v fzf >/dev/null; then
   source <(fzf --zsh) 2>/dev/null || true
 fi
 
+# atuin — searchable/synced shell history; init after fzf so it owns Ctrl-R
+command -v atuin >/dev/null && eval "$(atuin init zsh)"
+
 # zsh plugins from Homebrew (order: autosuggestions BEFORE syntax-highlighting)
 [[ -f "$BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ]] && \
   source "$BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh"

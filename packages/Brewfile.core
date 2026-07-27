@@ -23,6 +23,7 @@ brew "zsh-autosuggestions"
 brew "zsh-syntax-highlighting"
 
 # The modern unix toolbelt
+brew "atuin"           # shell history: search, stats, optional e2e-encrypted sync
 brew "fzf"             # fuzzy finder
 brew "ripgrep"         # rg — fast grep
 brew "fd"              # fast find

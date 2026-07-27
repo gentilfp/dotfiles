@@ -148,6 +148,7 @@ dotfile_links() {
     "$REPO/git/.gitconfig|$HOME/.gitconfig|core" \
     "$REPO/git/.gitignore|$HOME/.gitignore|core" \
     "$REPO/mise/config.toml|$HOME/.config/mise/config.toml|core" \
+    "$REPO/atuin/config.toml|$HOME/.config/atuin/config.toml|core" \
     "$REPO/zsh/.zshrc|$HOME/.zshrc|zsh" \
     "$REPO/zsh/.p10k.zsh|$HOME/.p10k.zsh|zsh"
 }
@@ -257,7 +258,7 @@ doctor() {
   done < <(dotfile_links)
 
   header "Required tools"
-  for t in brew git nvim mise fzf rg fd bat eza zoxide gh lazygit; do
+  for t in brew git nvim mise fzf rg fd bat eza zoxide atuin gh lazygit; do
     if have "$t"; then ok "$t"; else warn "$t missing"; problems=$((problems+1)); fi
   done
 

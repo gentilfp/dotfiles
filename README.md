@@ -71,6 +71,7 @@ zsh/                    curated zsh (oh-my-zsh + powerlevel10k + plugins)
   ├── aliases.zsh           aliases
   └── functions.zsh         shell functions
 mise/config.toml        global runtime versions (ruby/node/python/…)
+atuin/config.toml       atuin shell history (daemon mode, sync, Ctrl-R)
 git/                    portable gitconfig + global gitignore
 cmux/settings.json      cmux app settings (keybinds; font/theme inherited from ghostty)
 herdr/config.toml       herdr multiplexer config
@@ -92,6 +93,7 @@ ghostty/  nvim/         app configs (symlinked into ~/.config etc.)
 | `git/.gitconfig`     | `~/.gitconfig` |
 | `git/.gitignore`     | `~/.gitignore` |
 | `mise/config.toml`   | `~/.config/mise/config.toml` |
+| `atuin/config.toml`  | `~/.config/atuin/config.toml` |
 
 ## Terminal & multiplexer
 
@@ -139,4 +141,7 @@ brew bundle dump --file=packages/Brewfile.full --force
 2. `./install.sh` → pick **minimal** (it also installs Xcode CLT if missing)
 3. Open a new terminal (`exec zsh`)
 4. Open `nvim` once so lazy.nvim installs the pinned plugin versions (`lazy-lock.json`)
-5. `just doctor` to confirm everything landed
+5. `atuin import zsh` to seed history; `atuin login` to sync it from other machines
+   (the e2e key lives in `~/.local/share/atuin/key` — grab it from an old machine
+   with `atuin key`)
+6. `just doctor` to confirm everything landed
