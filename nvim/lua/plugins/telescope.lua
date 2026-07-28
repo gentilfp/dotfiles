@@ -30,16 +30,6 @@ return {
     end,
     keys = {
       {
-        "<leader>/",
-        function()
-          require("telescope").extensions.live_grep_args.live_grep_args({
-            cwd = LazyVim.root.get(),
-            prompt_title = "Grep with args (Root Dir)",
-          })
-        end,
-        desc = "Grep with args (Root Dir)",
-      },
-      {
         "<leader>sg",
         function()
           require("telescope").extensions.live_grep_args.live_grep_args({
