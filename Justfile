@@ -26,8 +26,9 @@ upgrade:
     mise upgrade --bump
 
 # regenerate the full machine snapshot (run on a machine you trust as baseline)
+# --no-vscode: neovim-only setup, don't snapshot VSCode extensions
 dump:
-    brew bundle dump --file=packages/Brewfile.full --force
+    brew bundle dump --file=packages/Brewfile.full --force --no-vscode
 
 # full interactive bootstrap (fresh machine)
 new-mac:

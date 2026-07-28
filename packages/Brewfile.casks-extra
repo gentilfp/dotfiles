@@ -3,9 +3,6 @@
 # Window management & desktop automation
 cask "middleclick"
 
-# Editors
-cask "sublime-text"
-
 # Browser & tools
 cask "chromium"
 cask "flameshot"       # screenshots + annotation
