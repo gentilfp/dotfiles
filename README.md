@@ -55,7 +55,7 @@ just new-mac    # full interactive bootstrap
 
 ```
 install.sh              interactive bootstrap (entry point; also --doctor)
-Justfile                daily commands (just link / doctor / update / dump)
+Justfile                daily commands (just link / doctor / update / upgrade / dump)
 bootstrap/lib.sh        shared shell helpers (prompts, logging, symlink)
 packages/               tiered Brewfiles
   ├── Brewfile.core         essential CLI — always installed
