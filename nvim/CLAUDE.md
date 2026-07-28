@@ -66,6 +66,7 @@ This Neovim configuration is optimized for Rails development with some React sup
 ### Git Integration
 - **`<leader>gg`** - Open Lazygit
 - **`<leader>gd`** - Open git diff view (Diffview)
+- **`<leader>gr`** - Review branch vs default branch, PR-style (Diffview)
 - **`<leader>gD`** - Close git diff view
 - **`<leader>gh`** - Current file git history
 - **`<leader>gH`** - Branch git history
