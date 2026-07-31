@@ -1,13 +1,10 @@
 #!/usr/bin/env bash
 #
-#  dotfiles installer — portable macOS dev environment bootstrap.
+#  dotfiles installer — one command, one setup: a new work machine.
 #
 #  Usage:
-#    ./install.sh                 interactive
-#    ./install.sh --minimal       new-job essentials, no prompts
-#    ./install.sh --standard      minimal + cloud & database tooling
-#    ./install.sh --full          everything from the reference machine
-#    ./install.sh --yes           accept all defaults (implies interactive defaults)
+#    ./install.sh                 install everything (asks only what it must)
+#    ./install.sh --yes           no prompts, accept all defaults
 #    ./install.sh --link-only     only (re)create symlinks
 #    ./install.sh --doctor        verify the setup (symlinks, tools, mise, git)
 #
@@ -17,20 +14,16 @@ REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 export DOTFILES="$REPO"
 source "$REPO/bootstrap/lib.sh"
 
-PROFILE=""            # minimal | standard | full | custom
 LINK_ONLY=0
 DOCTOR=0
 export ASSUME_YES=0
 
 for arg in "$@"; do
   case "$arg" in
-    --minimal)   PROFILE="minimal" ;;
-    --standard)  PROFILE="standard" ;;
-    --full)      PROFILE="full" ;;
     --yes|-y)    ASSUME_YES=1 ;;
     --link-only) LINK_ONLY=1 ;;
     --doctor)    DOCTOR=1 ;;
-    -h|--help)   sed -n '3,13p' "$0" | sed 's/^#//'; exit 0 ;;
+    -h|--help)   sed -n '3,10p' "$0" | sed 's/^#//'; exit 0 ;;
     *) die "unknown argument: $arg" ;;
   esac
 done
@@ -45,54 +38,6 @@ banner() {
 ART
   printf '%s' "$RESET"
   info "repo: $REPO"
-}
-
-# ── Feature flags (populated by the profile / questions) ─────────────────────
-DO_CASKS=0 DO_CLOUD=0 DO_DATA=0 DO_EXTRA=0 DO_CASKS_EXTRA=0
-DO_ZSH=0 DO_AI=0 DO_HERD=0 DO_MISE=0
-
-apply_profile() {
-  case "$1" in
-    minimal)
-      DO_CASKS=1 DO_MISE=1 DO_ZSH=1 DO_AI=1 ;;
-    standard)
-      DO_CASKS=1 DO_CLOUD=1 DO_DATA=1 DO_MISE=1 DO_ZSH=1 DO_AI=1 ;;
-    full)
-      DO_CASKS=1 DO_CLOUD=1 DO_DATA=1 DO_EXTRA=1 DO_CASKS_EXTRA=1 \
-      DO_MISE=1 DO_ZSH=1 DO_AI=1 DO_HERD=1 ;;
-  esac
-}
-
-choose_profile() {
-  header "Choose a profile"
-  cat <<EOF
-   ${BOLD}1)${RESET} minimal   new-job essentials: core CLI, ghostty, docker, mise, AI CLIs
-   ${BOLD}2)${RESET} standard  minimal + cloud & database tooling
-   ${BOLD}3)${RESET} full      everything on the reference machine
-   ${BOLD}4)${RESET} custom    pick each group yourself
-EOF
-  local c; c="$(ask "Profile" "1")"
-  case "$c" in
-    1) PROFILE="minimal"  ;;
-    2) PROFILE="standard" ;;
-    3) PROFILE="full"     ;;
-    4) PROFILE="custom"   ;;
-    *) PROFILE="minimal"  ;;
-  esac
-}
-
-customize() {
-  header "Pick your groups"
-  confirm "Install GUI apps (ghostty, orbstack, fonts…)?" Y && DO_CASKS=1
-  confirm "Install AI coding CLIs (claude, pi, codex)?"    Y && DO_AI=1
-  confirm "Set up zsh (oh-my-zsh + powerlevel10k + plugins)?" Y && DO_ZSH=1
-  confirm "Install mise runtimes (ruby/node/python/…)?"    Y && DO_MISE=1
-  confirm "Install cloud/infra tools (aws, sops, helm…)?"  N && DO_CLOUD=1
-  confirm "Install databases (postgres, redis, mailhog)?"  N && DO_DATA=1
-  confirm "Install extra CLI tools & fun stuff?"           N && DO_EXTRA=1
-  confirm "Install extra GUI apps?"                        N && DO_CASKS_EXTRA=1
-  confirm "Install Laravel Herd?"                          N && DO_HERD=1
-  return 0   # a declined final prompt must not abort the run (set -e)
 }
 
 # ── Steps ────────────────────────────────────────────────────────────────────
@@ -116,52 +61,32 @@ ensure_homebrew() {
   ok "Homebrew ready"
 }
 
-brew_bundle() {
-  local file="$REPO/packages/$1"
-  [[ -f "$file" ]] || { warn "no such Brewfile: $1"; return; }
-  step "brew bundle → $1"
-  brew bundle --file="$file" || warn "some entries in $1 failed (continuing)"
-}
-
 install_packages() {
   header "Packages"
-  if [[ "$PROFILE" == "full" ]]; then
-    brew_bundle "Brewfile.full"
-    return
-  fi
-  brew_bundle "Brewfile.core"
-  [[ "$DO_CASKS" == 1 ]]       && brew_bundle "Brewfile.casks-core"
-  [[ "$DO_CLOUD" == 1 ]]       && brew_bundle "Brewfile.cloud"
-  [[ "$DO_DATA"  == 1 ]]       && brew_bundle "Brewfile.data"
-  [[ "$DO_EXTRA" == 1 ]]       && brew_bundle "Brewfile.extra"
-  [[ "$DO_CASKS_EXTRA" == 1 ]] && brew_bundle "Brewfile.casks-extra"
-  [[ "$DO_HERD" == 1 ]]        && { step "installing Herd…"; brew install --cask herd || warn "herd failed"; }
-  # The guards above are AND-lists: a false one yields status 1. Without this,
-  # the function returns 1 and `set -e` aborts the whole install.
-  return 0
+  step "brew bundle → packages/Brewfile"
+  brew bundle --file="$REPO/packages/Brewfile" || warn "some Brewfile entries failed (continuing)"
 }
 
 # Canonical symlink map — the single source of truth for both linking and
-# doctor. Each line: SRC|DST|GROUP   (GROUP is core or zsh).
+# doctor. Each line: SRC|DST
 dotfile_links() {
   printf '%s\n' \
-    "$REPO/ghostty|$HOME/.config/ghostty|core" \
-    "$REPO/cmux/settings.json|$HOME/.config/cmux/settings.json|core" \
-    "$REPO/herdr/config.toml|$HOME/.config/herdr/config.toml|core" \
-    "$REPO/nvim|$HOME/.config/nvim|core" \
-    "$REPO/git/.gitconfig|$HOME/.gitconfig|core" \
-    "$REPO/git/.gitignore|$HOME/.gitignore|core" \
-    "$REPO/mise/config.toml|$HOME/.config/mise/config.toml|core" \
-    "$REPO/atuin/config.toml|$HOME/.config/atuin/config.toml|core" \
-    "$REPO/zsh/.zshrc|$HOME/.zshrc|zsh" \
-    "$REPO/zsh/.p10k.zsh|$HOME/.p10k.zsh|zsh"
+    "$REPO/ghostty|$HOME/.config/ghostty" \
+    "$REPO/cmux/settings.json|$HOME/.config/cmux/settings.json" \
+    "$REPO/herdr/config.toml|$HOME/.config/herdr/config.toml" \
+    "$REPO/nvim|$HOME/.config/nvim" \
+    "$REPO/git/.gitconfig|$HOME/.gitconfig" \
+    "$REPO/git/.gitignore|$HOME/.gitignore" \
+    "$REPO/mise/config.toml|$HOME/.config/mise/config.toml" \
+    "$REPO/atuin/config.toml|$HOME/.config/atuin/config.toml" \
+    "$REPO/zsh/.zshrc|$HOME/.zshrc" \
+    "$REPO/zsh/.p10k.zsh|$HOME/.p10k.zsh"
 }
 
 link_dotfiles() {
   header "Symlinks"
-  local src dst grp
-  while IFS='|' read -r src dst grp; do
-    [[ "$grp" == "zsh" && "$DO_ZSH" != 1 ]] && continue
+  local src dst
+  while IFS='|' read -r src dst; do
     link "$src" "$dst"
   done < <(dotfile_links)
   return 0
@@ -216,7 +141,7 @@ install_mise_tools() {
 
 install_ai_clis() {
   header "AI coding CLIs"
-  # claude-code & codex come via casks (installed with GUI apps). pi via npm.
+  # claude-code & codex come via casks (installed with the Brewfile). pi via npm.
   if have brew; then
     have claude 2>/dev/null || brew install --cask claude-code || warn "claude-code failed"
     have codex  2>/dev/null || brew install --cask codex        || warn "codex failed"
@@ -228,34 +153,18 @@ install_ai_clis() {
     # --ignore-scripts is safe: pi ships pre-built with no install lifecycle hooks.
     npm install -g --ignore-scripts @earendil-works/pi-coding-agent || warn "pi install failed"
   else
-    warn "npm not found — skipping pi (run the mise step first, then re-run --full or install pi manually)"
+    warn "npm not found — skipping pi (run the mise step first, then re-run ./install.sh or install pi manually)"
   fi
   return 0
-}
-
-summary() {
-  header "Plan"
-  printf '   profile      %s%s%s\n' "$BOLD" "$PROFILE" "$RESET"
-  local on="${GREEN}yes${RESET}" off="${DIM}no${RESET}"
-  printf '   GUI apps     %s\n' "$([[ $DO_CASKS == 1 ]] && echo "$on" || echo "$off")"
-  printf '   AI CLIs      %s\n' "$([[ $DO_AI == 1 ]] && echo "$on" || echo "$off")"
-  printf '   zsh setup    %s\n' "$([[ $DO_ZSH == 1 ]] && echo "$on" || echo "$off")"
-  printf '   mise tools   %s\n' "$([[ $DO_MISE == 1 ]] && echo "$on" || echo "$off")"
-  printf '   cloud/data   %s / %s\n' \
-    "$([[ $DO_CLOUD == 1 ]] && echo "$on" || echo "$off")" \
-    "$([[ $DO_DATA == 1 ]] && echo "$on" || echo "$off")"
-  printf '   extras       %s\n' "$([[ $DO_EXTRA == 1 || $DO_CASKS_EXTRA == 1 ]] && echo "$on" || echo "$off")"
-  printf '   Herd         %s\n' "$([[ $DO_HERD == 1 ]] && echo "$on" || echo "$off")"
-  echo
 }
 
 # ── Doctor ───────────────────────────────────────────────────────────────────
 doctor() {
   banner
-  local problems=0 src dst grp t
+  local problems=0 src dst t
 
   header "Symlinks"
-  while IFS='|' read -r src dst grp; do
+  while IFS='|' read -r src dst; do
     if [[ -L "$dst" && "$(readlink "$dst")" == "$src" ]]; then
       ok "${dst/#$HOME/~}"
     elif [[ -e "$dst" ]]; then
@@ -291,33 +200,29 @@ doctor() {
 
   echo
   if (( problems == 0 )); then ok "all good ✓"; else warn "$problems issue(s) found"; fi
+  return $(( problems > 0 ? 1 : 0 ))
 }
 
 # ── Main ─────────────────────────────────────────────────────────────────────
 main() {
-  if [[ "$DOCTOR" == 1 ]]; then doctor; exit 0; fi
+  if [[ "$DOCTOR" == 1 ]]; then doctor; exit $?; fi
 
   banner
 
   if [[ "$LINK_ONLY" == 1 ]]; then
-    DO_ZSH=1; link_dotfiles; ok "done (symlinks only)"; exit 0
+    link_dotfiles; ok "done (symlinks only)"; exit 0
   fi
 
-  [[ -z "$PROFILE" ]] && choose_profile
-  apply_profile "$PROFILE"
-  [[ "$PROFILE" == "custom" ]] && customize
-
-  summary
-  confirm "Proceed?" Y || { warn "aborted"; exit 0; }
+  confirm "Set up this machine (packages, symlinks, zsh, mise, AI CLIs)?" Y || { warn "aborted"; exit 0; }
 
   ensure_xcode_clt
   ensure_homebrew
   install_packages
   link_dotfiles
-  [[ "$DO_ZSH"  == 1 ]] && setup_zsh
+  setup_zsh
   setup_git_identity
-  [[ "$DO_MISE" == 1 ]] && install_mise_tools
-  [[ "$DO_AI"   == 1 ]] && install_ai_clis
+  install_mise_tools
+  install_ai_clis
 
   header "Done 🎉"
   ok "Open a new terminal (or run: exec zsh) to load everything."

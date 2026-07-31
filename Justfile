@@ -13,10 +13,10 @@ link:
 doctor:
     ./install.sh --doctor
 
-# pull latest, refresh core packages, relink
+# pull latest, refresh packages, relink
 update:
     git pull --ff-only
-    brew bundle --file=packages/Brewfile.core
+    brew bundle --file=packages/Brewfile
     ./install.sh --link-only
 
 # upgrade everything already installed (formulae + casks + mise runtimes)
@@ -24,11 +24,6 @@ upgrade:
     brew update
     brew upgrade
     mise upgrade --bump
-
-# regenerate the full machine snapshot (run on a machine you trust as baseline)
-# --no-vscode: neovim-only setup, don't snapshot VSCode extensions
-dump:
-    brew bundle dump --file=packages/Brewfile.full --force --no-vscode
 
 # full interactive bootstrap (fresh machine)
 new-mac:

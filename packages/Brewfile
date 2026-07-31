@@ -1,0 +1,65 @@
+# Brewfile — everything for a new work machine, in one place.
+# `brew bundle --file=packages/Brewfile`
+
+# ── Version control & git UX ─────────────────────────────────────────────────
+brew "git"
+brew "gh"
+brew "git-delta"       # syntax-highlighting diff pager
+brew "lazygit"
+brew "lazydocker"
+
+# ── Editor & multiplexer ─────────────────────────────────────────────────────
+brew "neovim"
+brew "herdr"           # agent-aware terminal multiplexer (persistent, remote-attachable)
+
+# ── Runtime & env management ─────────────────────────────────────────────────
+brew "mise"            # polyglot runtime manager (ruby/node/python/…)
+brew "direnv"
+brew "just"            # command runner (see ./Justfile)
+
+# ── Shell prompt & niceties ──────────────────────────────────────────────────
+brew "powerlevel10k"   # zsh prompt (via oh-my-zsh)
+brew "zsh-autosuggestions"
+brew "zsh-syntax-highlighting"
+
+# ── The modern unix toolbelt ─────────────────────────────────────────────────
+brew "atuin"           # shell history: search, stats, optional e2e-encrypted sync
+brew "fzf"             # fuzzy finder
+brew "ripgrep"         # rg — fast grep
+brew "fd"              # fast find
+brew "bat"             # cat with wings
+brew "eza"             # modern ls
+brew "zoxide"          # smarter cd
+brew "jq"              # JSON processor
+brew "yq"              # YAML/JSON/XML processor
+brew "coreutils"       # GNU coreutils
+brew "less"
+brew "btop"            # resource monitor
+brew "uv"              # fast python package manager
+
+# ── Cloud & infra ────────────────────────────────────────────────────────────
+# Note: kubectl, kubectx, terraform, terragrunt, helm come pinned via mise.
+brew "awscli"
+brew "aws-vault"       # secure AWS credential storage
+brew "sops"            # encrypted secrets
+brew "mkcert"          # locally-trusted dev certs
+brew "minica"          # minimal CA
+brew "ykman"           # YubiKey manager
+
+# ── Local databases & backing services ───────────────────────────────────────
+brew "postgresql@16"
+brew "libpq"           # psql client libs / pg_config
+brew "redis"
+brew "mailhog"         # local SMTP testing UI
+
+# ── GUI apps ─────────────────────────────────────────────────────────────────
+cask "ghostty"                       # terminal (stable; use ghostty@tip for nightly)
+cask "cmux"                          # Ghostty-based terminal for running AI agents in parallel
+cask "orbstack"                      # Docker & Linux VMs (Docker Desktop replacement)
+cask "claude-code"                   # Claude Code
+cask "codex"                         # OpenAI Codex CLI
+# pi (pi.dev) is installed separately by the AI-CLIs step (npm -g, --ignore-scripts)
+
+# ── Nerd Fonts — JetBrainsMono is referenced by ghostty/config ───────────────
+cask "font-jetbrains-mono-nerd-font"
+cask "font-meslo-lg-nerd-font"

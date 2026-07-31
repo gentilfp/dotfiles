@@ -1,6 +1,0 @@
-# Brewfile.data — local databases & backing services (optional group).
-
-brew "postgresql@16"
-brew "libpq"           # psql client libs / pg_config
-brew "redis"
-brew "mailhog"         # local SMTP testing UI
