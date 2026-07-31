@@ -50,7 +50,7 @@ brew "ykman"           # YubiKey manager
 brew "postgresql@16"
 brew "libpq"           # psql client libs / pg_config
 brew "redis"
-brew "mailhog"         # local SMTP testing UI
+brew "mailpit"         # local SMTP testing UI (MailHog successor; mailhog was removed from brew)
 
 # ── GUI apps ─────────────────────────────────────────────────────────────────
 cask "ghostty"                       # terminal (stable; use ghostty@tip for nightly)
