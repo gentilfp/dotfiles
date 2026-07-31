@@ -92,6 +92,7 @@ customize() {
   confirm "Install extra CLI tools & fun stuff?"           N && DO_EXTRA=1
   confirm "Install extra GUI apps?"                        N && DO_CASKS_EXTRA=1
   confirm "Install Laravel Herd?"                          N && DO_HERD=1
+  return 0   # a declined final prompt must not abort the run (set -e)
 }
 
 # ── Steps ────────────────────────────────────────────────────────────────────
@@ -135,6 +136,9 @@ install_packages() {
   [[ "$DO_EXTRA" == 1 ]]       && brew_bundle "Brewfile.extra"
   [[ "$DO_CASKS_EXTRA" == 1 ]] && brew_bundle "Brewfile.casks-extra"
   [[ "$DO_HERD" == 1 ]]        && { step "installing Herd…"; brew install --cask herd || warn "herd failed"; }
+  # The guards above are AND-lists: a false one yields status 1. Without this,
+  # the function returns 1 and `set -e` aborts the whole install.
+  return 0
 }
 
 # Canonical symlink map — the single source of truth for both linking and
@@ -160,6 +164,7 @@ link_dotfiles() {
     [[ "$grp" == "zsh" && "$DO_ZSH" != 1 ]] && continue
     link "$src" "$dst"
   done < <(dotfile_links)
+  return 0
 }
 
 setup_git_identity() {
@@ -194,6 +199,7 @@ setup_zsh() {
   if [[ "${SHELL:-}" != *zsh ]]; then
     confirm "Make zsh your default shell?" Y && chsh -s "$(command -v zsh)" || true
   fi
+  return 0
 }
 
 install_mise_tools() {
@@ -204,7 +210,8 @@ install_mise_tools() {
   mise trust "$REPO/mise/config.toml"          >/dev/null 2>&1 || true
   step "mise install (from ~/.config/mise/config.toml)…"
   mise install || warn "some mise tools failed"
-  mise ls
+  mise ls || warn "mise ls failed"
+  return 0
 }
 
 install_ai_clis() {
@@ -223,6 +230,7 @@ install_ai_clis() {
   else
     warn "npm not found — skipping pi (run the mise step first, then re-run --full or install pi manually)"
   fi
+  return 0
 }
 
 summary() {
