@@ -27,6 +27,7 @@
 [diff]
 	colorMoved = default
 	algorithm = histogram
+	tool = hunk
 
 [merge]
 	conflictstyle = zdiff3
@@ -38,6 +39,16 @@
 	navigate = true
 	line-numbers = true
 	side-by-side = false
+
+# hunk (hunk.dev) — review-first diff viewer, alongside delta.
+# delta stays the default pager; reach for hunk explicitly:
+#   git hdiff      review the working tree in hunk
+#   git hshow HEAD review a commit in hunk
+#   git difftool   diff via hunk
+[difftool]
+	prompt = false
+[difftool "hunk"]
+	cmd = hunk difftool "$LOCAL" "$REMOTE" "$MERGED"
 
 [column]
 	ui = auto
@@ -72,3 +83,5 @@
 	undo = reset --soft HEAD~1
 	wip = "!git add -A && git commit -m 'wip'"
 	cleanup = "!git branch --merged | grep -vE '^\\*|master|main|develop' | xargs -r git branch -d"
+	hdiff = -c core.pager=hunk\\ pager diff
+	hshow = -c core.pager=hunk\\ pager show

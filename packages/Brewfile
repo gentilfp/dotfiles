@@ -5,6 +5,7 @@
 brew "git"
 brew "gh"
 brew "git-delta"       # syntax-highlighting diff pager
+brew "hunk"            # review-first terminal diff viewer (git hdiff/hshow, difftool)
 brew "lazygit"
 brew "lazydocker"
 
