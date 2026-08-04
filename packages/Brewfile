@@ -54,6 +54,7 @@ brew "redis"
 brew "mailpit"         # local SMTP testing UI (MailHog successor; mailhog was removed from brew)
 
 # ── GUI apps ─────────────────────────────────────────────────────────────────
+cask "zed"                           # GUI editor (used alongside neovim)
 cask "ghostty"                       # terminal (stable; use ghostty@tip for nightly)
 cask "cmux"                          # Ghostty-based terminal for running AI agents in parallel
 cask "orbstack"                      # Docker & Linux VMs (Docker Desktop replacement)

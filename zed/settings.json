@@ -1,0 +1,104 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run `zed: open default settings` from the
+// command palette (cmd-shift-p / ctrl-shift-p)
+//
+// ⚠ SECRETS: the context_servers block below ships with placeholders.
+// After linking on a new machine, re-enter your real keys locally —
+// and NEVER commit them (this file is tracked in the dotfiles repo;
+// check `git diff zed/settings.json` before committing).
+{
+  "agent_servers": {
+    "codex-acp": {
+      "type": "registry"
+    },
+    "claude-acp": {
+      "type": "registry"
+    }
+  },
+  "outline_panel": {
+    "dock": "right"
+  },
+  "collaboration_panel": {
+    "dock": "right"
+  },
+  "agent": {
+    "sidebar_side": "right",
+    "dock": "left",
+    "favorite_models": [],
+    "model_parameters": []
+  },
+  "git_panel": {
+    "dock": "right"
+  },
+  "edit_predictions": {
+    "provider": "copilot"
+  },
+  "context_servers": {
+    "postgres-context-server": {
+      "enabled": true,
+      "settings": {
+        "database_url": "postgresql://USER:PASSWORD@localhost:5432/DBNAME"
+      }
+    },
+    "mcp-server-github": {
+      "enabled": true,
+      "settings": {
+        "github_personal_access_token": "GITHUB_PAT_HERE"
+      }
+    },
+    "mcp-server-context7": {
+      "enabled": true,
+      "settings": {
+        "context7_api_key": "CONTEXT7_KEY_HERE"
+      }
+    }
+  },
+  "prettier": {
+    "allowed": true
+  },
+  "search": {
+    "center_on_match": true,
+    "include_ignored": true
+  },
+  "project_panel": {
+    "dock": "left",
+    "default_width": 240.0
+  },
+  "vim_mode": false,
+  "icon_theme": {
+    "mode": "dark",
+    "light": "Catppuccin Mocha",
+    "dark": "Catppuccin Mocha"
+  },
+  "enable_language_server": true,
+  "buffer_font_family": "MesloLGL Nerd Font",
+  "ui_font_size": 12.0,
+  "buffer_font_size": 11,
+  "ui_font_family": "MesloLGL Nerd Font Mono",
+  "terminal": {
+    "font_family": "MesloLGL Nerd Font Mono",
+    "font_size": 11.0
+  },
+  "theme": {
+    "mode": "dark",
+    "light": "One Light",
+    "dark": "Dracula"
+  },
+  "languages": {
+    "Ruby": {
+      "language_servers": [
+        "ruby-lsp",
+        "!solargraph",
+        "rubocop",
+        "!sorbet",
+        "!steep",
+        "..."
+      ]
+    }
+  }
+}

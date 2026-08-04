@@ -21,3 +21,5 @@
 
 # Logs & temp
 *.log
+
+**/.claude/settings.local.json

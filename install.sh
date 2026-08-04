@@ -80,7 +80,10 @@ dotfile_links() {
     "$REPO/mise/config.toml|$HOME/.config/mise/config.toml" \
     "$REPO/atuin/config.toml|$HOME/.config/atuin/config.toml" \
     "$REPO/zsh/.zshrc|$HOME/.zshrc" \
-    "$REPO/zsh/.p10k.zsh|$HOME/.p10k.zsh"
+    "$REPO/zsh/.p10k.zsh|$HOME/.p10k.zsh" \
+    "$REPO/zed/settings.json|$HOME/.config/zed/settings.json" \
+    "$REPO/zed/keymap.json|$HOME/.config/zed/keymap.json" \
+    "$REPO/zed/tasks.json|$HOME/.config/zed/tasks.json"
 }
 
 link_dotfiles() {

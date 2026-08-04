@@ -49,6 +49,7 @@ atuin/config.toml       atuin shell history (daemon mode, sync, Ctrl-R)
 git/                    portable gitconfig + global gitignore
 cmux/settings.json      cmux app settings (keybinds; font/theme inherited from ghostty)
 herdr/config.toml       herdr multiplexer config
+zed/                    Zed editor (settings + keymap + tasks; secrets stay local)
 ghostty/  nvim/         app configs (symlinked into ~/.config etc.)
 ```
 
@@ -68,6 +69,9 @@ ghostty/  nvim/         app configs (symlinked into ~/.config etc.)
 | `git/.gitignore`     | `~/.gitignore` |
 | `mise/config.toml`   | `~/.config/mise/config.toml` |
 | `atuin/config.toml`  | `~/.config/atuin/config.toml` |
+| `zed/settings.json`  | `~/.config/zed/settings.json` |
+| `zed/keymap.json`    | `~/.config/zed/keymap.json` |
+| `zed/tasks.json`     | `~/.config/zed/tasks.json` |
 
 ## Terminal & multiplexer
 
@@ -93,6 +97,12 @@ Three untracked files hold anything that differs per machine/job:
 - **`~/.zshrc.local`** — work paths, secrets, per-machine overrides. Sourced last.
 - **`ghostty/local`** — window geometry & anything monitor-specific. Optional
   (`config-file = ?local`), gitignored, loaded last so it wins.
+
+One tracked file needs care: **`zed/settings.json`** is committed *sanitized* —
+its `context_servers` block ships with placeholders. After linking on a new
+machine, re-enter the real keys (GitHub PAT, Context7, DB url) in the live file;
+Zed has no local-override mechanism, so always check `git diff zed/settings.json`
+for secrets before committing.
 
 ## AI coding CLIs
 
