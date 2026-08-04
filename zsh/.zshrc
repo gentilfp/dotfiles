@@ -66,4 +66,8 @@ command -v atuin >/dev/null && eval "$(atuin init zsh)"
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-source ~/.bash_alias
+# source ~/.bash_alias
+export PATH="$(brew --prefix postgresql@17)/bin:$PATH"
+
+# Homebrew keg-only postgresql@17 (needed by Rails db:test:prepare / psql CLI)
+export PATH="/opt/homebrew/opt/postgresql@17/bin:$PATH"

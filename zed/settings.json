@@ -69,7 +69,7 @@
     "dock": "left",
     "default_width": 240.0
   },
-  "vim_mode": false,
+  "vim_mode": true,
   "icon_theme": {
     "mode": "dark",
     "light": "Catppuccin Mocha",
