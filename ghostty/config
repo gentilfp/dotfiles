@@ -30,3 +30,11 @@ keybind = alt+shift+space=equalize_splits
 # untracked `local` file next to this one — see .gitignore. The leading `?`
 # makes it optional, so a fresh machine works without it. Loaded last: wins.
 config-file = ?local
+
+# Quick Terminal
+quick-terminal-position = top
+quick-terminal-size= 45%
+quick-terminal-screen = main
+quick-terminal-autohide = true
+quick-terminal-animation-duration=0.25
+keybind = global:opt+grave_accent=toggle_quick_terminal
