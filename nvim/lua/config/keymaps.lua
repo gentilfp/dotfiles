@@ -2,14 +2,6 @@ vim.keymap.set("n", "<leader>sq", "<cmd>copen<cr>", { desc = "Open search result
 vim.keymap.set("n", "]q", "<cmd>cnext<cr>", { desc = "Next search result" })
 vim.keymap.set("n", "[q", "<cmd>cprev<cr>", { desc = "Previous search result" })
 
--- Search scratchpad files from anywhere via Telescope
-vim.keymap.set("n", "<leader>sn", function()
-  require("telescope.builtin").find_files({
-    cwd = vim.fn.expand("~/notes/scratchpad"),
-    prompt_title = "Find Scratchpad Note",
-  })
-end, { desc = "Search Scratchpad" })
-
 -- Command palette: fuzzy-search every available picker (keymaps, commands, files, etc.)
 vim.keymap.set("n", "<leader>sP", function()
   Snacks.picker()
