@@ -33,6 +33,7 @@ brew "eza"             # modern ls
 brew "zoxide"          # smarter cd
 brew "jq"              # JSON processor
 brew "yq"              # YAML/JSON/XML processor
+brew "gettext"         # envsubst — renders zed/settings.json from env vars
 brew "coreutils"       # GNU coreutils
 brew "less"
 brew "btop"            # resource monitor

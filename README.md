@@ -69,7 +69,7 @@ ghostty/  nvim/         app configs (symlinked into ~/.config etc.)
 | `git/.gitignore`     | `~/.gitignore` |
 | `mise/config.toml`   | `~/.config/mise/config.toml` |
 | `atuin/config.toml`  | `~/.config/atuin/config.toml` |
-| `zed/settings.json`  | `~/.config/zed/settings.json` |
+| `zed/settings.json`  | `~/.config/zed/settings.json` (rendered via `envsubst`, not a symlink — see below) |
 | `zed/keymap.json`    | `~/.config/zed/keymap.json` |
 | `zed/tasks.json`     | `~/.config/zed/tasks.json` |
 
@@ -98,11 +98,21 @@ Three untracked files hold anything that differs per machine/job:
 - **`ghostty/local`** — window geometry & anything monitor-specific. Optional
   (`config-file = ?local`), gitignored, loaded last so it wins.
 
-One tracked file needs care: **`zed/settings.json`** is committed *sanitized* —
-its `context_servers` block ships with placeholders. After linking on a new
-machine, re-enter the real keys (GitHub PAT, Context7, DB url) in the live file;
-Zed has no local-override mechanism, so always check `git diff zed/settings.json`
-for secrets before committing.
+One tracked file needs care: **`zed/settings.json`** ships with `${ZED_*}`
+placeholders in its `context_servers` block (Zed has no env-var interpolation
+of its own). `just link` renders it through `envsubst` into
+`~/.config/zed/settings.json`, filling those in from your shell environment —
+export the real values in `~/.zshrc.local`:
+
+```sh
+export ZED_DATABASE_URL="postgresql://user:pass@localhost:5432/dbname"
+export ZED_GITHUB_PAT="ghp_..."
+export ZED_CONTEXT7_API_KEY="ctx7sk-..."
+```
+
+The rendered file is the one Zed actually reads and writes, so edit the repo's
+`zed/settings.json` template for structural changes, then re-run `just link`
+to re-render (`install.sh --doctor` flags stale/unrendered placeholders).
 
 ## AI coding CLIs
 

@@ -23,3 +23,10 @@ export FZF_DEFAULT_OPTS="--height 40% --layout=reverse --border --info=inline"
 
 # Personal bin dir first on PATH
 export PATH="$HOME/.local/bin:$HOME/bin:$PATH"
+
+# Rust/Cargo installed binaries (e.g. cargo install --git ...)
+export PATH="$HOME/.cargo/bin:$PATH"
+
+# mise shims — resolve the right ruby/bundle/node/etc. even in non-interactive
+# shells (GUI apps like Zed) that never run `mise activate`
+export PATH="$HOME/.local/share/mise/shims:$PATH"
