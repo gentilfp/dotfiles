@@ -42,9 +42,9 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
--- Disable spelling for markdown files
+-- Disable spelling for plain-text files
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "markdown", "md" },
+  pattern = { "markdown", "text" },
   callback = function()
     vim.opt_local.spell = false
   end,
