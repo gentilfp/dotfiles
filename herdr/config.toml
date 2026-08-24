@@ -12,3 +12,12 @@ delivery = "terminal"
 [theme]
 name = "dracula"
 auto_switch = false
+
+[worktrees]
+directory = "~/Developer/.worktrees"
+
+[experimental]
+kitty_graphics = true
+
+[ui.sidebar.agents]
+rows = [["state_icon", "workspace", "$pr"], ["agent"]]
