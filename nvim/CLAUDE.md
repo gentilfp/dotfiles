@@ -73,6 +73,14 @@ This Neovim configuration is optimized for Rails development with some React sup
 - **`<leader>gp`** - Find PR for current line's commit
 - **`<leader>gt`** - Find PRs touching current file
 
+### Markdown
+- **markview.nvim** renders markdown in-buffer (headings, code blocks, tables, callouts, LaTeX math, YAML front matter)
+- **`<leader>um`** - Toggle Markview rendering
+- **`<leader>uM`** - Toggle Markview splitview (rendered copy in a split)
+- **`<leader>cp`** - Browser preview (markdown-preview.nvim)
+- Hybrid mode is on in normal mode: the line under the cursor shows raw text
+- `marksman` LSP, `markdownlint-cli2` and `prettier` still handle nav/lint/format
+
 ## Installed Plugins
 
 ### Core Rails Support
@@ -86,6 +94,10 @@ This Neovim configuration is optimized for Rails development with some React sup
 - `telescope.nvim` - Fuzzy finder
 - `telescope-live-grep-args` - Grep with include/exclude filters
 - `nvim-spectre` - Search & replace across files
+
+### Markdown
+- `markview.nvim` - in-buffer markdown/LaTeX/YAML renderer (replaces `render-markdown.nvim`)
+- `markdown-preview.nvim` - browser preview
 
 ### Git
 - `lazygit.nvim` - Git UI

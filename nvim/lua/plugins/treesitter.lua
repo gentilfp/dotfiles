@@ -12,6 +12,7 @@ return {
         "html",
         "javascript",
         "json",
+        "latex", -- markview.nvim renders LaTeX math in markdown
         "lua",
         "markdown",
         "markdown_inline",
