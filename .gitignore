@@ -1,7 +1,8 @@
 # OS
 .DS_Store
 
-# Neovim — lazy-lock.json IS tracked on purpose (pins plugin versions across machines)
+# Neovim — lazy-lock.json is machine-local (plugin versions resolve per machine)
+nvim/lazy-lock.json
 nvim/.nvimlog
 nvim/doc/tags
 *.swp
