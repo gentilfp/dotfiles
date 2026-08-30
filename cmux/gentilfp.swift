@@ -141,7 +141,10 @@ VStack(alignment: .leading, spacing: 0) {
 
                         Spacer()
 
-                        Text(w.branch != nil ? w.branch : (w.directory.contains("/.worktrees/") ? String(w.directory.split(separator: "/").last) : w.title))
+                        // project/folder name: worktree -> repo name (same derivation
+                        // as the workspace list's top line), everything else -> last
+                        // path segment (so paths outside ~/Developer still show a folder)
+                        Text(w.directory.contains("/.worktrees/") ? String(w.directory.split(separator: "/").dropFirst(4).first) : String(w.directory.split(separator: "/").last))
                             .font(.system(size: 9))
                             .foregroundColor(.tertiary)
                             .lineLimit(1)
