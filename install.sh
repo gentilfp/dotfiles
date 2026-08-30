@@ -73,6 +73,7 @@ dotfile_links() {
   printf '%s\n' \
     "$REPO/ghostty|$HOME/.config/ghostty" \
     "$REPO/cmux/settings.json|$HOME/.config/cmux/settings.json" \
+    "$REPO/cmux/gentilfp.swift|$HOME/.config/cmux/sidebars/gentilfp.swift" \
     "$REPO/herdr/config.toml|$HOME/.config/herdr/config.toml" \
     "$REPO/nvim|$HOME/.config/nvim" \
     "$REPO/git/.gitconfig|$HOME/.gitconfig" \
