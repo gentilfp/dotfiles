@@ -47,9 +47,7 @@ zsh/                    curated zsh (oh-my-zsh + powerlevel10k + plugins)
 mise/config.toml        global runtime versions (ruby/node/python/…)
 atuin/config.toml       atuin shell history (daemon mode, sync, Ctrl-R)
 git/                    portable gitconfig + global gitignore
-cmux/settings.json      cmux app settings (keybinds; font/theme inherited from ghostty)
 herdr/config.toml       herdr multiplexer config
-zed/                    Zed editor (settings + keymap + tasks; secrets stay local)
 ghostty/  nvim/         app configs (symlinked into ~/.config etc.)
 ```
 
@@ -60,8 +58,7 @@ ghostty/  nvim/         app configs (symlinked into ~/.config etc.)
 
 | Repo file            | → Target |
 |----------------------|----------|
-| `ghostty/`           | `~/.config/ghostty` (cmux reads this too) |
-| `cmux/settings.json` | `~/.config/cmux/settings.json` |
+| `ghostty/`           | `~/.config/ghostty` |
 | `herdr/config.toml`  | `~/.config/herdr/config.toml` |
 | `nvim/`              | `~/.config/nvim` |
 | `zsh/.zshrc`         | `~/.zshrc` |
@@ -69,23 +66,13 @@ ghostty/  nvim/         app configs (symlinked into ~/.config etc.)
 | `git/.gitignore`     | `~/.gitignore` |
 | `mise/config.toml`   | `~/.config/mise/config.toml` |
 | `atuin/config.toml`  | `~/.config/atuin/config.toml` |
-| `zed/settings.json`  | `~/.config/zed/settings.json` (rendered via `envsubst`, not a symlink — see below) |
-| `zed/keymap.json`    | `~/.config/zed/keymap.json` |
-| `zed/tasks.json`     | `~/.config/zed/tasks.json` |
 
 ## Terminal & multiplexer
 
-Two layers, and they stack — one is the window, the other tiles inside it:
-
-- **cmux** (the window) — a native macOS terminal built on *libghostty*, tuned for
-  running AI agents in parallel. It reads the terminal **font, colors, and theme
-  from `~/.config/ghostty/config`**, so the Dracula theme + JetBrainsMono Nerd
-  Font are shared with Ghostty automatically. Only cmux's app-level keybinds live
-  in `cmux/settings.json` (split-focus mapped to `opt+shift+hjkl` to match Ghostty).
 - **herdr** (the multiplexer) — replaces tmux/zellij. Agent-aware panes, plus
   persistent sessions you can detach and re-attach over SSH (even from a phone).
 
-Ghostty stays installed as a fallback window; `cmux` is the daily driver.
+Ghostty is the terminal window.
 
 ## Machine-specific bits (never committed)
 
@@ -97,22 +84,6 @@ Three untracked files hold anything that differs per machine/job:
 - **`~/.zshrc.local`** — work paths, secrets, per-machine overrides. Sourced last.
 - **`ghostty/local`** — window geometry & anything monitor-specific. Optional
   (`config-file = ?local`), gitignored, loaded last so it wins.
-
-One tracked file needs care: **`zed/settings.json`** ships with `${ZED_*}`
-placeholders in its `context_servers` block (Zed has no env-var interpolation
-of its own). `just link` renders it through `envsubst` into
-`~/.config/zed/settings.json`, filling those in from your shell environment —
-export the real values in `~/.zshrc.local`:
-
-```sh
-export ZED_DATABASE_URL="postgresql://user:pass@localhost:5432/dbname"
-export ZED_GITHUB_PAT="ghp_..."
-export ZED_CONTEXT7_API_KEY="ctx7sk-..."
-```
-
-The rendered file is the one Zed actually reads and writes, so edit the repo's
-`zed/settings.json` template for structural changes, then re-run `just link`
-to re-render (`install.sh --doctor` flags stale/unrendered placeholders).
 
 ## AI coding CLIs
 

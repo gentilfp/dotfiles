@@ -33,7 +33,6 @@ brew "eza"             # modern ls
 brew "zoxide"          # smarter cd
 brew "jq"              # JSON processor
 brew "yq"              # YAML/JSON/XML processor
-brew "gettext"         # envsubst — renders zed/settings.json from env vars
 brew "coreutils"       # GNU coreutils
 brew "less"
 brew "btop"            # resource monitor
@@ -55,9 +54,7 @@ brew "redis"
 brew "mailpit"         # local SMTP testing UI (MailHog successor; mailhog was removed from brew)
 
 # ── GUI apps ─────────────────────────────────────────────────────────────────
-cask "zed"                           # GUI editor (used alongside neovim)
 cask "ghostty"                       # terminal (stable; use ghostty@tip for nightly)
-cask "cmux"                          # Ghostty-based terminal for running AI agents in parallel
 cask "orbstack"                      # Docker & Linux VMs (Docker Desktop replacement)
 cask "claude-code"                   # Claude Code
 cask "codex"                         # OpenAI Codex CLI

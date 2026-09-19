@@ -72,8 +72,6 @@ install_packages() {
 dotfile_links() {
   printf '%s\n' \
     "$REPO/ghostty|$HOME/.config/ghostty" \
-    "$REPO/cmux/settings.json|$HOME/.config/cmux/settings.json" \
-    "$REPO/cmux/gentilfp.swift|$HOME/.config/cmux/sidebars/gentilfp.swift" \
     "$REPO/herdr/config.toml|$HOME/.config/herdr/config.toml" \
     "$REPO/nvim|$HOME/.config/nvim" \
     "$REPO/git/.gitconfig|$HOME/.gitconfig" \
@@ -81,43 +79,7 @@ dotfile_links() {
     "$REPO/mise/config.toml|$HOME/.config/mise/config.toml" \
     "$REPO/atuin/config.toml|$HOME/.config/atuin/config.toml" \
     "$REPO/zsh/.zshrc|$HOME/.zshrc" \
-    "$REPO/zsh/.p10k.zsh|$HOME/.p10k.zsh" \
-    "$REPO/zed/keymap.json|$HOME/.config/zed/keymap.json" \
-    "$REPO/zed/tasks.json|$HOME/.config/zed/tasks.json"
-}
-
-# Secrets referenced by zed/settings.json as ${VAR} placeholders — export
-# real values in ~/.zshrc.local, never in the repo. See render_zed_settings.
-ZED_SECRET_VARS=(ZED_DATABASE_URL ZED_GITHUB_PAT ZED_CONTEXT7_API_KEY)
-
-# Non-secret vars also substituted in the template — used for portable
-# per-machine paths (e.g. ${HOME}/.cargo/bin/...). Always set, so no
-# "missing" warning is needed for these.
-ZED_TEMPLATE_VARS=(HOME)
-
-# zed/settings.json is a template, not a symlink target: Zed has no env-var
-# interpolation, so we render it through envsubst on every link, substituting
-# only the known ZED_SECRET_VARS and ZED_TEMPLATE_VARS (anything else stays
-# literal).
-render_zed_settings() {
-  local src="$REPO/zed/settings.json" dst="$HOME/.config/zed/settings.json"
-  if ! have envsubst; then
-    warn "envsubst missing (brew install gettext) — skipping $src render"
-    return
-  fi
-  local missing=() v
-  for v in "${ZED_SECRET_VARS[@]}"; do
-    [[ -n "${!v:-}" ]] || missing+=("$v")
-  done
-  if ((${#missing[@]} > 0)); then
-    warn "not set, rendering with blanks: ${missing[*]} (export in ~/.zshrc.local, then: just link)"
-  fi
-  mkdir -p "$(dirname "$dst")"
-  # dst may be a stale symlink to $src from before this became a rendered
-  # file — remove it first, or `envsubst ... > "$dst"` truncates $src too.
-  [[ -L "$dst" ]] && rm -f "$dst"
-  envsubst "$(printf '$%s,' "${ZED_SECRET_VARS[@]}" "${ZED_TEMPLATE_VARS[@]}")" <"$src" >"$dst"
-  ok "rendered: ${dst/#$HOME/~}"
+    "$REPO/zsh/.p10k.zsh|$HOME/.p10k.zsh"
 }
 
 link_dotfiles() {
@@ -126,7 +88,6 @@ link_dotfiles() {
   while IFS='|' read -r src dst; do
     link "$src" "$dst"
   done < <(dotfile_links)
-  render_zed_settings
   return 0
 }
 
@@ -212,24 +173,13 @@ doctor() {
     fi
   done < <(dotfile_links)
 
-  header "Zed settings (rendered, not symlinked)"
-  local zed_dst="$HOME/.config/zed/settings.json"
-  if [[ ! -f "$zed_dst" ]]; then
-    warn "${zed_dst/#$HOME/~} missing — run: just link"; problems=$((problems+1))
-  elif grep -q '\${ZED_' "$zed_dst"; then
-    warn "${zed_dst/#$HOME/~} has unexpanded \${ZED_*} placeholders — export in ~/.zshrc.local, then: just link"
-    problems=$((problems+1))
-  else
-    ok "${zed_dst/#$HOME/~} rendered"
-  fi
-
   header "Required tools"
   for t in brew git nvim mise fzf rg fd bat eza zoxide atuin gh lazygit; do
     if have "$t"; then ok "$t"; else warn "$t missing"; problems=$((problems+1)); fi
   done
 
   header "Terminal & AI (optional)"
-  for t in cmux herdr claude codex pi docker; do
+  for t in herdr claude codex pi docker; do
     if have "$t"; then ok "$t"; else info "$t not installed"; fi
   done
 

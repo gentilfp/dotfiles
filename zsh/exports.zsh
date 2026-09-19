@@ -28,5 +28,5 @@ export PATH="$HOME/.local/bin:$HOME/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 
 # mise shims — resolve the right ruby/bundle/node/etc. even in non-interactive
-# shells (GUI apps like Zed) that never run `mise activate`
+# shells that never run `mise activate`
 export PATH="$HOME/.local/share/mise/shims:$PATH"
