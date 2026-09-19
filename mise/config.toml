@@ -6,8 +6,8 @@
 #   - Cloud/infra CLIs: "latest" — anything that must match a cluster or a
 #     project belongs in a repo-local .mise.toml / .tool-versions instead.
 [tools]
-ruby = "3.4"
-node = "22"
+ruby = "4.0.6"
+node = "24.20.0"
 python = "3.13"
 
 aws = { version = "latest", symlink_bins = "true" }
@@ -16,3 +16,4 @@ kubectl = "latest"
 kubectx = "latest"
 sops = "latest"
 terraform = "latest"
+pnpm = "latest"

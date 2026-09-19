@@ -6,6 +6,10 @@ theme = "MOSS"
 font-family = "Fira Code"
 font-size = 13
 
+# Treat macOS Option as Alt so apps like nvim receive <A-...> keybinds
+# instead of macOS dead keys (e.g. Option+i = ˆ)
+macos-option-as-alt = true
+
 # Shift + Enter = new line
 keybind = shift+enter=text:\x1b\r
 
