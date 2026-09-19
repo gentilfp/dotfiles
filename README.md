@@ -48,6 +48,8 @@ mise/config.toml        global runtime versions (ruby/node/python/…)
 atuin/config.toml       atuin shell history (daemon mode, sync, Ctrl-R)
 git/                    portable gitconfig + global gitignore
 herdr/config.toml       herdr multiplexer config
+ai-skills/              agent skills, linked into ~/.claude/skills and
+                        ~/.pi/agent/skills by ai-skills/link.sh
 ghostty/  nvim/         app configs (symlinked into ~/.config etc.)
 ```
 
@@ -66,6 +68,9 @@ ghostty/  nvim/         app configs (symlinked into ~/.config etc.)
 | `git/.gitignore`     | `~/.gitignore` |
 | `mise/config.toml`   | `~/.config/mise/config.toml` |
 | `atuin/config.toml`  | `~/.config/atuin/config.toml` |
+
+Agent skills are linked separately — run `ai-skills/link.sh` to (re)link every
+skill folder into `~/.claude/skills` and `~/.pi/agent/skills`.
 
 ## Terminal & multiplexer
 
