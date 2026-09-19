@@ -4,11 +4,7 @@
 # Basics
 theme = "dracula"
 font-family = "JetBrainsMono Nerd Font Mono"
-font-size = 11
-
-# Treat macOS Option as Alt so apps like nvim receive <A-...> keybinds
-# instead of macOS dead keys (e.g. Option+i = ˆ)
-macos-option-as-alt = true
+font-size = 12
 
 # Shift + Enter = new line
 keybind = shift+enter=text:\x1b\r
@@ -37,6 +33,8 @@ quick-terminal-size= 70%
 quick-terminal-screen = main
 quick-terminal-autohide = true
 quick-terminal-animation-duration=0.25
-keybind = global:opt+grave_accent=toggle_quick_terminal
+keybind = global:opt+§=toggle_quick_terminal
 
-background-opacity=0.95
+background-image="~/Pictures/hallstatt.jpg"
+background-image-fit=cover
+background-image-opacity=0.1
