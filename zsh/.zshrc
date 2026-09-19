@@ -84,5 +84,5 @@ export PATH="/opt/homebrew/opt/postgresql@17/bin:$PATH"
 export PATH="$HOME/.druk/bin:$PATH"
 
 # >>> railway initialize >>>
-source "$HOME/.railway/env"
+[[ -f "$HOME/.railway/env" ]] && source "$HOME/.railway/env"
 # <<< railway initialize <<<

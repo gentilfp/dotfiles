@@ -91,6 +91,13 @@ link_dotfiles() {
   return 0
 }
 
+link_ai_skills() {
+  header "Agent skills"
+  step "ai-skills/link.sh → ~/.claude/skills, ~/.pi/agent/skills"
+  "$REPO/ai-skills/link.sh" || warn "linking agent skills failed"
+  return 0
+}
+
 setup_git_identity() {
   header "Git identity"
   local local_cfg="$HOME/.gitconfig.local"
@@ -173,6 +180,13 @@ doctor() {
     fi
   done < <(dotfile_links)
 
+  header "Agent skills"
+  for src in "$REPO"/ai-skills/*/; do
+    [[ -d "$src" ]] || continue
+    dst="$HOME/.claude/skills/$(basename "$src")"
+    if [[ -L "$dst" ]]; then ok "$(basename "$src")"; else warn "$(basename "$src") not linked"; problems=$((problems+1)); fi
+  done
+
   header "Required tools"
   for t in brew git nvim mise fzf rg fd bat eza zoxide atuin gh lazygit; do
     if have "$t"; then ok "$t"; else warn "$t missing"; problems=$((problems+1)); fi
@@ -209,7 +223,7 @@ main() {
   banner
 
   if [[ "$LINK_ONLY" == 1 ]]; then
-    link_dotfiles; ok "done (symlinks only)"; exit 0
+    link_dotfiles; link_ai_skills; ok "done (symlinks only)"; exit 0
   fi
 
   confirm "Set up this machine (packages, symlinks, zsh, mise, AI CLIs)?" Y || { warn "aborted"; exit 0; }
@@ -218,6 +232,7 @@ main() {
   ensure_homebrew
   install_packages
   link_dotfiles
+  link_ai_skills
   setup_zsh
   setup_git_identity
   install_mise_tools

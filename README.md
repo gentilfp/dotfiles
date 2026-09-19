@@ -69,8 +69,9 @@ ghostty/  nvim/         app configs (symlinked into ~/.config etc.)
 | `mise/config.toml`   | `~/.config/mise/config.toml` |
 | `atuin/config.toml`  | `~/.config/atuin/config.toml` |
 
-Agent skills are linked separately — run `ai-skills/link.sh` to (re)link every
-skill folder into `~/.claude/skills` and `~/.pi/agent/skills`.
+Agent skills are linked by `install.sh` (also by `--link-only`), which runs
+`ai-skills/link.sh` to link every skill folder into `~/.claude/skills` and
+`~/.pi/agent/skills`. Run that script directly to re-link after adding a skill.
 
 ## Terminal & multiplexer
 
