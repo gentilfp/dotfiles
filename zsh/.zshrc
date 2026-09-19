@@ -48,6 +48,14 @@ fi
 
 # atuin — searchable/synced shell history; init after fzf so it owns Ctrl-R
 command -v atuin >/dev/null && eval "$(atuin init zsh)"
+# Keep atuin search on Ctrl-R only; restore zsh default ↑ (atuin binds ↑ to its search)
+bindkey -M emacs '^[[A' up-line-or-search
+bindkey -M emacs '^[OA' up-line-or-search
+bindkey -M viins '^[[A' up-line-or-search
+bindkey -M viins '^[OA' up-line-or-search
+bindkey -M vicmd '^[[A' up-line-or-search
+bindkey -M vicmd '^[OA' up-line-or-search
+bindkey -M vicmd 'k' up-history
 
 # zsh plugins from Homebrew (order: autosuggestions BEFORE syntax-highlighting)
 [[ -f "$BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ]] && \
@@ -71,3 +79,10 @@ export PATH="$(brew --prefix postgresql@17)/bin:$PATH"
 
 # Homebrew keg-only postgresql@17 (needed by Rails db:test:prepare / psql CLI)
 export PATH="/opt/homebrew/opt/postgresql@17/bin:$PATH"
+
+# druk
+export PATH="$HOME/.druk/bin:$PATH"
+
+# >>> railway initialize >>>
+source "$HOME/.railway/env"
+# <<< railway initialize <<<
