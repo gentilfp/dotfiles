@@ -25,3 +25,4 @@
 **/.claude/settings.local.json
 
 .ai/
+.superset/
