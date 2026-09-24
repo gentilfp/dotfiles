@@ -7,11 +7,22 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 })
 
 return {
-  { "dracula/vim", name = "dracula", priority = 1000 },
+  {
+    "metalelf0/black-metal-theme-neovim",
+    name = "black-metal",
+    lazy = false,
+    priority = 1000,
+    config = function()
+      require("black-metal").setup({
+        theme = "burzum",
+      })
+      require("black-metal").load()
+    end,
+  },
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = "dracula",
+      colorscheme = "burzum",
     },
   },
 }
