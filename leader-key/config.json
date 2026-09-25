@@ -45,13 +45,13 @@
           "key" : "d",
           "label" : "Downloads",
           "type" : "folder",
-          "value" : "/Users/felipe.gentil/Downloads"
+          "value" : "~/Downloads"
         },
         {
           "key" : "D",
           "label" : "Downloads",
           "type" : "folder",
-          "value" : "/Users/felipe.gentil/Desktop"
+          "value" : "~/Desktop"
         }
       ],
       "key" : "f",
