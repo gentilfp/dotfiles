@@ -79,7 +79,9 @@ dotfile_links() {
     "$REPO/mise/config.toml|$HOME/.config/mise/config.toml" \
     "$REPO/atuin/config.toml|$HOME/.config/atuin/config.toml" \
     "$REPO/zsh/.zshrc|$HOME/.zshrc" \
-    "$REPO/zsh/.p10k.zsh|$HOME/.p10k.zsh"
+    "$REPO/zsh/.p10k.zsh|$HOME/.p10k.zsh" \
+    "$REPO/aerospace/aerospace.toml|$HOME/.aerospace.toml" \
+    "$REPO/leader-key/config.json|$HOME/Library/Application Support/Leader Key/config.json"
 }
 
 link_dotfiles() {

@@ -1,0 +1,63 @@
+{
+  "actions" : [
+    {
+      "key" : "enter",
+      "label" : "Ghostty",
+      "type" : "application",
+      "value" : "/Applications/Ghostty.app"
+    },
+    {
+      "key" : "space",
+      "label" : "Helium",
+      "type" : "application",
+      "value" : "/Applications/Helium.app"
+    },
+    {
+      "actions" : [
+        {
+          "key" : "o",
+          "type" : "application",
+          "value" : "/Applications/Orca.app"
+        },
+        {
+          "key" : "z",
+          "type" : "application",
+          "value" : "/Applications/Zed.app"
+        },
+        {
+          "key" : "s",
+          "type" : "application",
+          "value" : "/Applications/Slack.app"
+        },
+        {
+          "key" : "n",
+          "type" : "application",
+          "value" : "/Applications/Notion.app"
+        }
+      ],
+      "key" : "d",
+      "label" : "Development",
+      "type" : "group"
+    },
+    {
+      "actions" : [
+        {
+          "key" : "d",
+          "label" : "Downloads",
+          "type" : "folder",
+          "value" : "/Users/felipe.gentil/Downloads"
+        },
+        {
+          "key" : "D",
+          "label" : "Downloads",
+          "type" : "folder",
+          "value" : "/Users/felipe.gentil/Desktop"
+        }
+      ],
+      "key" : "f",
+      "label" : "Finder",
+      "type" : "group"
+    }
+  ],
+  "type" : "group"
+}
