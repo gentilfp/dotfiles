@@ -1,0 +1,6 @@
+[hooks]
+exclude_commands = ["curl", "playwright"]
+suppress_hook_warning = false
+
+[tee]
+enabled = true

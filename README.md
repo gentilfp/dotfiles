@@ -50,8 +50,8 @@ git/                    portable gitconfig + global gitignore
 herdr/config.toml       herdr multiplexer config
 aerospace/aerospace.toml  AeroSpace tiling window manager
 leader-key/config.json  Leader Key launcher shortcuts
-ai-skills/              agent skills, linked into ~/.claude/skills and
-                        ~/.pi/agent/skills by ai-skills/link.sh
+agents/                 shared skills, instructions, tools, and MCP settings
+                        for Codex, Claude Code, Pi, and OpenCode
 ghostty/  nvim/         app configs (symlinked into ~/.config etc.)
 ```
 
@@ -73,9 +73,10 @@ ghostty/  nvim/         app configs (symlinked into ~/.config etc.)
 | `aerospace/aerospace.toml` | `~/.aerospace.toml` |
 | `leader-key/config.json`   | `~/Library/Application Support/Leader Key/config.json` |
 
-Agent skills are linked by `install.sh` (also by `--link-only`), which runs
-`ai-skills/link.sh` to link every skill folder into `~/.claude/skills` and
-`~/.pi/agent/skills`. Run that script directly to re-link after adding a skill.
+Shared AI settings live in [`agents/`](agents/README.md). `just agents-sync`
+merges them into all four harnesses and relinks skills. `just agents-setup`
+also installs tools and native RTK adapters. `just agents-check` detects drift.
+Credentials, OAuth sessions, proxy state, and CodeGraph indexes stay local.
 
 ## Terminal & multiplexer
 
@@ -98,7 +99,8 @@ Three untracked files hold anything that differs per machine/job:
 ## AI coding CLIs
 
 Installed by the AI step: **Claude Code** & **Codex** (Homebrew casks) and
-**pi** (`pi.dev`, via `npm -g @earendil-works/pi-coding-agent`).
+**pi** (`pi.dev`, via `npm -g @earendil-works/pi-coding-agent`), plus
+**OpenCode** (Homebrew). Shared tools are installed by `agents/setup.sh`.
 
 ## Moving to a new machine — checklist
 

@@ -28,3 +28,19 @@ upgrade:
 # full interactive bootstrap (fresh machine)
 new-mac:
     ./install.sh
+
+# install AI tools, native RTK adapters, and shared settings
+agents-setup:
+    ./agents/setup.sh
+
+# apply shared settings after pulling this repo; no package upgrades
+agents-sync:
+    ./agents/sync.sh --apply
+
+# detect drift without changing harness settings
+agents-check:
+    ./agents/sync.sh --check
+
+# session-only Caveman proxy (for example: just agent codex)
+agent harness:
+    ./agents/run.sh {{quote(harness)}}

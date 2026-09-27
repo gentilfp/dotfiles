@@ -94,10 +94,8 @@ link_dotfiles() {
 }
 
 link_ai_skills() {
-  header "Agent skills"
-  step "ai-skills/link.sh → ~/.claude/skills, ~/.pi/agent/skills"
-  "$REPO/ai-skills/link.sh" || warn "linking agent skills failed"
-  return 0
+  header "Shared agent settings"
+  "$REPO/agents/sync.sh" --apply
 }
 
 setup_git_identity() {
@@ -182,12 +180,12 @@ doctor() {
     fi
   done < <(dotfile_links)
 
-  header "Agent skills"
-  for src in "$REPO"/ai-skills/*/; do
-    [[ -d "$src" ]] || continue
-    dst="$HOME/.claude/skills/$(basename "$src")"
-    if [[ -L "$dst" ]]; then ok "$(basename "$src")"; else warn "$(basename "$src") not linked"; problems=$((problems+1)); fi
-  done
+  header "Shared agent settings"
+  if "$REPO/agents/sync.sh" --check; then
+    ok "agent settings in sync"
+  else
+    warn "agent settings need attention: run just agents-sync"; problems=$((problems+1))
+  fi
 
   header "Required tools"
   for t in brew git nvim mise fzf rg fd bat eza zoxide atuin gh lazygit; do
@@ -195,7 +193,7 @@ doctor() {
   done
 
   header "Terminal & AI (optional)"
-  for t in herdr claude codex pi docker; do
+  for t in herdr claude codex pi opencode rtk codegraph caveman docker; do
     if have "$t"; then ok "$t"; else info "$t not installed"; fi
   done
 
@@ -234,11 +232,11 @@ main() {
   ensure_homebrew
   install_packages
   link_dotfiles
-  link_ai_skills
   setup_zsh
   setup_git_identity
   install_mise_tools
   install_ai_clis
+  "$REPO/agents/setup.sh"
 
   header "Done 🎉"
   ok "Open a new terminal (or run: exec zsh) to load everything."

@@ -112,5 +112,5 @@ of `evaluate_merge.sh`.
 
 ## Layout
 
-Canonical skill lives in `~/dotfiles/ai-skills/jev-merge-check/`, symlinked
+Canonical skill lives in `~/dotfiles/agents/skills/jev-merge-check/`, symlinked
 into `~/.claude/skills/jev-merge-check`.
