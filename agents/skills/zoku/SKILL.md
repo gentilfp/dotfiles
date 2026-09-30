@@ -1,6 +1,6 @@
 ---
 name: zoku
-description: Work on one explicitly named Zoku card through the Zoku MCP workflow. Invoke manually with a card identifier such as ZOK-18 or ABC-12.
+description: Original one-shot Zoku workflow for one explicitly named card, from implementation to user-approved closure. Commits only when explicitly asked. Use zok-plan, zok-implement, zok-test, and zok-close for separate stages.
 argument-hint: "<PROJECT-NUMBER> [extra instructions]"
 disable-model-invocation: true
 ---
@@ -8,6 +8,8 @@ disable-model-invocation: true
 # Zoku Card Workflow
 
 Use Zoku MCP as the task tracker. Work on exactly one card supplied by the user.
+This is the original one-shot path, not a stage in the `zok-*` pipeline.
+Tool names below identify Zoku MCP operations; discover their harness-specific exposed names.
 
 ## Input
 
@@ -21,10 +23,10 @@ Require a card identifier in `PREFIX-NUMBER` form, such as `ABC-12`.
 
 ## Start
 
-1. Use `zoku_get_card` to fetch the card from its prefix project.
+1. Use Zoku MCP `get_card` to fetch the card from its prefix project.
 2. Read its title, description, prompt, status, and existing summary before editing code.
 3. Read repository instructions and inspect current Git state. Preserve unrelated changes.
-4. If the card is in backlog, move it to `doing` with `zoku_move_card`. If already `doing`, continue. If already `done`, report that and stop unless the user explicitly asks to reopen or continue it.
+4. If the card is in backlog, move it to `doing` with Zoku MCP `move_card`. If already `doing`, continue. If already `done`, report that and stop unless the user explicitly asks to reopen or continue it.
 5. Treat card content plus any invocation text after the identifier as requirements. Explicit user instructions win on conflict.
 
 If Zoku MCP is unavailable, authentication fails, or the card cannot be found, stop and report the exact blocker. Do not silently work from guessed task details.
@@ -57,8 +59,8 @@ If the user requests changes, keep the card in `doing`, make them, rerun relevan
 Only after the user explicitly approves the reviewed result:
 
 1. Run any final check requested by the user.
-2. Use `zoku_update_card_summary` with a substantive summary of implementation, important decisions, and validation performed.
-3. Move the card to `done` with `zoku_move_card`.
+2. Use Zoku MCP `update_card_summary` with a substantive summary of implementation, important decisions, and validation performed.
+3. Move the card to `done` with Zoku MCP `move_card`.
 4. Report the closed card identifier and current Git status.
 
 Do not commit unless the user explicitly asks for a commit. If asked, commit only intended files and include the card identifier in the commit message.

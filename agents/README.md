@@ -57,6 +57,31 @@ a native rewrite hook. The shared instructions provide an explicit-command
 fallback. RTK's upstream installers own their adapters; re-run `agents-setup`
 after upgrading RTK. Neither RTK nor this setup changes approval policies.
 
+## Zoku staged workflow
+
+The original `zoku` skill remains the one-shot, user-approved closure path;
+it commits only when explicitly asked. For separate stages, manually invoke
+one skill at a time with the same card identifier (for example, `ABC-12`):
+
+```text
+plan → implement → test
+FAILED → implement → test | BLOCKED → resolve prerequisite → test
+PASSED → close
+```
+
+1. `zok-plan`: inspect architecture and edge cases; save the plan in the card's prompt. No code or status changes.
+2. `zok-implement`: implement the card; save implementation and test instructions in its summary. Leave it in `doing`, uncommitted.
+3. `zok-test`: in a fresh session, read the summary, run relevant checks (including end-to-end when needed), and save PASSED, FAILED, or BLOCKED validation.
+4. `zok-close`: require a current test pass, commit only intended changes, add the commit hash to the summary, and move the card to `done`. No push.
+
+Failures return to `zok-implement`, then `zok-test` again. Blocked checks do
+not permit closure. Each stage stops for your next invocation; there is no
+automatic orchestration. The card's prompt and summary carry the handoff
+between sessions. Shared rules and a short, card-scoped fingerprint command
+live in `skills/zok-plan/zok-common.md`. Test replaces only
+the validation block; close adds only closure details. Run `just agents-sync`
+to install the new skills locally.
+
 ## First machine / another computer
 
 ```sh
@@ -138,6 +163,7 @@ parsing. `uv` provisions them automatically and needs network access initially.
 
 ```sh
 uv run --with tomlkit==0.13.3 --with json5==0.12.1 python agents/test_sync.py
+python3 agents/test_zok.py
 bash -n install.sh agents/setup.sh agents/sync.sh agents/run.sh
 just agents-check
 ```
