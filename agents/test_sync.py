@@ -104,6 +104,20 @@ command = "keep-me"
             except OSError:
                 pass
         assert one.read_text() == "original one" and two.read_text() == "original two"
+        # Excluded skills are unlinked; foreign links and other skills are untouched.
+        ex = ["zoku", "zok-*"]
+        foreign = home / ".claude/skills/zok-plan"
+        foreign.unlink()
+        foreign.symlink_to(home / "elsewhere")
+        plan = sync.build_plan(home, cfg, 2, ex)
+        removed = {c[0] for c in plan.changes if c[2] == "remove"}
+        assert home / ".agents/skills/zoku" in removed
+        assert foreign not in removed and not any("jev-" in str(r) for r in removed)
+        foreign.unlink()
+        sync.build_plan(home, cfg, 2, ex).apply(home)
+        assert not (home / ".agents/skills/zoku").is_symlink()
+        assert (home / ".agents/skills/jev-plan-check").is_symlink()
+        assert not sync.build_plan(home, cfg, 2, ex).changes
         # Bad input is rejected while still building the plan, before any write.
         opencode.write_text("{ invalid json")
         try:

@@ -6,6 +6,7 @@
 """Merge shared agent settings without copying credentials into dotfiles."""
 import argparse
 import fcntl
+import fnmatch
 import json
 import os
 from pathlib import Path
@@ -131,14 +132,21 @@ class Plan:
         print(f"Backups: {backup}")
 
 
-def build_plan(home, config_home, opencode_major):
+def build_plan(home, config_home, opencode_major, exclude=()):
     plan = Plan()
     servers = read_json(ROOT / "config/mcp.json")["mcpServers"]
-    skills = sorted(p for p in (ROOT / "skills").iterdir() if (p / "SKILL.md").exists())
+    all_skills = sorted(p for p in (ROOT / "skills").iterdir() if (p / "SKILL.md").exists())
+    skipped = [p for p in all_skills if any(fnmatch.fnmatch(p.name, g) for g in exclude)]
+    skills = [p for p in all_skills if p not in skipped]
     for target in (home / ".agents/skills", home / ".claude/skills",
                    home / ".pi/agent/skills", config_home / "opencode/skills"):
         for skill in skills:
             plan.link(target / skill.name, skill)
+        # Unlink excluded skills, but only links that point into this repo.
+        for skill in skipped:
+            path = target / skill.name
+            if path.is_symlink() and path.readlink() == skill:
+                plan.remove(path)
 
     # The old Bash array accidentally created ~/.claude/skills, (with a comma).
     # Remove only links demonstrably owned by the previous dotfiles linker.
@@ -257,6 +265,8 @@ def main():
     mode.add_argument("--apply", action="store_true")
     mode.add_argument("--check", action="store_true")
     parser.add_argument("--home", type=Path, default=Path.home(), help="alternate home for testing")
+    parser.add_argument("--exclude", action="append", default=[], metavar="GLOB",
+                        help="skip skills matching GLOB and unlink them if linked; repeatable")
     parser.add_argument("--opencode-major", type=int, choices=(1, 2))
     args = parser.parse_args()
     home = args.home.expanduser().resolve()
@@ -277,7 +287,7 @@ def main():
     state.mkdir(parents=True, exist_ok=True, mode=0o700)
     with (state / "sync.lock").open("w") as lock:
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
-        plan = build_plan(home, config_home, major)
+        plan = build_plan(home, config_home, major, args.exclude)
         for path, _, kind, _ in plan.changes:
             print(f"{kind}: {path}")
         if args.apply:

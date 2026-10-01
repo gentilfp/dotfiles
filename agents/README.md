@@ -9,6 +9,7 @@ never synchronize whole harness home directories.
 ```sh
 just agents-setup       # install missing tools, sync settings, install RTK adapters
 just agents-sync        # apply repo settings; no tool upgrades
+just agents-sync-no-zoku  # same, but skip and unlink the zoku and zok-* skills
 just agents-check       # exit nonzero if shared settings have drifted
 ```
 
@@ -109,6 +110,7 @@ Do not synchronize `.codegraph/` indexes through Git or a cloud drive.
 ./agents/sync.sh                  # preview paths only; never prints credentials
 ./agents/sync.sh --check          # detect drift
 ./agents/sync.sh --apply          # back up and apply
+./agents/sync.sh --apply --exclude zoku --exclude 'zok-*'  # skip and unlink matching skills
 ./agents/sync.sh --opencode-major 2 --apply
 ```
 

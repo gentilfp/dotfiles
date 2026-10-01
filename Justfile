@@ -37,6 +37,10 @@ agents-setup:
 agents-sync:
     ./agents/sync.sh --apply
 
+# apply shared settings, skipping and unlinking Zoku skills (this machine does not use them)
+agents-sync-no-zoku:
+    ./agents/sync.sh --apply --exclude zoku --exclude 'zok-*'
+
 # detect drift without changing harness settings
 agents-check:
     ./agents/sync.sh --check
