@@ -40,7 +40,3 @@ agents-sync:
 # detect drift without changing harness settings
 agents-check:
     ./agents/sync.sh --check
-
-# session-only Caveman proxy (for example: just agent codex)
-agent harness:
-    ./agents/run.sh {{quote(harness)}}

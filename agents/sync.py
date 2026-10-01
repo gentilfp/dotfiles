@@ -248,10 +248,6 @@ def build_plan(home, config_home, opencode_major):
             rtk[section] = tomlkit.table()
         rtk[section].update(values)
     plan.file(rtk_path, tomlkit.dumps(rtk))
-    pony_path = config_home / "ponytail/config.json"
-    pony = read_json(pony_path)
-    pony.update(read_json(ROOT / "config/ponytail.json"))
-    plan.json(pony_path, pony)
     return plan
 
 

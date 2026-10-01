@@ -13,7 +13,6 @@ fi
 
 # Versions tested with this setup. Avoid replacing a working newer installation.
 command -v codegraph >/dev/null || npm install -g @colbymchenry/codegraph@1.6.0
-command -v caveman >/dev/null || npm install -g @caveman-ai/cli@1.3.3
 
 "$ROOT/sync.sh" --apply "$@"
 # Snapshot files owned by RTK before asking its installer to update them.

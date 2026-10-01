@@ -10,33 +10,15 @@ never synchronize whole harness home directories.
 just agents-setup       # install missing tools, sync settings, install RTK adapters
 just agents-sync        # apply repo settings; no tool upgrades
 just agents-check       # exit nonzero if shared settings have drifted
-just agent codex        # optional session through Caveman's local proxy
-just agent pi
-just agent claude
-just agent opencode     # opencode2 is also accepted as a launcher alias
-```
-
-The normal `codex`, `pi`, `claude`, and `opencode` commands still work. The
-Caveman launcher uses `caveman wrap`, so it adds a proxy for that session.
-Existing persistent Caveman integrations are preserved. Their installed paths,
-provider routing, databases, and daemon state remain machine-local. Do not run
-`caveman enable` again merely to synchronize this repository.
-
-Pass harness arguments directly to the script:
-
-```sh
-./agents/run.sh codex --help
 ```
 
 ## What is shared
 
 | Component | Shared source | Integration |
 |---|---|---|
-| Personal + upstream skills | `skills/` | Individual symlinks into each harness's skill directory |
+| Personal skills | `skills/` | Individual symlinks into each harness's skill directory |
 | Instructions | `AGENTS.md` | Managed block merged into global instructions; existing text retained |
 | RTK | `config/rtk.toml` | Native RTK installers for Claude, Codex, Pi, OpenCode |
-| Ponytail | `skills/ponytail/`, `config/ponytail.json` | Full-mode skill; no plugin hooks needed |
-| Caveman | `skills/caveman/`, `run.sh` | Lite-mode skill plus optional native proxy wrapper |
 | Zoku + CodeGraph | `config/mcp.json` | Converted into each harness's native MCP format |
 
 Codex discovers shared skills in `~/.agents/skills`. The other targets are
@@ -44,12 +26,6 @@ Codex discovers shared skills in `~/.agents/skills`. The other targets are
 OpenCode and supported tool configs honor `XDG_CONFIG_HOME`.
 Pi uses `pi-mcp-adapter`; setup adds it to Pi's package list without replacing
 your other packages. Pi installs configured packages when it starts.
-
-Ponytail and Caveman are vendored plain-text skills, pinned in `UPSTREAM.md`.
-This provides the portable behavior without duplicate prompt hooks or four
-plugin update mechanisms. Native plugin dashboards and lifecycle controls are
-not installed. Shared instructions set initial modes; skill instructions honor
-explicit per-session changes. The existing `talk-to-me` skill remains available.
 
 RTK hook capabilities depend on the installed RTK/harness versions. Tested
 RTK 0.44.2 provides Codex instruction guidance; newer versions may also install
@@ -104,7 +80,7 @@ Git is the synchronization mechanism; no background process auto-commits or
 overwrites unpushed work. Machine-specific models, projects, permissions,
 credentials, and third-party settings stay in their current local files.
 
-Setup installs missing CodeGraph 1.6.0 and Caveman 1.3.3 via npm; it preserves
+Setup installs missing CodeGraph 1.6.0 via npm; it preserves
 existing installations. RTK and OpenCode come from Homebrew. These are tested
 baselines, not an enforced cross-machine binary lock. Upgrade deliberately and
 re-run setup/check. Skill contents and Python parser dependencies are pinned.
@@ -164,7 +140,7 @@ parsing. `uv` provisions them automatically and needs network access initially.
 ```sh
 uv run --with tomlkit==0.13.3 --with json5==0.12.1 python agents/test_sync.py
 python3 agents/test_zok.py
-bash -n install.sh agents/setup.sh agents/sync.sh agents/run.sh
+bash -n install.sh agents/setup.sh agents/sync.sh
 just agents-check
 ```
 
@@ -173,7 +149,5 @@ preserved credentials and approvals, old links, skill backups, concurrent edits,
 write-failure rollback, and malformed input. It makes no provider/API calls.
 
 Sources: [RTK](https://github.com/rtk-ai/rtk),
-[Ponytail](https://github.com/DietrichGebert/ponytail),
 [CodeGraph](https://github.com/colbymchenry/codegraph),
-[Caveman](https://github.com/juliusbrussee/caveman),
 [Codex MCP](https://developers.openai.com/codex/mcp/).
