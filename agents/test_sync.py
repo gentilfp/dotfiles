@@ -51,6 +51,11 @@ command = "keep-me"
         assert codex.read_text().startswith("# keep this comment")
         plan.apply(home)
         assert not sync.build_plan(home, cfg, 1).changes, "Repeated sync must be a no-op"
+        # Shared statuslines are symlinked into each harness config.
+        assert (home / ".claude/statusline.sh").is_symlink()
+        assert (home / ".claude/statusline.sh").readlink() == sync.ROOT / "statusline/claude/statusline.sh"
+        assert (home / ".pi/agent/extensions/aij-footer").is_symlink()
+        assert (home / ".pi/agent/extensions/aij-footer").readlink() == sync.ROOT / "statusline/pi/aij-footer"
         parsed = sync.tomlkit.parse(codex.read_text())
         assert parsed["model"] == "keep-model"
         assert parsed["mcp_servers"]["zoku"]["tools"]["move_card"]["approval_mode"] == "approve"

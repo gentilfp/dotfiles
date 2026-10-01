@@ -157,6 +157,10 @@ def build_plan(home, config_home, opencode_major, exclude=()):
         if path.is_symlink() and path.readlink() == old_source:
             plan.remove(path)
 
+    # Shared statuslines: Claude Code statusLine script and the Pi quota footer extension.
+    plan.link(home / ".claude/statusline.sh", ROOT / "statusline/claude/statusline.sh")
+    plan.link(home / ".pi/agent/extensions/aij-footer", ROOT / "statusline/pi/aij-footer")
+
     instructions = (ROOT / "AGENTS.md").read_text().rstrip()
     for path in (home / ".codex/AGENTS.md", home / ".claude/CLAUDE.md",
                  home / ".pi/agent/AGENTS.md", config_home / "opencode/AGENTS.md"):

@@ -21,6 +21,7 @@ just agents-check       # exit nonzero if shared settings have drifted
 | Instructions | `AGENTS.md` | Managed block merged into global instructions; existing text retained |
 | RTK | `config/rtk.toml` | Native RTK installers for Claude, Codex, Pi, OpenCode |
 | Zoku + CodeGraph | `config/mcp.json` | Converted into each harness's native MCP format |
+| Statusline | `statusline/` | Claude script and Pi extension symlinked into each harness config (see `statusline/README.md`) |
 
 Codex discovers shared skills in `~/.agents/skills`. The other targets are
 `~/.claude/skills`, `~/.pi/agent/skills`, and `~/.config/opencode/skills`.
