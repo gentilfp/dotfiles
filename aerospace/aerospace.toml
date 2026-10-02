@@ -24,7 +24,7 @@ enable-normalization-opposite-orientation-for-nested-containers = true
 # See: https://nikitabobko.github.io/AeroSpace/guide#layouts
 # The 'accordion-padding' specifies the size of accordion padding
 # You can set 0 to disable the padding feature
-accordion-padding = 30
+accordion-padding = 50
 
 # Possible values: tiles|accordion
 default-root-container-layout = 'tiles'
@@ -85,14 +85,14 @@ gaps.outer.right =      0
 # Auto-place apps on their pinned workspace when a new window is detected.
 # Rules fire once on first detection; manually moved windows stay put.
 # See: https://nikitabobko.github.io/AeroSpace/guide#on-window-detected-callback
-on-window-detected = [
-    { if = 'test %{app-bundle-id} = net.imput.helium',           run = ['move-node-to-workspace 1'] },
-    { if = 'test %{app-name} ~= orca',                           run = ['move-node-to-workspace 2'] },
-    { if = 'test %{app-bundle-id} = dev.zed.Zed',                run = ['move-node-to-workspace 2'] },
-    { if = 'test %{app-bundle-id} = com.adibhanna.zennotes',     run = ['move-node-to-workspace 3'] },
-    { if = 'test %{app-bundle-id} = notion.id',                  run = ['move-node-to-workspace 6'] },
-    { if = 'test %{app-bundle-id} = com.tinyspeck.slackmacgap',  run = ['move-node-to-workspace 7'] },
-]
+# on-window-detected = [
+#     { if = 'test %{app-bundle-id} = net.imput.helium',           run = ['move-node-to-workspace 1'] },
+#     { if = 'test %{app-name} ~= orca',                           run = ['move-node-to-workspace 2'] },
+#     { if = 'test %{app-bundle-id} = dev.zed.Zed',                run = ['move-node-to-workspace 2'] },
+#     { if = 'test %{app-bundle-id} = com.adibhanna.zennotes',     run = ['move-node-to-workspace 3'] },
+#     { if = 'test %{app-bundle-id} = notion.id',                  run = ['move-node-to-workspace 6'] },
+#     { if = 'test %{app-bundle-id} = com.tinyspeck.slackmacgap',  run = ['move-node-to-workspace 7'] },
+# ]
 
 # Pin each workspace to a physical monitor.
 # Monitor patterns: 'main' = macOS main display, or a case-insensitive regex on the monitor name.
