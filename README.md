@@ -50,8 +50,8 @@ git/                    portable gitconfig + global gitignore
 herdr/config.toml       herdr multiplexer config
 aerospace/aerospace.toml  AeroSpace tiling window manager
 leader-key/config.json  Leader Key launcher shortcuts
-agents/                 shared skills, instructions, tools, and MCP settings
-                        for Codex, Claude Code, Pi, and OpenCode
+agents/                 shared skills and instructions for Codex, Claude
+                        Code, Pi, and OpenCode
 ghostty/  nvim/         app configs (symlinked into ~/.config etc.)
 ```
 
@@ -73,10 +73,10 @@ ghostty/  nvim/         app configs (symlinked into ~/.config etc.)
 | `aerospace/aerospace.toml` | `~/.aerospace.toml` |
 | `leader-key/config.json`   | `~/Library/Application Support/Leader Key/config.json` |
 
-Shared AI settings live in [`agents/`](agents/README.md). `just agents-sync`
-merges them into all four harnesses and relinks skills. `just agents-setup`
-also installs tools and native RTK adapters. `just agents-check` detects drift.
-Credentials, OAuth sessions, proxy state, and CodeGraph indexes stay local.
+Shared skills live in [`agents/`](agents/README.md). `just agents-sync` links
+each one into all four harnesses. `just agents-setup` also installs tools and
+native RTK adapters. `just agents-check` detects drift. Credentials, OAuth
+sessions, MCP settings, proxy state, and CodeGraph indexes stay local.
 
 ## Terminal & multiplexer
 

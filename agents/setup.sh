@@ -4,7 +4,6 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 export PATH="$HOME/.local/share/mise/shims:$HOME/.local/bin:$PATH"
 
-command -v uv >/dev/null || { echo "Install uv first (brew install uv)." >&2; exit 1; }
 command -v npm >/dev/null || { echo "Install Node.js first (mise install)." >&2; exit 1; }
 if ! command -v rtk >/dev/null; then
   command -v brew >/dev/null || { echo "Install RTK: https://github.com/rtk-ai/rtk" >&2; exit 1; }
@@ -33,6 +32,4 @@ rtk init -g --auto-patch
 rtk init -g --codex
 rtk init -g --agent pi
 rtk init -g --opencode --auto-patch
-# RTK may edit instruction files; restore the shared block if needed.
-"$ROOT/sync.sh" --apply "$@"
 echo "Shared setup installed. Restart your harnesses; authenticate Zoku in each."

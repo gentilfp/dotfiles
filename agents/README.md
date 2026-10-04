@@ -1,39 +1,52 @@
-# Shared AI setup
+# Shared agent setup
 
-`agents/` is the source of truth for personal settings across Codex, Pi,
-Claude Code, and OpenCode. Clone this dotfiles repository on each machine;
-never synchronize whole harness home directories.
+`agents/` is the source of truth for personal skills. One Bash script,
+`sync.sh`, links every skill in `skills/` into the skill directory of each
+harness, so adding a skill is a one-step operation.
 
 ## Daily use
 
 ```sh
-just agents-setup       # install missing tools, sync settings, install RTK adapters
-just agents-sync        # apply repo settings; no tool upgrades
+just agents-setup         # install missing tools, install RTK adapters, sync skills
+just agents-sync          # apply skill links; no tool changes
 just agents-sync-no-zoku  # same, but skip and unlink the zoku and zok-* skills
-just agents-check       # exit nonzero if shared settings have drifted
+just agents-check         # exit nonzero if skill links have drifted
 ```
 
-## What is shared
+## Skills
 
-| Component | Shared source | Integration |
-|---|---|---|
-| Personal skills | `skills/` | Individual symlinks into each harness's skill directory |
-| Instructions | `AGENTS.md` | Managed block merged into global instructions; existing text retained |
-| RTK | `config/rtk.toml` | Native RTK installers for Claude, Codex, Pi, OpenCode |
-| Zoku + CodeGraph | `config/mcp.json` | Converted into each harness's native MCP format |
-| Statusline | `statusline/` | Claude script and Pi extension symlinked into each harness config (see `statusline/README.md`) |
+| | |
+|---|---|
+| Source | `skills/<name>/SKILL.md` |
+| Installed into | `~/.agents/skills` (Codex), `~/.claude/skills` (Claude Code), `~/.pi/agent/skills` (Pi), `${XDG_CONFIG_HOME:-~/.config}/opencode/skills` (OpenCode) |
 
-Codex discovers shared skills in `~/.agents/skills`. The other targets are
-`~/.claude/skills`, `~/.pi/agent/skills`, and `~/.config/opencode/skills`.
-OpenCode and supported tool configs honor `XDG_CONFIG_HOME`.
-Pi uses `pi-mcp-adapter`; setup adds it to Pi's package list without replacing
-your other packages. Pi installs configured packages when it starts.
+Claude Code does not read the shared `~/.agents` directory, so its own
+directory receives the same links. Every installed skill is a symlink back
+into this repository, so harnesses always read the current file.
 
-RTK hook capabilities depend on the installed RTK/harness versions. Tested
-RTK 0.44.2 provides Codex instruction guidance; newer versions may also install
-a native rewrite hook. The shared instructions provide an explicit-command
-fallback. RTK's upstream installers own their adapters; re-run `agents-setup`
-after upgrading RTK. Neither RTK nor this setup changes approval policies.
+```sh
+./agents/sync.sh                                           # preview
+./agents/sync.sh --apply                                   # create and refresh links
+./agents/sync.sh --check                                   # exit 1 when links drifted
+./agents/sync.sh --apply --exclude zoku --exclude 'zok-*'  # per-machine skill set
+```
+
+Behaviour:
+
+- Add a skill: create `skills/<name>/SKILL.md`, run `--apply`.
+- Remove or rename one: the next `--apply` unlinks it from every harness.
+- Only symlinks that resolve into this repository's `skills/` directory are
+  replaced or removed. A real file or directory with a skill's name is an
+  error, never an overwrite; unrelated files, directories, and links are left
+  alone.
+- The script is idempotent and needs no Python, `uv`, or network access.
+
+## Shared instructions
+
+`sync.sh` manages skill links only. `AGENTS.md` holds the instruction block
+shared by the global harness instruction files (`~/.codex/AGENTS.md`,
+`~/.claude/CLAUDE.md`, `~/.pi/agent/AGENTS.md`,
+`~/.config/opencode/AGENTS.md`) and is applied to them by hand on each machine.
 
 ## Zoku staged workflow
 
@@ -68,24 +81,34 @@ cd ~/Developer/dotfiles
 ./install.sh
 ```
 
-For an existing machine with the harnesses, Node.js, uv, and RTK installed:
+For an existing machine with the harnesses, Node.js, and RTK installed:
 
 ```sh
 git pull --ff-only
 just agents-setup
 ```
 
-For subsequent settings changes, edit files here, review and commit them, push,
-then run `git pull --ff-only && just agents-sync` on the other computer.
-`just update` also refreshes Homebrew packages and reapplies shared settings.
+For subsequent changes, edit files here, review and commit them, push, then
+run `git pull --ff-only && just agents-sync` on the other computer.
+`just update` also refreshes Homebrew packages and reapplies the links.
 Git is the synchronization mechanism; no background process auto-commits or
 overwrites unpushed work. Machine-specific models, projects, permissions,
-credentials, and third-party settings stay in their current local files.
+credentials, and MCP settings stay in their current local files.
 
-Setup installs missing CodeGraph 1.6.0 via npm; it preserves
-existing installations. RTK and OpenCode come from Homebrew. These are tested
+Setup installs missing CodeGraph 1.6.0 via npm; it preserves existing
+installations. RTK and OpenCode come from Homebrew. These are tested
 baselines, not an enforced cross-machine binary lock. Upgrade deliberately and
-re-run setup/check. Skill contents and Python parser dependencies are pinned.
+re-run setup/check. Skill contents are pinned in Git.
+
+RTK hook capabilities depend on the installed RTK/harness versions. Tested
+RTK 0.44.2 provides Codex instruction guidance; newer versions may also install
+a native rewrite hook. The shared instructions provide an explicit-command
+fallback. RTK's upstream installers own their adapters; re-run `agents-setup`
+after upgrading RTK. Neither RTK nor this setup changes approval policies.
+Keep RTK settings in the machine's local RTK config; the values used when this
+repository still carried `config/rtk.toml` were
+`hooks.exclude_commands = ["curl", "playwright"]`, `hooks.suppress_hook_warning = false`,
+and `tee.enabled = true`.
 
 ## Authentication and projects
 
@@ -96,61 +119,29 @@ Authenticate Zoku separately in each harness after restart:
 - Pi: `/mcp`, select Zoku and authenticate through the adapter.
 - OpenCode: `opencode mcp auth zoku`.
 
-Never commit tokens or copy OAuth databases between computers. The canonical
-MCP file contains only the public endpoint and the local CodeGraph command.
-Existing local headers, auth settings, disabled state, and Codex per-tool
-approval policies are preserved. Project-local configs can override globals.
+Never commit tokens or copy OAuth databases between computers. Configure the
+servers in each harness and leave machine-local settings as they are: Zoku is
+the HTTP server `https://zoku-app.com/api/mcp`, CodeGraph is the stdio command
+`codegraph serve --mcp`.
 
 Run `codegraph init` once inside each code repository you want indexed. Leave
 the default daemon enabled so simultaneous harnesses share an index writer.
 Do not synchronize `.codegraph/` indexes through Git or a cloud drive.
 
-## Preview, recovery, and OpenCode versions
-
-```sh
-./agents/sync.sh                  # preview paths only; never prints credentials
-./agents/sync.sh --check          # detect drift
-./agents/sync.sh --apply          # back up and apply
-./agents/sync.sh --apply --exclude zoku --exclude 'zok-*'  # skip and unlink matching skills
-./agents/sync.sh --opencode-major 2 --apply
-```
-
-By default the installed `opencode --version` selects v1 or v2. No automatic
-major-version upgrade is performed. V1 uses `mcp.<name>`; v2 uses `mcp.servers`.
-The explicit major option is useful when preparing a machine before installing
-OpenCode. For v2 migrations with additional legacy MCP servers, first let
-OpenCode migrate those entries; sync refuses to leave a mixed schema behind.
-
-All input files are parsed before changes start. Concurrent syncs are locked;
-changed target files abort the apply. Writes are atomic per file and failures
-roll back completed writes. Close harness settings editors while syncing:
-external applications do not participate in the sync lock.
-
-Backups live in `~/.local/state/dotfiles-agents/backups/<timestamp>/`, with a
-`manifest.json` mapping numbered backups to original paths. They contain local
-config secrets and belong only on this machine. Stop the harness, inspect the
-manifest, and copy the required backup back to its listed path to undo a change;
-entries marked `absent` had no previous file. Existing real skill directories
-are backed up before being replaced with links.
-
-TOML comments are preserved. JSON/JSONC settings are normalized to formatted
-JSON only when their values change; original comments remain in the backup.
-Two small pinned parsers (`tomlkit`, `json5`) avoid handwritten TOML/JSONC
-parsing. `uv` provisions them automatically and needs network access initially.
-
 ## Verification
 
 ```sh
-uv run --with tomlkit==0.13.3 --with json5==0.12.1 python agents/test_sync.py
+bash -n agents/sync.sh agents/setup.sh
+./agents/test-sync.sh
 python3 agents/test_zok.py
-bash -n install.sh agents/setup.sh agents/sync.sh
+./agents/sync.sh --check
 just agents-check
 ```
 
-The temporary-home acceptance check exercises both MCP layouts, repeated sync,
-preserved credentials and approvals, old links, skill backups, concurrent edits,
-write-failure rollback, and malformed input. It makes no provider/API calls.
+`test-sync.sh` runs the real script against fixture skills and a throwaway
+`HOME`: preview, apply, idempotence, drift, `--exclude`, pruning, relative
+links, refusals, the retired typo directory, and option handling. It makes no
+network calls and never touches a real harness config.
 
-Sources: [RTK](https://github.com/rtk-ai/rtk),
-[CodeGraph](https://github.com/colbymchenry/codegraph),
-[Codex MCP](https://developers.openai.com/codex/mcp/).
+`--check` is dry: it prints the pending links and exits 1 when a skill is
+missing from a harness or a link drifted. It creates nothing.

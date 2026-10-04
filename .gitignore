@@ -14,6 +14,3 @@ ghostty/local
 
 # Claude
 .claude/*
-
-# Shared agent setup runtime artifacts
-agents/__pycache__/
