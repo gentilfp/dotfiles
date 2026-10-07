@@ -4,7 +4,7 @@
 # Basics
 theme = "MOSS"
 font-family = "Fira Code"
-font-size = 14
+font-size = 13
 
 # Treat macOS Option as Alt so apps like nvim receive <A-...> keybinds
 # instead of macOS dead keys (e.g. Option+i = ˆ)
@@ -40,6 +40,6 @@ quick-terminal-animation-duration=0.25
 keybind = global:opt+escape=toggle_quick_terminal
 
 # Tracked in the repo next to this file, so it works on every machine.
-background-image="~/.config/ghostty/hallstatt.jpg"
-background-image-fit=cover
-background-image-opacity=0.08
+# background-image="~/.config/ghostty/hallstatt.jpg"
+# background-image-fit=cover
+# background-image-opacity=0.08
