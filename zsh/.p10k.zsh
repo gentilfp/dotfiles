@@ -391,11 +391,11 @@
     fi
 
     # Styling for different parts of Git status.
-    local       meta='%7F' # white foreground
-    local      clean='%0F' # black foreground
-    local   modified='%0F' # black foreground
-    local  untracked='%0F' # black foreground
-    local conflicted='%1F' # red foreground
+    local       meta='%F{#70766B}' # muted
+    local      clean='%F{#7E9273}' # moss
+    local   modified='%F{#B69A64}' # ochre
+    local  untracked='%F{#9A9968}' # olive
+    local conflicted='%F{#C06B63}' # red-bright
 
     local res
 
@@ -1819,6 +1819,9 @@
   # can slow down prompt by 1-2 milliseconds, so it's better to keep it turned off unless you
   # really need it.
   typeset -g POWERLEVEL9K_DISABLE_HOT_RELOAD=true
+
+  # MOSS minimal look: flat, hex colors, no frame.
+  source ${${(%):-%x}:A:h}/moss-prompt.zsh
 
   # If p10k is already loaded, reload configuration.
   # This works even with POWERLEVEL9K_DISABLE_HOT_RELOAD=true.
