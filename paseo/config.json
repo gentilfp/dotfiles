@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "daemon": {
+    "listen": "127.0.0.1:6767",
+    "enableTerminalAgentHooks": false,
+    "terminalProfiles": [],
+    "cors": {
+      "allowedOrigins": [
+        "https://app.paseo.sh"
+      ]
+    },
+    "relay": {
+      "enabled": true
+    }
+  },
+  "app": {
+    "baseUrl": "https://app.paseo.sh"
+  },
+  "pluginsEnabled": true,
+  "plugins": {
+    "moss": {
+      "source": "directory",
+      "path": "/Users/felipe.gentil/Developer/moss_theme/paseo",
+      "enabled": true
+    }
+  },
+  "worktrees": {
+    "root": "/Users/felipe.gentil/Developer/.worktrees"
+  },
+  "agents": {
+    "providers": {
+      "copilot": {
+        "enabled": false
+      },
+      "opencode": {
+        "enabled": false
+      },
+      "codex": {
+        "enabled": false
+      }
+    }
+  },
+  "features": {
+    "dictation": {
+      "enabled": true
+    },
+    "voiceMode": {
+      "enabled": true
+    }
+  }
+}

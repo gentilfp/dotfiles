@@ -81,7 +81,9 @@ dotfile_links() {
     "$REPO/zsh/.zshrc|$HOME/.zshrc" \
     "$REPO/zsh/.p10k.zsh|$HOME/.p10k.zsh" \
     "$REPO/aerospace/aerospace.toml|$HOME/.aerospace.toml" \
-    "$REPO/leader-key/config.json|$HOME/Library/Application Support/Leader Key/config.json"
+    "$REPO/paseo/config.json|$HOME/.paseo/config.json" \
+    "$REPO/leader-key/config.json|$HOME/Library/Application Support/Leader Key/config.json" \
+    "$REPO/paseo/desktop-settings.json|$HOME/Library/Application Support/Paseo/desktop-settings.json"
 }
 
 link_dotfiles() {
