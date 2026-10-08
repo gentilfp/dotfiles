@@ -74,9 +74,9 @@ ghostty/  nvim/         app configs (symlinked into ~/.config etc.)
 | `leader-key/config.json`   | `~/Library/Application Support/Leader Key/config.json` |
 
 Shared skills live in [`agents/`](agents/README.md). `just agents-sync` links
-each one into all four harnesses. `just agents-setup` also installs tools and
-native RTK adapters. `just agents-check` detects drift. Credentials, OAuth
-sessions, MCP settings, proxy state, and CodeGraph indexes stay local.
+each one into all four harnesses. `just agents-setup` also installs tools.
+`just agents-check` detects drift. Credentials, OAuth sessions, MCP settings,
+proxy state, and CodeGraph indexes stay local.
 
 ## Terminal & multiplexer
 

@@ -195,7 +195,7 @@ doctor() {
   done
 
   header "Terminal & AI (optional)"
-  for t in herdr claude codex pi opencode rtk codegraph docker; do
+  for t in herdr claude codex pi opencode codegraph docker; do
     if have "$t"; then ok "$t"; else info "$t not installed"; fi
   done
 

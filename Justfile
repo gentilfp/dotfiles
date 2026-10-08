@@ -29,7 +29,7 @@ upgrade:
 new-mac:
     ./install.sh
 
-# install AI tools, native RTK adapters, and shared settings
+# install AI tools and shared settings
 agents-setup:
     ./agents/setup.sh
 

@@ -7,7 +7,7 @@ harness, so adding a skill is a one-step operation.
 ## Daily use
 
 ```sh
-just agents-setup         # install missing tools, install RTK adapters, sync skills
+just agents-setup         # install missing tools and sync skills
 just agents-sync          # apply skill links; no tool changes
 just agents-sync-no-zoku  # same, but skip and unlink the zoku and zok-* skills
 just agents-check         # exit nonzero if skill links have drifted
@@ -81,7 +81,7 @@ cd ~/Developer/dotfiles
 ./install.sh
 ```
 
-For an existing machine with the harnesses, Node.js, and RTK installed:
+For an existing machine with the harnesses and Node.js installed:
 
 ```sh
 git pull --ff-only
@@ -96,19 +96,9 @@ overwrites unpushed work. Machine-specific models, projects, permissions,
 credentials, and MCP settings stay in their current local files.
 
 Setup installs missing CodeGraph 1.6.0 via npm; it preserves existing
-installations. RTK and OpenCode come from Homebrew. These are tested
+installations. OpenCode comes from Homebrew. These are tested
 baselines, not an enforced cross-machine binary lock. Upgrade deliberately and
 re-run setup/check. Skill contents are pinned in Git.
-
-RTK hook capabilities depend on the installed RTK/harness versions. Tested
-RTK 0.44.2 provides Codex instruction guidance; newer versions may also install
-a native rewrite hook. The shared instructions provide an explicit-command
-fallback. RTK's upstream installers own their adapters; re-run `agents-setup`
-after upgrading RTK. Neither RTK nor this setup changes approval policies.
-Keep RTK settings in the machine's local RTK config; the values used when this
-repository still carried `config/rtk.toml` were
-`hooks.exclude_commands = ["curl", "playwright"]`, `hooks.suppress_hook_warning = false`,
-and `tee.enabled = true`.
 
 ## Authentication and projects
 

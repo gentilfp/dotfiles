@@ -36,7 +36,6 @@ brew "yq"              # YAML/JSON/XML processor
 brew "coreutils"       # GNU coreutils
 brew "less"
 brew "btop"            # resource monitor
-brew "rtk"             # agent shell-output compression
 brew "opencode"        # fourth coding harness
 brew "uv"              # fast python package manager
 
