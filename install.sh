@@ -182,6 +182,19 @@ doctor() {
     fi
   done < <(dotfile_links)
 
+  header "Repo hygiene"
+  local broken
+  broken="$(broken_symlinks)"
+  if [[ -z "$broken" ]]; then
+    ok "no broken symlinks in the repo"
+  else
+    warn "broken symlink(s) in the repo:"
+    while IFS= read -r l; do
+      printf '    %s -> %s\n' "$l" "$(readlink "$REPO/$l")"
+    done <<< "$broken"
+    problems=$((problems+1))
+  fi
+
   header "Shared agent settings"
   if "$REPO/agents/sync.sh" --check; then
     ok "agent settings in sync"

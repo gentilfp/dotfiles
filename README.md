@@ -25,6 +25,8 @@ With `just` installed (it's in the Brewfile):
 
 ```sh
 just            # list recipes
+just sync       # commit, rebase on origin, push, relink — the everyday command
+just sync-check # show what sync would do; changes nothing
 just link       # (re)create symlinks
 just doctor     # health-check the setup
 just update     # git pull + refresh packages + relink
@@ -32,12 +34,33 @@ just upgrade    # brew update/upgrade + mise upgrade (everything installed)
 just new-mac    # full bootstrap
 ```
 
+## Syncing between machines
+
+`just sync` is the one command to run before you leave a machine or after you
+sit down at another one. In order, it:
+
+1. reports broken symlinks inside the repo (never fatal)
+2. stages and commits local edits as `sync: <host> <timestamp>`
+3. pulls remote commits with `git pull --rebase --autostash`
+4. pushes to `origin`
+5. relinks dotfiles (`install.sh --link-only`) and shared agent skills
+   (`agents/sync.sh --apply`)
+
+A rebase conflict is never auto-resolved: the rebase is aborted and the repo is
+left exactly as it was. Two guards beat a wrong merge, so resolve by hand with
+`git pull --rebase`, then `just sync` again.
+
+Useful modifiers: `--check` (dry run), `--no-push` (commit and rebase only),
+`--no-link` (git only). If you only changed files on this machine and want the
+slow package steps too, run `just update` instead.
+
 ## What lives where
 
 ```
 install.sh              bootstrap (entry point; also --link-only / --doctor)
-Justfile                daily commands (just link / doctor / update / upgrade)
+Justfile                daily commands (just sync / link / doctor / update / upgrade)
 bootstrap/lib.sh        shared shell helpers (prompts, logging, symlink)
+bootstrap/sync.sh       cross-machine sync (just sync); also --check / --no-push / --no-link
 packages/Brewfile       everything: CLI toolbelt, cloud/infra, databases, GUI apps, fonts
 zsh/                    curated zsh (oh-my-zsh + powerlevel10k + plugins)
   ├── .zshrc                loader
@@ -113,3 +136,7 @@ Installed by the AI step: **Claude Code** & **Codex** (Homebrew casks) and
    (the e2e key lives in `~/.local/share/atuin/key` — grab it from an old machine
    with `atuin key`)
 6. `just doctor` to confirm everything landed
+
+After that, `just sync` is the only command you need day to day: it commits what
+you changed on this machine, pulls what the other machine changed, pushes, and
+relinks.

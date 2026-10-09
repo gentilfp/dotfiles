@@ -5,6 +5,14 @@
 default:
     @just --list
 
+# commit local edits, rebase on origin, push, relink (the everyday command)
+sync:
+    ./bootstrap/sync.sh
+
+# show what 'just sync' would do; changes nothing
+sync-check:
+    ./bootstrap/sync.sh --check
+
 # (re)create all symlinks into place
 link:
     ./install.sh --link-only

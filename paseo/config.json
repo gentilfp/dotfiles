@@ -33,9 +33,15 @@
         "enabled": false
       },
       "opencode": {
-        "enabled": false
+        "enabled": true
       },
       "codex": {
+        "enabled": false
+      },
+      "muse": {
+        "enabled": false
+      },
+      "antigravity": {
         "enabled": false
       }
     }

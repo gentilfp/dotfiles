@@ -49,6 +49,16 @@ confirm() {
 
 have() { command -v "$1" >/dev/null 2>&1; }
 
+# ── Repo hygiene ───────────────────────────────────────────────────────────
+# List symlinks inside the repo that point at nothing. A dangling link tracked
+# in git is almost always a mistake (a stray `ln -s` run inside a config dir).
+broken_symlinks() {
+  local l
+  while IFS= read -r -d '' l; do
+    [[ -e "$l" ]] || printf '%s\n' "${l#./}"
+  done < <(cd "$REPO" && find . -type l -not -path './.git/*' -print0 2>/dev/null)
+}
+
 # ── Symlinking ───────────────────────────────────────────────────────────────
 # link SRC DST — idempotent. Backs up an existing real file/dir to DST.bak-<ts>.
 link() {
