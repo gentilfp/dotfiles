@@ -86,3 +86,6 @@ export PATH="$HOME/.druk/bin:$PATH"
 # >>> railway initialize >>>
 [[ -f "$HOME/.railway/env" ]] && source "$HOME/.railway/env"
 # <<< railway initialize <<<
+
+# opencode
+export PATH=/Users/gentilfp/.opencode/bin:$PATH

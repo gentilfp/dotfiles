@@ -4,7 +4,7 @@
 # Basics
 theme = "MOSS"
 font-family = "Fira Code"
-font-size = 13
+font-size = 12
 
 # Treat macOS Option as Alt so apps like nvim receive <A-...> keybinds
 # instead of macOS dead keys (e.g. Option+i = ˆ)

@@ -9,7 +9,7 @@ harness, so adding a skill is a one-step operation.
 ```sh
 just agents-setup         # install missing tools and sync skills
 just agents-sync          # apply skill links; no tool changes
-just agents-sync-no-zoku  # same, but skip and unlink the zoku and zok-* skills
+just agents-sync-no-zoku  # same, but skip and unlink the zok-* skills
 just agents-check         # exit nonzero if skill links have drifted
 ```
 
@@ -28,7 +28,7 @@ into this repository, so harnesses always read the current file.
 ./agents/sync.sh                                           # preview
 ./agents/sync.sh --apply                                   # create and refresh links
 ./agents/sync.sh --check                                   # exit 1 when links drifted
-./agents/sync.sh --apply --exclude zoku --exclude 'zok-*'  # per-machine skill set
+./agents/sync.sh --apply --exclude 'zok-*'  # per-machine skill set
 ```
 
 Behaviour:
@@ -50,28 +50,18 @@ shared by the global harness instruction files (`~/.codex/AGENTS.md`,
 
 ## Zoku staged workflow
 
-The original `zoku` skill remains the one-shot, user-approved closure path;
-it commits only when explicitly asked. For separate stages, manually invoke
-one skill at a time with the same card identifier (for example, `ABC-12`):
+Manually invoke one skill at a time with the same card identifier (for example, `ABC-12`):
 
 ```text
-plan → implement → test
-FAILED → implement → test | BLOCKED → resolve prerequisite → test
-PASSED → close
+plan → implement → test → close
 ```
 
-1. `zok-plan`: inspect architecture and edge cases; save the plan in the card's prompt. No code or status changes.
-2. `zok-implement`: implement the card; save implementation and test instructions in its summary. Leave it in `doing`, uncommitted.
-3. `zok-test`: in a fresh session, read the summary, run relevant checks (including end-to-end when needed), and save PASSED, FAILED, or BLOCKED validation.
-4. `zok-close`: require a current test pass, commit only intended changes, add the commit hash to the summary, and move the card to `done`. No push.
+1. `zok-plan`: save the goal and acceptance criteria in the card description, and short instructions in its prompt.
+2. `zok-implement`: build it; save a short summary. Uncommitted, card stays `doing`.
+3. `zok-test`: in a fresh session, check each acceptance criterion; save PASSED or FAILED.
+4. `zok-close`: quick check, commit, append the hash, move to `done`. No push.
 
-Failures return to `zok-implement`, then `zok-test` again. Blocked checks do
-not permit closure. Each stage stops for your next invocation; there is no
-automatic orchestration. The card's prompt and summary carry the handoff
-between sessions. Shared rules and a short, card-scoped fingerprint command
-live in `skills/zok-plan/zok-common.md`. Test replaces only
-the validation block; close adds only closure details. Run `just agents-sync`
-to install the new skills locally.
+Failures return to `zok-implement`. Shared rules live in `skills/zok-plan/zok-common.md`. Run `just agents-sync` to install.
 
 ## First machine / another computer
 
@@ -123,7 +113,6 @@ Do not synchronize `.codegraph/` indexes through Git or a cloud drive.
 ```sh
 bash -n agents/sync.sh agents/setup.sh
 ./agents/test-sync.sh
-python3 agents/test_zok.py
 ./agents/sync.sh --check
 just agents-check
 ```

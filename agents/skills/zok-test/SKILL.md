@@ -1,23 +1,23 @@
 ---
 name: zok-test
-description: Validate one explicitly named Zoku card from its implementation summary and record results. Stop on failures and hand back to zok-implement.
+description: Validate one explicitly named Zoku card against its acceptance criteria and record a short result.
 argument-hint: "<PROJECT-NUMBER> [extra instructions]"
 disable-model-invocation: true
 ---
 
 # Zoku Test
 
-Run in a fresh session from `zok-implement`. Validate; do not fix the implementation.
+Validate in a fresh session. Do not fix the implementation.
 
-Read [shared rules](../zok-plan/zok-common.md) and follow Start, Summary, and Fingerprint.
-Require a card in `doing` with an implementation summary and exact card file paths. Otherwise return to `zok-implement`.
+Read [shared rules](../zok-plan/zok-common.md) and follow Start. Require a card in `doing` with a summary; otherwise return to `zok-implement`.
 
-1. Compare the actual changes with the card's requirements. Capture the fingerprint using only the listed card files.
-2. Run the summary's checks and relevant existing tests, including end-to-end checks when needed. Do not introduce a new test framework.
-3. Use Zoku MCP `update_card_summary` to replace only the leading validation block, keeping the other sections intact:
-   - `Validation: PASSED`: all required checks passed and the card fingerprint is unchanged. Include `Fingerprint: <hash>` and the commands and results.
-   - `Validation: FAILED`: record the failure and expected behavior. Stop and return to `zok-implement`.
-   - `Validation: BLOCKED`: record checks that could not run or card files that changed during testing. Stop; missing checks are not passes.
-4. Report the result. Only PASSED is ready for `zok-close`. After fixes, test again in a fresh session.
+1. Read the acceptance criteria and look at the uncommitted changes.
+2. Check each criterion. Run existing tests and any end-to-end check the criteria need. Do not add a test framework.
+3. Replace the summary's `Validation:` line and results with `update_card`. Keep it to one line per criterion:
+   - `Validation: PASSED` when every criterion holds.
+   - `Validation: FAILED` with what failed and what was expected. Return to `zok-implement`.
+   - Mark any criterion you could not check. Do not count it as passed.
+   Keep the implementer's change description. Leave out file lists, command logs, and environment details.
+4. Report the result. Stop.
 
-Do not commit, push, or change card status. If saving results fails, stop and report the blocker.
+Do not commit, push, or change status.
