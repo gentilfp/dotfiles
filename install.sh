@@ -82,6 +82,7 @@ dotfile_links() {
     "$REPO/zsh/.p10k.zsh|$HOME/.p10k.zsh" \
     "$REPO/aerospace/aerospace.toml|$HOME/.aerospace.toml" \
     "$REPO/paseo/config.json|$HOME/.paseo/config.json" \
+    "$REPO/agents/statusbar/pi/moss-statusbar.ts|$HOME/.pi/agent/extensions/moss-statusbar.ts" \
     "$REPO/leader-key/config.json|$HOME/Library/Application Support/Leader Key/config.json" \
     "$REPO/paseo/desktop-settings.json|$HOME/Library/Application Support/Paseo/desktop-settings.json"
 }
