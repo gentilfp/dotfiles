@@ -11,7 +11,7 @@ Plan exactly one card. Do not implement.
 
 Read [shared rules](zok-common.md) and follow Start.
 
-1. Look at the relevant code and tests. Use CodeGraph when indexed; otherwise use focused search. Look up facts yourself.
+1. If a Zoku page titled `<PROJECT-NUMBER> diagnosis` exists, read it with `get_page` and use it as context. Then look at the relevant code and tests. Use CodeGraph when indexed; otherwise use focused search. Look up facts yourself.
 2. Ask the user only about decisions: scope, tradeoffs, unclear requirements. Ask all independent questions in one round, each with your recommended answer. Skip this step when nothing is unclear.
 3. Save with Zoku MCP `update_card`, once:
    - `description`: the goal as one plain line, then acceptance criteria as bullets. Include edge cases worth checking (for example, invalid input). No user-story phrasing.

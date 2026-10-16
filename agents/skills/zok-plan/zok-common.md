@@ -16,3 +16,16 @@ Skills are installed together. Resolve links relative to the skill directory.
 - `summary`: a short result. First line is `Validation: PENDING`, `PASSED`, or `FAILED`.
 
 Keep every field short. No transcripts, no file dumps, no repeated context.
+
+## Pages and notes
+
+- `<PROJECT-NUMBER> diagnosis`: a page from `zok-diagnose`, read by `zok-plan`.
+- `Spec: <idea>`: a page from `zok-decompose`.
+- Retro reports are notes from `zok-retro`.
+
+Keep this state in Zoku, not in project repositories.
+
+## Working rules
+
+- Back every claim with evidence: `file:line`, command output, a test result, or a user decision. "No issue found" is a valid result.
+- Work sequentially. Use the cheapest capable model and no subagents unless the work is isolated and mechanical. A helper reports facts; the calling skill decides.

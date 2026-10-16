@@ -50,10 +50,33 @@ shared by the global harness instruction files (`~/.codex/AGENTS.md`,
 
 ## Zoku staged workflow
 
+These are personal skills for Zoku projects, separate from any work setup.
 Manually invoke one skill at a time with the same card identifier (for example, `ABC-12`):
 
-```text
-plan → implement → test → close
+```mermaid
+flowchart TD
+    A[Idea or task] --> B{Large or vague?}
+    B -- Yes --> C[/zok-decompose/]
+    C --> D[/zok-risk-check/]
+    B -- No --> D
+    D --> E[/zok-plan/]
+    E --> F[/zok-implement/]
+    F --> G[/zok-test/]
+    G -- FAILED --> F
+    G -- PASSED --> H[/zok-close/]
+    H --> I{Anything to learn?}
+    I -- Yes --> J[/zok-retro/]
+    I -- No --> K[Done]
+    J --> K
+```
+
+When a bug's root cause is unknown, diagnose before planning:
+
+```mermaid
+flowchart TD
+    A[Bug card] --> B[/zok-diagnose/]
+    B --> C[diagnosis page]
+    C --> D[/zok-plan/]
 ```
 
 1. `zok-plan`: save the goal and acceptance criteria in the card description, and short instructions in its prompt.
@@ -61,7 +84,22 @@ plan → implement → test → close
 3. `zok-test`: in a fresh session, check each acceptance criterion; save PASSED or FAILED.
 4. `zok-close`: quick check, commit, append the hash, move to `done`. No push.
 
-Failures return to `zok-implement`. Shared rules live in `skills/zok-plan/zok-common.md`. Run `just agents-sync` to install.
+Failures return to `zok-implement`. The other skills are optional:
+
+| Skill | Use when | Does | Input | Output | Next |
+|---|---|---|---|---|---|
+| `zok-risk-check` | Unsure how careful to be | Classifies tiny, normal, or risky. Read-only | Card or task text | Size, reason, flow in chat | `zok-plan` |
+| `zok-decompose` | Idea too big for one card | Writes a spec and 3 to 7 ordered cards after approval | Project and idea | `Spec:` page, backlog cards | `zok-plan` on the first card |
+| `zok-diagnose` | Bug with unknown cause | Reproduces, tests hypotheses, does not fix | Bug card, logs | `<ID> diagnosis` page | `zok-plan` on the same card |
+| `zok-retro` | A card taught something | Proposes up to five setup updates, applies approved ones | Card | Retro note, small edits | None |
+
+Shared rules live in `skills/zok-plan/zok-common.md`. Specs, diagnoses, and
+retros live in Zoku, not in project repositories. Skills run sequentially
+with the cheapest capable model and no subagents by default. Run
+`just agents-sync` to install.
+
+Not built yet: `zok-arena` (compare approaches for an uncertain design) and
+`zok-parallel` (run independent cards in separate worktrees, merge one at a time).
 
 ## First machine / another computer
 
