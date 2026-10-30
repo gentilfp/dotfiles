@@ -32,4 +32,7 @@ fi
 # Right of the pills: quiet text. Context turns ochre past 60 and red past 85.
 CC=$MUTED; [ "$PCT" -ge 60 ] && CC=$OCHRE; [ "$PCT" -ge 85 ] && CC=$RED
 OUT+="  $(fg $MUTED)${MODEL}  $(fg $CC)ctx ${PCT}%$R"
+# Orca orchestration summary; empty unless a worker is active.
+ORCA=$("$(dirname "$0")/orca-segment.sh" 2>/dev/null)
+[ -n "$ORCA" ] && OUT+="  $(fg $OCHRE)${ORCA}$R"
 printf '%s\n' "$OUT"

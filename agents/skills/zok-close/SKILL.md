@@ -11,8 +11,8 @@ Invoking this skill authorizes a local commit and closing the card. It does not 
 
 Read [shared rules](../zok-plan/zok-common.md) and follow Start.
 
-1. Require a card in `doing` with `Validation: PASSED` on the first summary line. Otherwise stop and name the skill to run next.
-2. Do a quick check: look at `git status` and the diff, and run the project's fast tests if there are any. Stop on anything unexpected or failing.
+1. Require a card in `review` with `Validation: PASSED` on the first summary line and all required scenarios passed. Otherwise stop and name the skill to run next.
+2. Look at `git status` and the diff. Stop if there are changes this card did not make.
 3. Commit only this card's changes, with the card identifier in the message. Ask if file ownership is unclear.
 4. With one `update_card` call, add the commit hash to the summary and set the status to `done`.
 5. Report the identifier and commit hash.

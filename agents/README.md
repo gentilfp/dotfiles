@@ -57,9 +57,8 @@ Manually invoke one skill at a time with the same card identifier (for example, 
 flowchart TD
     A[Idea or task] --> B{Large or vague?}
     B -- Yes --> C[/zok-decompose/]
-    C --> D[/zok-risk-check/]
-    B -- No --> D
-    D --> E[/zok-plan/]
+    C --> E[/zok-plan/]
+    B -- No --> E
     E --> F[/zok-implement/]
     F --> G[/zok-test/]
     G -- FAILED --> F
@@ -79,16 +78,17 @@ flowchart TD
     C --> D[/zok-plan/]
 ```
 
-1. `zok-plan`: save the goal and acceptance criteria in the card description, and short instructions in its prompt.
-2. `zok-implement`: build it; save a short summary. Uncommitted, card stays `doing`.
-3. `zok-test`: in a fresh session, check each acceptance criterion; save PASSED or FAILED.
-4. `zok-close`: quick check, commit, append the hash, move to `done`. No push.
+Board: Backlog (`backlog`) → Scoped (`scoped`) → In Progress (`doing`) → Review (`review`) → Done (`done`).
+
+1. `zok-plan`: save the goal and acceptance criteria in the card description, and a grounded implementation brief in its prompt: code pointers, ordered changes, boundaries, and concrete verification. Move `backlog` to `scoped`; preserve later stages when replanning.
+2. `zok-implement`: move to `doing`, build it, run checks, and save a short summary. Leave changes uncommitted; move to `review` when ready for testing.
+3. `zok-test`: in a fresh session, check each acceptance criterion. PASSED stays in `review`; FAILED returns to `doing`. Blocked or incomplete validation stays in `review` with PENDING.
+4. `zok-close`: require `review` and all validation passed, check the diff, commit, append the hash, move to `done`. No push.
 
 Failures return to `zok-implement`. The other skills are optional:
 
 | Skill | Use when | Does | Input | Output | Next |
 |---|---|---|---|---|---|
-| `zok-risk-check` | Unsure how careful to be | Classifies tiny, normal, or risky. Read-only | Card or task text | Size, reason, flow in chat | `zok-plan` |
 | `zok-decompose` | Idea too big for one card | Writes a spec and 3 to 7 ordered cards after approval | Project and idea | `Spec:` page, backlog cards | `zok-plan` on the first card |
 | `zok-diagnose` | Bug with unknown cause | Reproduces, tests hypotheses, does not fix | Bug card, logs | `<ID> diagnosis` page | `zok-plan` on the same card |
 | `zok-retro` | A card taught something | Proposes up to five setup updates, applies approved ones | Card | Retro note, small edits | None |

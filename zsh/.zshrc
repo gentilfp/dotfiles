@@ -89,3 +89,4 @@ export PATH="$HOME/.druk/bin:$PATH"
 
 # opencode
 export PATH=/Users/gentilfp/.opencode/bin:$PATH
+export PATH=$PATH:$HOME/.maestro/bin

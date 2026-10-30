@@ -6,5 +6,5 @@ search; initialize a project with `codegraph init` when useful. Keep indexes loc
 
 Use Zoku only for explicitly requested card work, following the requested
 `zok-*` skill (`zok-plan`, `zok-implement`, `zok-test`, `zok-close`, or the
-optional `zok-risk-check`, `zok-decompose`, `zok-diagnose`, `zok-retro`).
+optional `zok-decompose`, `zok-diagnose`, `zok-retro`).
 Authentication and project permissions remain specific to each machine/harness.

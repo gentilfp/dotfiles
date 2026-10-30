@@ -6,13 +6,26 @@
 import type { AssistantMessage } from "@earendil-works/pi-ai";
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { truncateToWidth, visibleWidth } from "@earendil-works/pi-tui";
+import { execFileSync } from "node:child_process";
 import { homedir } from "node:os";
+import { realpathSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 
 const hex = (h: string) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16)).join(";");
 const fg = (h: string) => `\x1b[38;2;${hex(h)}m`;
 const bg = (h: string) => `\x1b[48;2;${hex(h)}m`;
 const R = "\x1b[0m";
 const C = { surface: "#161914", raised: "#1F231C", muted: "#70766B", faint: "#4B5147", moss: "#7E9273", ochre: "#B69A64" };
+const orcaScript = join(dirname(realpathSync(fileURLToPath(import.meta.url))), "..", "orca-segment.sh");
+// Orca orchestration summary; empty unless a worker is active. The script caches for 5s.
+const orcaSegment = () => {
+	try {
+		return execFileSync(orcaScript, { encoding: "utf8", timeout: 4000 }).trim();
+	} catch {
+		return "";
+	}
+};
 const fmt = (n: number) => (n < 1000 ? `${n}` : `${(n / 1000).toFixed(1)}k`);
 
 export default function (pi: ExtensionAPI) {
@@ -43,6 +56,8 @@ export default function (pi: ExtensionAPI) {
 						out += `${R}${fg(C.surface)}${R}`;
 					}
 					out += `  ${fg(C.muted)}${ctx.model?.id ?? "no-model"}  ↑${fmt(input)} ↓${fmt(output)}${R}`;
+					const orca = orcaSegment();
+					if (orca) out += `  ${fg(C.ochre)}${orca}${R}`;
 					return [truncateToWidth(out, width)];
 				},
 			};
