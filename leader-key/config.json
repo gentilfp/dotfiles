@@ -15,11 +15,6 @@
     {
       "actions" : [
         {
-          "key" : "o",
-          "type" : "application",
-          "value" : "/Applications/Orca.app"
-        },
-        {
           "key" : "z",
           "type" : "application",
           "value" : "/Applications/Zed.app"
