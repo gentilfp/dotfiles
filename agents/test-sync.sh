@@ -70,12 +70,12 @@ expect "unexcluded skill relinked" '[[ -L "$HOME/.agents/skills/gamma" ]]'
 
 # 5. Links this repository owns are pruned; foreign links are not.
 ln -s "$src/delta" "$HOME/.claude/skills/delta"
-ln -s "../../.agents/skills/orca-cli" "$HOME/.pi/agent/skills/orca-cli"
+ln -s "../../.agents/skills/foreign-skill" "$HOME/.pi/agent/skills/foreign-skill"
 ln -s "$tmp/elsewhere" "$HOME/.agents/skills/mine"
 run --apply >"$tmp/prune"
 expect "stale owned link pruned" '[[ ! -L "$HOME/.claude/skills/delta" ]]'
 expect "prune is reported" 'grep -q "unlink: $HOME/.claude/skills/delta" "$tmp/prune"'
-expect "foreign relative link kept" '[[ -L "$HOME/.pi/agent/skills/orca-cli" ]]'
+expect "foreign relative link kept" '[[ -L "$HOME/.pi/agent/skills/foreign-skill" ]]'
 expect "foreign absolute link kept" '[[ -L "$HOME/.agents/skills/mine" ]]'
 
 # 6. A relative link into this repository resolves as ours and is normalized.
